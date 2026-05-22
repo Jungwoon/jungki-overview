@@ -291,8 +291,8 @@
 <body>
 
 <header>
-  <h1>🧠 Jungki — 박정운의 LLM Wiki 시스템</h1>
-  <div class="sub">2026-05-22 스냅샷 · 박정운 이해 검증용</div>
+  <h1>🧠 Jungki — 박정운의 LLM Wiki + AI 하네스 시스템</h1>
+  <div class="sub">2026-05-22 스냅샷 · LLM Wiki + My AI System 설명용 · <span class="highlight">변경 즉시 자동 갱신</span></div>
 </header>
 
 <nav>
@@ -302,8 +302,10 @@
   <a href="#models">④ 모델 분기</a>
   <a href="#routing">⑤ Agent 라우팅</a>
   <a href="#sync">⑥ 글로벌 ↔ vault Sync</a>
-  <a href="#today">⑦ 오늘 변화</a>
-  <a href="#check">⑧ 이해 체크</a>
+  <a href="#harness">⑦ 하네스 평가·진화</a>
+  <a href="#today">⑧ 오늘 변화</a>
+  <a href="#check">⑨ 이해 체크</a>
+  <a href="#autoupdate">⑩ 자동 갱신</a>
 </nav>
 
 <main>
@@ -501,17 +503,24 @@
 
     <div class="grid grid-3" style="margin-top: 16px;">
       <div>
-        <strong>21 specialized agents 등록</strong>
-        <div class="muted">ai-engineer · android-developer · code-quality · tester · error-detective · doc-manager · planner · 14 GSD 등</div>
+        <strong>회사 맥 28 agents</strong>
+        <div class="muted">specialized 10 · gsd-* 11 · mk-* 6 · ai-engineer · claude</div>
       </div>
       <div>
-        <strong>7개 description PROACTIVELY 보강</strong>
-        <div class="muted">한국어/영어 TRIGGER 키워드 추가 → 자동 위임률 ↑</div>
+        <strong>cc-* 12개 = 개인 맥 전용 ⭐</strong>
+        <div class="muted">박정운이 풀스택 팀(<code>/code-crew</code>)용으로 만든 것 → vault <code>setup/agents-personal/</code> 보존 + sync hostname 분기로 회사 맥 자동 skip</div>
       </div>
       <div>
         <strong>모델 사다리</strong>
         <div class="muted">Haiku (slash default) → Sonnet (agent default) → Opus (ai-engineer escalation)</div>
       </div>
+    </div>
+
+    <div class="panel" style="margin-top: 16px; background: rgba(255, 200, 0, 0.05); border: 1px solid rgba(255, 200, 0, 0.2);">
+      <strong>📊 자동 호출 로깅 (2026-05-22 P2 신설)</strong>
+      <p class="muted" style="margin-top: 6px;">
+        <code>~/.claude/hooks/agent-call-logger.js</code> PostToolUse hook → Agent tool 호출마다 <code>~/jungki/.metrics/agent-calls.jsonl</code>에 자동 append (ts·subagent·description·tokens). <code>/daily-end</code>가 향후 합산해 <code>jungki-llm-costs.md</code>에 누적 예정.
+      </p>
     </div>
   </div>
 </section>
@@ -526,9 +535,12 @@
       <div class="sync-side">
         <h4>🖥️ 글로벌 (머신별)</h4>
         <ul>
-          <li>~/.claude/CLAUDE.md</li>
-          <li>~/.claude/agents/*.md (21)</li>
+          <li>~/.claude/CLAUDE.md (191줄)</li>
+          <li>~/.claude/agents/*.md (28 회사 맥 / +12 cc-* 개인 맥)</li>
           <li>~/.claude/commands/*.md (25)</li>
+          <li>~/.claude/commands/gsd/*.md (32) ⭐</li>
+          <li>~/.claude/hooks/*.js (4) ⭐</li>
+          <li>~/.claude/settings.json ⭐</li>
         </ul>
       </div>
       <div class="sync-arrows">
@@ -541,8 +553,13 @@
         <h4>☁️ Vault 마스터</h4>
         <ul>
           <li>setup/global-CLAUDE.md</li>
-          <li>setup/agents/*.md (21)</li>
-          <li>setup/commands/*.md (25)</li>
+          <li>setup/agents/*.md (공통)</li>
+          <li>setup/agents-personal/cc-*.md (개인 맥 전용 ⭐)</li>
+          <li>setup/policies/*.md (6 — P3 분리 ⭐)</li>
+          <li>setup/commands/*.md</li>
+          <li>setup/commands-gsd/gsd/*.md ⭐</li>
+          <li>setup/hooks/*.js ⭐</li>
+          <li>setup/settings/settings.json ⭐</li>
         </ul>
       </div>
     </div>
@@ -551,27 +568,142 @@
       <strong>4 모드</strong>: <code>--auto</code> (권장, git-like 양방향) · <code>--check</code> (diff만) · <code>--pull</code> (vault→글로벌) · <code>--push</code> (글로벌→vault) · <code>--clean-old</code> (30일+ .bak 정리)
     </p>
     <p class="muted">자동 트리거 후보: 머신 부팅 시 · <code>/daily-end</code> · <code>/lint</code> 월 1회</p>
+
+    <div class="panel" style="margin-top: 16px; background: rgba(120, 200, 255, 0.05); border: 1px solid rgba(120, 200, 255, 0.2);">
+      <strong>🎯 머신별 분기 (2026-05-22 P4 적용)</strong>
+      <p class="muted" style="margin-top: 6px;">
+        <code>WORK_MACHINE_HOSTNAME="MacBookPro-DW2K7P1W9V"</code> 변수로 회사 맥 식별.<br/>
+        • <strong>회사 맥</strong>: agents-personal/ skip — "cc-* 풀스택 팀 불필요" 로그<br/>
+        • <strong>개인 맥</strong>: agents/는 cc-* <em>제외</em> sync + agents-personal/은 cc-* <em>패턴</em> 전용 sync<br/>
+        → vault 단일 소스 유지 + 머신마다 다른 agent 풀
+      </p>
+    </div>
+    <div class="panel" style="margin-top: 12px; background: rgba(200, 120, 255, 0.05); border: 1px solid rgba(200, 120, 255, 0.2);">
+      <strong>🔐 Vault 락 (2026-05-22 A8 보완)</strong>
+      <p class="muted" style="margin-top: 6px;">
+        <code>--pull</code>/<code>--push</code>/<code>--auto</code> 시작 시 <code>~/jungki/setup/.sync.lock</code> mkdir(atomic). 동시 실행 차단 + EXIT/INT/TERM trap으로 자동 정리. 10분+ stale 락은 자동 재획득. <code>--check</code>는 read-only라 락 불필요.
+      </p>
+    </div>
+    <div class="panel" style="margin-top: 12px; background: rgba(255, 80, 80, 0.05); border: 1px solid rgba(255, 80, 80, 0.2);">
+      <strong>🔒 시크릿 영구 차단 (2026-05-22)</strong>
+      <p class="muted" style="margin-top: 6px;">
+        <code>**/settings.local.json</code>은 sync 대상이 아니라 <code>.gitignore</code>로 영구 차단. P5 작업 중 Confluence/Jira API 토큰 평문 발견 → vault 미오염 차단됨.
+      </p>
+    </div>
   </div>
 </section>
 
-<!-- Section 7: Today's changes -->
+<!-- Section 7: Harness evaluation & evolution -->
+<section id="harness">
+  <h2><span class="num">7</span>하네스 평가·진화 (2026-05-22 박정운 평가 + 적용)</h2>
+  <div class="panel">
+    <p class="muted">"PKM은 상위 1%, 측정·자동화는 약함" 진단 → 약점 11개 식별 → 한 세션에 7개 해결.</p>
+
+    <h3 style="margin-top: 16px;">평가 → 해결 매트릭스</h3>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px;">
+      <thead>
+        <tr style="border-bottom: 1px solid var(--border);">
+          <th style="text-align: left; padding: 6px;">#</th>
+          <th style="text-align: left; padding: 6px;">약점</th>
+          <th style="text-align: left; padding: 6px;">처리</th>
+          <th style="text-align: center; padding: 6px;">상태</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="padding: 6px;">A1</td><td style="padding: 6px;">Hooks 활용 미흡 (2개)</td><td style="padding: 6px;">P2: agent-call-logger 추가 (3개)</td><td style="text-align: center;">✅</td></tr>
+        <tr><td style="padding: 6px;">A2</td><td style="padding: 6px;">자동매매 코드 가드 X</td><td style="padding: 6px;">P1 보류 (봇 테스트 중)</td><td style="text-align: center;">⏸</td></tr>
+        <tr><td style="padding: 6px;">A3</td><td style="padding: 6px;">CLAUDE.md 비대 (710줄)</td><td style="padding: 6px;">P3: 글로벌 523→191 (-63%) + policies 6 분리</td><td style="text-align: center;">✅</td></tr>
+        <tr><td style="padding: 6px;">A4</td><td style="padding: 6px;">Agent 중복 (cc-* vs specialized)</td><td style="padding: 6px;">P4: 머신별 install 분기 (vault 보존)</td><td style="text-align: center;">✅</td></tr>
+        <tr><td style="padding: 6px;">A5</td><td style="padding: 6px;">모델 분기 자기보고 의존</td><td style="padding: 6px;">agent-cost-summary.sh로 ai-engineer 호출=escalation 일별 카운트 자동 집계</td><td style="text-align: center;">✅</td></tr>
+        <tr><td style="padding: 6px;">A6</td><td style="padding: 6px;">비용 추적 자동화 부재</td><td style="padding: 6px;">agent-cost-summary.sh — jsonl 합산 → jungki-llm-costs.md 자동 갱신 (subagent별 카운트·escalation·예상 비용)</td><td style="text-align: center;">✅</td></tr>
+        <tr><td style="padding: 6px;">A7</td><td style="padding: 6px;">회귀 테스트 부재</td><td style="padding: 6px;">test-harness.sh 신설 — 8개 항목 검증 (sync·hooks·agents·policies·gitignore·락 누수)</td><td style="text-align: center;">✅</td></tr>
+        <tr><td style="padding: 6px;">A8</td><td style="padding: 6px;">병렬 Agent 충돌 가드 X</td><td style="padding: 6px;">sync-global.sh에 .sync.lock mkdir(atomic) + trap 자동 정리 + stale 락 재획득</td><td style="text-align: center;">✅</td></tr>
+        <tr><td style="padding: 6px;">A9</td><td style="padding: 6px;">MCP 서버 분산</td><td style="padding: 6px;">wiki/areas/mcp-servers.md 카탈로그 신설 — 위치 매트릭스·서버 목록·인증·추가 절차</td><td style="text-align: center;">✅</td></tr>
+        <tr><td style="padding: 6px;">A10</td><td style="padding: 6px;">하네스 자체 백업 부재</td><td style="padding: 6px;">P5: hooks·settings·gsd 풀 vault sync</td><td style="text-align: center;">✅</td></tr>
+        <tr><td style="padding: 6px;">A11</td><td style="padding: 6px;">관측가능성 부재</td><td style="padding: 6px;">P2 logger hook이 첫 measurement layer</td><td style="text-align: center;">✅</td></tr>
+      </tbody>
+    </table>
+    <p class="muted" style="margin-top: 12px;"><strong>처리율: 11/11 해결 + 1 보류(P1 자동매매)</strong> (한 세션 기준 매우 높음)</p>
+
+    <h3 style="margin-top: 20px;">새로 등장한 강점 (★)</h3>
+    <ul style="margin-top: 8px;">
+      <li><strong>머신별 install 분기 패턴 ★★★★★</strong> — hostname 기반 vault 단일 소스 + 머신별 다른 풀. 새 머신·새 역할 확장 가능</li>
+      <li><strong>박정운 정정 인사이트 메모리화 ★★★★★</strong> — "cc-*는 개인 맥 풀스택용" 같은 의도를 <code>feedback_*.md</code> 메모리로 영구 학습 → 재발 방지</li>
+      <li><strong>자동 보고 누적 규율 검증 ★★★★☆</strong> — 한 세션 4 작업 → 5 commits + daily + log + memory + policies 동시 갱신 작동</li>
+      <li><strong>시크릿 즉시 대응 ★★★★★</strong> — vault 진입 직전 평문 토큰 발견·차단</li>
+      <li><strong>측정 인프라 풀세트 완성 ★★★★★</strong> — agent-cost-summary(비용·escalation 일별 합산) + test-harness(8 항목 회귀) + mcp-servers 카탈로그까지 한 세션에 구축</li>
+    </ul>
+
+    <h3 style="margin-top: 16px;">새로 등장한 약점 (⚠️)</h3>
+    <ul>
+      <li>policies/*.md "Read 강제" 메커니즘 X → LLM이 트리거 시 정말 Read하는지 보장 없음</li>
+      <li>개인 맥 cc-* 필터(<code>auto_sync_dir_excluding</code>) 실환경 미검증 — 첫 실행 시 실패 가능</li>
+      <li>hostname 단일 키 의존 → 새 머신 추가 시 코드 수정 필요</li>
+      <li>jsonl raw만 쌓이고 집계 로직 미구현 — 데이터만 있고 인사이트 X</li>
+    </ul>
+
+    <h3 style="margin-top: 16px;">측면별 점수 (이번 세션 전·후)</h3>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px;">
+      <thead>
+        <tr style="border-bottom: 1px solid var(--border);">
+          <th style="text-align: left; padding: 6px;">측면</th>
+          <th style="text-align: center; padding: 6px;">Before</th>
+          <th style="text-align: center; padding: 6px;">After</th>
+          <th style="text-align: left; padding: 6px;">변화</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="padding: 6px;">PKM·정책 설계</td><td style="text-align: center;">★★★★★</td><td style="text-align: center;">★★★★★</td><td style="padding: 6px;">유지 (이미 최상)</td></tr>
+        <tr><td style="padding: 6px;">Agent 인프라</td><td style="text-align: center;">★★★★★</td><td style="text-align: center;">★★★★☆</td><td style="padding: 6px;">분리·운영 패턴 +, 테스트 X</td></tr>
+        <tr><td style="padding: 6px;">측정·관측가능성</td><td style="text-align: center;">★☆☆☆☆</td><td style="text-align: center;">★★★☆☆</td><td style="padding: 6px;">+2 (logger·라우팅 분기)</td></tr>
+        <tr><td style="padding: 6px;">보안</td><td style="text-align: center;">★★★☆☆</td><td style="text-align: center;">★★★★☆</td><td style="padding: 6px;">+1 (시크릿 차단·gitignore)</td></tr>
+        <tr><td style="padding: 6px;">백업·복구</td><td style="text-align: center;">★★☆☆☆</td><td style="text-align: center;">★★★★★</td><td style="padding: 6px;">+3 (vault 단일 소스 풀)</td></tr>
+        <tr><td style="padding: 6px;">자동화 강제</td><td style="text-align: center;">★★☆☆☆</td><td style="text-align: center;">★★★☆☆</td><td style="padding: 6px;">+1 (hook 1개 추가)</td></tr>
+      </tbody>
+    </table>
+    <p class="muted" style="margin-top: 12px;"><strong>총평 ★★★★☆ 상위 1% 유지 + 측정·백업 격차 메움.</strong> 다음 큰 진전 후보: 자동화 강제 hook 더 · 회귀 테스트.</p>
+  </div>
+</section>
+
+<!-- Section 8: Today's changes -->
 <section id="today">
-  <h2><span class="num">7</span>오늘 5/22 하루 변화</h2>
+  <h2><span class="num">8</span>오늘 5/22 하루 변화</h2>
   <div class="summary-grid">
-    <div class="summary-card"><div class="num">9</div><div class="label">Ingest 자료</div></div>
+    <div class="summary-card"><div class="num">9</div><div class="label">Ingest 자료 (오전)</div></div>
     <div class="summary-card"><div class="num">+82</div><div class="label">wiki 페이지 정리 (321→258, stub 63 삭제)</div></div>
     <div class="summary-card"><div class="num">1</div><div class="label">archives/lint 첫 보고서 (0→1)</div></div>
-    <div class="summary-card"><div class="num">7</div><div class="label">신규 정책 (CLAUDE.md 룰 변경 이력)</div></div>
     <div class="summary-card"><div class="num">25</div><div class="label">슬래시 모델 frontmatter 적용</div></div>
-    <div class="summary-card"><div class="num">21</div><div class="label">agents description PROACTIVELY 보강 (7개) / 마스터 백업 (21개)</div></div>
-    <div class="summary-card"><div class="num">76→90</div><div class="label">하네스 점수 (B+ → A)</div></div>
+    <div class="summary-card"><div class="num">76→90</div><div class="label">하네스 점수 (B+ → A, 오전)</div></div>
     <div class="summary-card"><div class="num">~70%</div><div class="label">예상 월 LLM 비용 절감</div></div>
+    <div class="summary-card" style="background: rgba(120, 200, 255, 0.08);"><div class="num">11→7</div><div class="label">하네스 약점 해결 (오후 평가)</div></div>
+    <div class="summary-card" style="background: rgba(120, 200, 255, 0.08);"><div class="num">523→191</div><div class="label">글로벌 CLAUDE.md 슬림화 (-63%)</div></div>
+    <div class="summary-card" style="background: rgba(120, 200, 255, 0.08);"><div class="num">40→28</div><div class="label">회사 맥 agents 정리 (cc-* 분리)</div></div>
+    <div class="summary-card" style="background: rgba(120, 200, 255, 0.08);"><div class="num">+6</div><div class="label">policies/*.md 신설 (P3 분리)</div></div>
+    <div class="summary-card" style="background: rgba(120, 200, 255, 0.08);"><div class="num">+1</div><div class="label">PostToolUse hook (agent-call-logger)</div></div>
+    <div class="summary-card" style="background: rgba(120, 200, 255, 0.08);"><div class="num">6</div><div class="label">vault sync 대상 종 (3→6)</div></div>
+    <div class="summary-card" style="background: rgba(120, 200, 255, 0.08);"><div class="num">+3</div><div class="label">신규 스크립트 (cost-summary·test-harness·sync 락)</div></div>
+    <div class="summary-card" style="background: rgba(120, 200, 255, 0.08);"><div class="num">8/8</div><div class="label">회귀 테스트 첫 실행 통과</div></div>
+    <div class="summary-card" style="background: rgba(120, 200, 255, 0.08);"><div class="num">11→11</div><div class="label">하네스 약점 해결 (P1 보류 제외)</div></div>
+  </div>
+
+  <div class="panel" style="margin-top: 16px;">
+    <strong>📦 오후 commits (vault)</strong>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px;">
+      <thead><tr style="border-bottom: 1px solid var(--border);"><th style="text-align: left; padding: 4px;">SHA</th><th style="text-align: left; padding: 4px;">제목</th></tr></thead>
+      <tbody>
+        <tr><td style="padding: 4px;"><code>431f15e</code></td><td style="padding: 4px;">chore(security): settings.local.json gitignore 차단</td></tr>
+        <tr><td style="padding: 4px;"><code>c5a0278</code></td><td style="padding: 4px;">feat(jungki/sync): P5 백업 확장 — hooks·settings·gsd</td></tr>
+        <tr><td style="padding: 4px;"><code>ae5a9d8</code></td><td style="padding: 4px;">feat(jungki/hook): P2 Agent 위임 자동 로깅 hook 신설</td></tr>
+        <tr><td style="padding: 4px;"><code>6d07ac6</code></td><td style="padding: 4px;">feat(jungki): P3 슬림화 + P4 머신별 분리 + 정책 6분리</td></tr>
+        <tr><td style="padding: 4px;"><code>5452d1f</code></td><td style="padding: 4px;">fix(jungki/sync): line 183 unbound + 개인 맥 필터 + daily/log</td></tr>
+      </tbody>
+    </table>
   </div>
 </section>
 
-<!-- Section 8: Validation -->
+<!-- Section 9: Validation -->
 <section id="check">
-  <h2><span class="num">8</span>박정운 이해 검증 체크리스트</h2>
+  <h2><span class="num">9</span>박정운 이해 검증 체크리스트</h2>
   <div class="panel">
     <p class="muted">아래 항목을 보고 "맞다/이해 됨"이면 ✓, "헷갈림"이면 표시 후 알려주세요.</p>
     <ul class="check-list">
@@ -582,19 +714,49 @@
       <li>슬래시 25개는 frontmatter <code>model:</code>로 자동 모델 분기 (Haiku 4·Sonnet 19·Opus 2)</li>
       <li>자연어로 요청해도 메인 LLM이 agent TRIGGER 매칭으로 자동 위임 시도 (PROACTIVELY)</li>
       <li>한계 감지 시 ai-engineer(Opus)로 Escalation = 반-자동 안전망</li>
-      <li>setup/global-CLAUDE.md가 글로벌 룰 단일 소스, ~/.claude/CLAUDE.md는 sync 사본</li>
-      <li>sync-global.sh --auto는 mtime 비교해서 더 최신 쪽으로 자동 양방향 sync</li>
+      <li>setup/global-CLAUDE.md(191줄)가 글로벌 룰 단일 소스, ~/.claude/CLAUDE.md는 sync 사본 — 풀 본문은 setup/policies/*.md 6개로 분리 (2026-05-22 P3) ⭐</li>
+      <li>sync-global.sh --auto는 mtime 비교해서 더 최신 쪽으로 자동 양방향 sync — 6종 동기화 + 머신 분기 ⭐</li>
       <li>새 프로젝트는 overview만 생성 (Lazy Seed) — 5종 stub 미리 만들지 않음</li>
-      <li>비용 추적 wiki(jungki-llm-costs.md)에 routine별 토큰·비용 누적 예정</li>
-      <li>다음 한 수: 개인 맥에서 launchd 등록 (worklog 22:30 / daily-end 23:55)</li>
+      <li>cc-* 12개는 개인 맥 풀스택 팀 전용 (회사 맥 자동 skip) — vault setup/agents-personal/에 단일 소스 보존 ⭐</li>
+      <li>Agent tool 호출은 PostToolUse hook이 자동 로깅 → .metrics/agent-calls.jsonl ⭐</li>
+      <li>settings.local.json은 API 토큰 평문 가능성으로 영구 차단 (sync·git 둘 다) ⭐</li>
+      <li>~/.claude/{hooks,settings.json,commands/gsd}는 vault setup/ 풀 동기화 (백업·복구 풀 커버) ⭐</li>
+      <li>이 사이트는 jungki + 하네스 변경 시 자동 갱신되는 살아있는 문서 ⭐</li>
     </ul>
+  </div>
+</section>
+
+<!-- Section 10: Auto-update policy -->
+<section id="autoupdate">
+  <h2><span class="num">10</span>이 사이트의 자동 갱신 정책</h2>
+  <div class="panel">
+    <p class="muted">박정운 지시(2026-05-22): "LLM Wiki + My AI System 설명용 — 변경될 때마다 항상 자동 업데이트".</p>
+    <h3 style="margin-top: 12px;">갱신 트리거</h3>
+    <ul>
+      <li>글로벌 CLAUDE.md / policies/*.md 추가·수정</li>
+      <li>~/.claude/agents/ 추가·삭제 (vault setup/agents·agents-personal 변경 포함)</li>
+      <li>~/.claude/hooks/ 추가·수정</li>
+      <li>sync-global.sh 동기화 구조 변경</li>
+      <li>슬래시 신설·모델 분기 변경</li>
+      <li>하네스 약점 평가·해결 (이 페이지 §7 매트릭스 갱신)</li>
+      <li>박정운이 직접 "사이트 업데이트해줘" 요청</li>
+    </ul>
+    <h3 style="margin-top: 12px;">갱신 절차 (LLM 자동)</h3>
+    <ol>
+      <li>의미 있는 변경 발생 → 영향 받는 섹션 식별</li>
+      <li><code>~/Projects/jungki-overview/index.html</code> 편집 (해당 섹션 + 오늘 변화 §8 박스 + footer timestamp)</li>
+      <li>vault <code>wiki/projects/jungki-overview/overview.md</code> 동시 갱신 (필요 시)</li>
+      <li><code>git push</code> → GitHub webhook → Vercel 자동 deploy → <a href="https://jungki-overview.vercel.app">https://jungki-overview.vercel.app</a> 즉시 반영</li>
+      <li>vault commit + push (오늘 daily 한 줄 누적)</li>
+    </ol>
+    <p class="muted" style="margin-top: 12px;">정책 단일 소스: <code>~/jungki/wiki/projects/jungki-overview/overview.md</code> "자동 갱신 정책" 섹션.</p>
   </div>
 </section>
 
 </main>
 
 <footer>
-  생성: 2026-05-22 · 박정운 Jungki 시스템 시각화 · 단일 HTML 파일 (외부 의존성 없음)
+  마지막 갱신: <span style="color: var(--yellow); font-weight: bold;">2026-05-22 17:30 KST</span> (A5~A9 일괄 적용 + 측정 인프라 완성) · 박정운 Jungki 시스템 시각화 · 단일 HTML (외부 의존성 0) · <a href="https://github.com/Jungwoon/jungki-overview" style="color: var(--muted);">Source</a>
 </footer>
 
 <script>
