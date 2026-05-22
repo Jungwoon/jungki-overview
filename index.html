@@ -306,6 +306,7 @@
   <a href="#today">⑧ 오늘 변화</a>
   <a href="#check">⑨ 이해 체크</a>
   <a href="#autoupdate">⑩ 자동 갱신</a>
+  <a href="#learning">⑪ 노하우 학습</a>
 </nav>
 
 <main>
@@ -753,10 +754,71 @@
   </div>
 </section>
 
+<!-- Section 11: Knowledge learning cycle + self-evolution -->
+<section id="learning">
+  <h2><span class="num">11</span>노하우 학습 루프 + 자가 학습 메커니즘</h2>
+  <div class="panel">
+    <p class="muted">박정운 작업 → wiki/메모리 누적 → agent가 다음 호출 시 자동 Read → 사이클 반복. Claude 모델 자체는 학습 안 되지만 외부 지식 누적·자동 첨부로 "학습한 듯" 작동.</p>
+
+    <h3 style="margin-top: 16px;">노하우 학습 사이클 (정적 인프라)</h3>
+    <pre style="background: var(--panel-2); padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 12px; line-height: 1.5;">
+박정운 작업 → 노하우 누적 (wiki/메모리) ──────┐
+                                              ↓
+                  agent-knowledge-index.md (영역별 wiki 매트릭스)
+                                              ↓
+              agent description에 "위임 받으면 인덱스 Read"
+                                              ↓
+                  메인 LLM 위임 prompt에 자동 첨부
+                                              ↓
+                  agent 작업 결과 ─ 새 노하우 발견
+                                              ↓ (자동 누적 정책)
+                       ┌──────────────────────┘
+                       (사이클 반복)
+    </pre>
+
+    <h3 style="margin-top: 20px;">자가 학습 메커니즘 5종 (동적 진화)</h3>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px;">
+      <thead>
+        <tr style="border-bottom: 1px solid var(--border);">
+          <th style="text-align: left; padding: 6px;">#</th>
+          <th style="text-align: left; padding: 6px;">메커니즘</th>
+          <th style="text-align: left; padding: 6px;">트리거</th>
+          <th style="text-align: left; padding: 6px;">저장 위치</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="padding: 6px;">1</td><td style="padding: 6px;"><strong>Feedback 메모리 자동 누적</strong></td><td style="padding: 6px;">박정운 정정·확인 + 메인 LLM 자체 감지</td><td style="padding: 6px;"><code>memory/feedback_*.md</code></td></tr>
+        <tr><td style="padding: 6px;">2</td><td style="padding: 6px;"><strong>Agent description 자동 진화</strong></td><td style="padding: 6px;">놓친 항목·새 TRIGGER 키워드 발견</td><td style="padding: 6px;"><code>setup/agents/*.md</code> 한 줄 추가</td></tr>
+        <tr><td style="padding: 6px;">3</td><td style="padding: 6px;"><strong>Knowledge-index 자동 갱신</strong></td><td style="padding: 6px;">새 wiki 페이지 / 새 agent 추가</td><td style="padding: 6px;"><code>wiki/areas/agent-knowledge-index.md</code></td></tr>
+        <tr><td style="padding: 6px;">4</td><td style="padding: 6px;"><strong>메타 학습 회고</strong></td><td style="padding: 6px;"><code>/weekly</code>·<code>/monthly</code> 슬래시</td><td style="padding: 6px;">회고 보고서 별도 섹션</td></tr>
+        <tr><td style="padding: 6px;">5</td><td style="padding: 6px;"><strong>실패 학습 (Postmortem)</strong></td><td style="padding: 6px;">박정운 정정·재요청 + 작업 실패 시그널</td><td style="padding: 6px;"><code>gotchas.md</code> G번호 + 메모리</td></tr>
+      </tbody>
+    </table>
+
+    <div class="panel" style="margin-top: 16px; background: rgba(63, 185, 80, 0.05); border: 1px solid rgba(63, 185, 80, 0.2);">
+      <strong>✅ 학습 성공 신호</strong>
+      <p class="muted" style="margin-top: 6px;">
+        다음 작업·다음 세션에서 박정운이 비슷한 정정·지적을 안 함 (반복률 감소).<br/>
+        측정: <code>/monthly</code> 메타 학습 회고에서 박정운 정정 횟수 추이 추적.
+      </p>
+    </div>
+
+    <div class="panel" style="margin-top: 12px; background: rgba(240, 136, 62, 0.05); border: 1px solid rgba(240, 136, 62, 0.2);">
+      <strong>⚠️ 한계·안전</strong>
+      <ul class="muted" style="margin-top: 6px;">
+        <li>Claude 모델 자체(가중치)는 fine-tuning 없이 안 똑똑해짐 — Anthropic이 모델 업데이트해야 함</li>
+        <li>agent description 자동 진화는 본문 추가만 (frontmatter·기존 본문 보존)</li>
+        <li>큰 정책·룰 변경은 박정운 컨펌 필수 (자율 진화 X)</li>
+        <li>모든 자가 학습은 vault에 누적 → 다른 머신 자동 반영 (단일 소스)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <footer>
-  마지막 갱신: <span style="color: var(--yellow); font-weight: bold;">2026-05-22 17:30 KST</span> (A5~A9 일괄 적용 + 측정 인프라 완성) · 박정운 Jungki 시스템 시각화 · 단일 HTML (외부 의존성 0) · <a href="https://github.com/Jungwoon/jungki-overview" style="color: var(--muted);">Source</a>
+  마지막 갱신: <span style="color: var(--yellow); font-weight: bold;">2026-05-22 18:00 KST</span> (노하우 학습 루프 + 자가 학습 5 메커니즘) · 박정운 Jungki 시스템 시각화 · 단일 HTML (외부 의존성 0) · <a href="https://github.com/Jungwoon/jungki-overview" style="color: var(--muted);">Source</a>
 </footer>
 
 <script>
