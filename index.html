@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Jungki — 박정운의 LLM Wiki 시스템 (2026-05-22 스냅샷)</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --panel: #161b22;
+    --panel-2: #1f2937;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --orange: #f0883e;
+    --red: #f85149;
+    --purple: #bc8cff;
+    --yellow: #d29922;
+    --cyan: #39c5cf;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Pretendard', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  header {
+    padding: 40px 32px 24px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #1c2128 0%, var(--bg) 100%);
+  }
+  header h1 {
+    margin: 0 0 8px;
+    font-size: 28px;
+    background: linear-gradient(90deg, var(--accent), var(--purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  header .sub { color: var(--muted); font-size: 14px; }
+  nav {
+    display: flex; gap: 12px; flex-wrap: wrap;
+    padding: 16px 32px; border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; background: var(--bg); z-index: 100;
+  }
+  nav a {
+    color: var(--accent); text-decoration: none; padding: 6px 12px;
+    border: 1px solid var(--border); border-radius: 6px; font-size: 13px;
+    transition: all .2s;
+  }
+  nav a:hover { background: var(--panel); border-color: var(--accent); }
+  main { max-width: 1200px; margin: 0 auto; padding: 24px 32px 60px; }
+  section { margin-bottom: 56px; }
+  section h2 {
+    font-size: 20px; margin: 0 0 16px;
+    padding-bottom: 8px; border-bottom: 1px solid var(--border);
+  }
+  section h2 .num {
+    display: inline-block; width: 28px; height: 28px;
+    border-radius: 50%; background: var(--accent); color: var(--bg);
+    text-align: center; line-height: 28px; font-weight: bold;
+    margin-right: 10px; font-size: 14px;
+  }
+  .panel {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 10px; padding: 20px; margin-bottom: 16px;
+  }
+  .panel h3 { margin: 0 0 12px; font-size: 16px; color: var(--accent); }
+  .muted { color: var(--muted); font-size: 13px; }
+  .grid { display: grid; gap: 16px; }
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+  .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .grid-5 { grid-template-columns: repeat(5, 1fr); }
+  @media (max-width: 768px) {
+    .grid-2, .grid-3, .grid-5 { grid-template-columns: 1fr; }
+  }
+
+  /* ===== Section 1: Multi-machine ===== */
+  .machine-flow {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; padding: 32px 16px; position: relative;
+  }
+  .machine {
+    flex: 1; min-width: 0;
+    background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px; text-align: center;
+    position: relative;
+  }
+  .machine .label { font-size: 14px; font-weight: bold; margin-bottom: 4px; }
+  .machine .role { font-size: 11px; color: var(--muted); }
+  .machine.work { border-color: var(--accent); }
+  .machine.personal { border-color: var(--orange); }
+  .central {
+    flex: 1; padding: 20px;
+    background: var(--panel-2); border: 2px solid var(--green);
+    border-radius: 12px; text-align: center;
+  }
+  .central .title { font-size: 15px; font-weight: bold; color: var(--green); }
+  .central .meta { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .arrow-row { display: flex; align-items: center; gap: 4px; flex: 0 0 60px; }
+  .arrow {
+    flex: 1; height: 2px; background: linear-gradient(90deg, var(--cyan), var(--accent));
+    position: relative;
+  }
+  .arrow::after {
+    content: ''; position: absolute; right: -1px; top: -4px;
+    border: 5px solid transparent; border-left-color: var(--accent);
+  }
+  /* Animated data dot */
+  .data-flow { position: absolute; width: 8px; height: 8px;
+    background: var(--yellow); border-radius: 50%;
+    box-shadow: 0 0 12px var(--yellow);
+  }
+  @keyframes flow-right {
+    0% { left: 0%; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { left: 100%; opacity: 0; }
+  }
+  .machine-flow .data-flow.work-to-vault { top: 50%; left: 18%; width: 30%; height: 2px;
+    background: transparent; }
+  .machine-flow .data-flow.work-to-vault::before {
+    content: '●'; color: var(--yellow); position: absolute; left: 0;
+    animation: dot-slide 3s linear infinite; font-size: 16px;
+  }
+  .machine-flow .data-flow.vault-to-personal::before {
+    content: '●'; color: var(--cyan); position: absolute; left: 0;
+    animation: dot-slide 3s linear infinite 1.5s; font-size: 16px;
+  }
+  @keyframes dot-slide {
+    0% { left: 0; opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { left: calc(100% - 16px); opacity: 0; }
+  }
+
+  /* ===== Section 2: Vault Structure ===== */
+  .vault-stack {
+    display: flex; flex-direction: column; gap: 8px; padding: 16px;
+  }
+  .layer {
+    padding: 14px 18px; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--panel-2); cursor: pointer;
+    transition: all .2s; display: flex; justify-content: space-between; align-items: center;
+  }
+  .layer:hover { transform: translateX(4px); border-color: var(--accent); }
+  .layer .icon { font-size: 20px; margin-right: 12px; }
+  .layer .name { font-weight: bold; }
+  .layer .desc { font-size: 12px; color: var(--muted); margin-left: 8px; }
+  .layer .tag {
+    font-size: 11px; padding: 2px 8px; border-radius: 4px;
+    background: var(--panel); color: var(--muted);
+  }
+  .layer.wiki { border-left: 4px solid var(--accent); }
+  .layer.raw { border-left: 4px solid var(--cyan); }
+  .layer.work { border-left: 4px solid var(--yellow); }
+  .layer.personal { border-left: 4px solid var(--red); }
+  .layer.setup { border-left: 4px solid var(--purple); }
+
+  /* ===== Section 3: 3-동작 Cycle ===== */
+  .cycle {
+    display: flex; justify-content: space-around; align-items: center;
+    padding: 32px 0; position: relative;
+  }
+  .cycle-node {
+    width: 140px; height: 140px; border-radius: 50%;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    border: 2px solid var(--border); background: var(--panel-2);
+    text-align: center; padding: 8px;
+  }
+  .cycle-node.active {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(88,166,255,.4);
+  }
+  .cycle-node .emoji { font-size: 28px; margin-bottom: 4px; }
+  .cycle-node .name { font-weight: bold; font-size: 14px; }
+  .cycle-node .sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .cycle-node.ingest.active { animation: pulse-blue 6s infinite; }
+  .cycle-node.query.active { animation: pulse-blue 6s infinite 2s; }
+  .cycle-node.lint.active { animation: pulse-blue 6s infinite 4s; }
+  @keyframes pulse-blue {
+    0%, 33% { box-shadow: 0 0 20px rgba(88,166,255,.6); border-color: var(--accent); }
+    34%, 100% { box-shadow: none; border-color: var(--border); }
+  }
+
+  /* ===== Section 4: Slash → Model ===== */
+  .slash-flow { padding: 16px 0; }
+  .slash-group { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .slash-tag {
+    padding: 4px 10px; border-radius: 12px; font-size: 12px;
+    background: var(--panel-2); border: 1px solid var(--border);
+    cursor: pointer; transition: all .2s;
+  }
+  .slash-tag:hover { transform: translateY(-2px); }
+  .slash-tag.haiku { border-color: var(--green); color: var(--green); }
+  .slash-tag.sonnet { border-color: var(--accent); color: var(--accent); }
+  .slash-tag.opus { border-color: var(--purple); color: var(--purple); }
+  .model-badge {
+    padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: bold;
+    min-width: 80px; text-align: center;
+  }
+  .model-badge.haiku { background: rgba(63,185,80,.15); color: var(--green); border: 1px solid var(--green); }
+  .model-badge.sonnet { background: rgba(88,166,255,.15); color: var(--accent); border: 1px solid var(--accent); }
+  .model-badge.opus { background: rgba(188,140,255,.15); color: var(--purple); border: 1px solid var(--purple); }
+  .arrow-h { color: var(--muted); font-size: 18px; }
+  .slash-list { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
+
+  /* ===== Section 5: Agent routing ===== */
+  .routing-demo {
+    background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 24px; margin: 16px 0;
+  }
+  .user-bubble {
+    background: var(--accent); color: var(--bg); padding: 10px 14px;
+    border-radius: 14px 14px 4px 14px; display: inline-block; max-width: 80%;
+    font-size: 14px; margin-bottom: 16px;
+  }
+  .step { display: flex; gap: 12px; margin: 8px 0; align-items: flex-start; }
+  .step-num {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--panel); border: 1px solid var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; flex-shrink: 0; color: var(--accent);
+  }
+  .step-content { font-size: 13px; color: var(--text); }
+  .step-content .agent { color: var(--purple); font-weight: bold; }
+  .step-content .model { color: var(--green); }
+  .escalation {
+    margin-top: 16px; padding: 12px; border-radius: 8px;
+    background: rgba(240,136,62,.1); border: 1px dashed var(--orange);
+    color: var(--orange); font-size: 13px;
+  }
+
+  /* ===== Section 6: Sync ===== */
+  .sync-diagram {
+    display: grid; grid-template-columns: 1fr 80px 1fr;
+    gap: 0; padding: 24px 16px; align-items: center;
+  }
+  .sync-side {
+    background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px;
+  }
+  .sync-side h4 { margin: 0 0 12px; font-size: 14px; color: var(--accent); }
+  .sync-side ul { margin: 0; padding-left: 18px; font-size: 12px; color: var(--muted); }
+  .sync-arrows {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 12px; position: relative;
+  }
+  .sync-arrow {
+    width: 100%; height: 2px; background: var(--cyan); position: relative;
+  }
+  .sync-arrow.l-to-r::after {
+    content: '▶'; position: absolute; right: -4px; top: -8px;
+    color: var(--cyan); font-size: 14px;
+  }
+  .sync-arrow.r-to-l::before {
+    content: '◀'; position: absolute; left: -4px; top: -8px;
+    color: var(--cyan); font-size: 14px;
+  }
+  .sync-label { font-size: 10px; color: var(--muted); text-align: center; }
+
+  /* ===== Today Summary ===== */
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .summary-card {
+    background: var(--panel-2); padding: 16px; border-radius: 10px;
+    border-left: 4px solid var(--accent);
+  }
+  .summary-card .num { font-size: 28px; font-weight: bold; color: var(--accent); }
+  .summary-card .label { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  /* Validation prompt */
+  .check-list { padding: 0; list-style: none; }
+  .check-list li {
+    padding: 10px 14px; margin: 6px 0;
+    background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 8px; font-size: 13px;
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .check-list li::before { content: '✓'; color: var(--green); font-weight: bold; }
+
+  footer {
+    padding: 24px 32px; text-align: center; color: var(--muted);
+    border-top: 1px solid var(--border); font-size: 12px;
+  }
+  .highlight { color: var(--yellow); font-weight: bold; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧠 Jungki — 박정운의 LLM Wiki 시스템</h1>
+  <div class="sub">2026-05-22 스냅샷 · 박정운 이해 검증용</div>
+</header>
+
+<nav>
+  <a href="#machines">① 멀티 머신</a>
+  <a href="#vault">② Vault 5층</a>
+  <a href="#operations">③ 3-동작</a>
+  <a href="#models">④ 모델 분기</a>
+  <a href="#routing">⑤ Agent 라우팅</a>
+  <a href="#sync">⑥ 글로벌 ↔ vault Sync</a>
+  <a href="#today">⑦ 오늘 변화</a>
+  <a href="#check">⑧ 이해 체크</a>
+</nav>
+
+<main>
+
+<!-- Section 1: Multi-machine -->
+<section id="machines">
+  <h2><span class="num">1</span>멀티 머신 운영 — 회사 맥 + 개인 맥 + 동기화</h2>
+  <div class="panel">
+    <p class="muted">박정운은 회사 맥(주간 본업) + 개인 맥(저녁·자동화 본거지)을 시간대 분리로 사용. 같은 파일 동시 편집 거의 X.</p>
+    <div class="machine-flow">
+      <div class="machine work">
+        <div class="label">🖥️ 회사 맥</div>
+        <div class="role">주간 본업<br/>~/StudioProjects/baemin-android<br/><span class="muted">수동 /worklog</span></div>
+      </div>
+      <div class="arrow-row">
+        <div class="arrow"></div>
+      </div>
+      <div class="central">
+        <div class="title">☁️ Jungki Vault</div>
+        <div class="meta">iCloud Drive + GitHub Private<br/>~/jungki (심볼릭 링크)</div>
+      </div>
+      <div class="arrow-row">
+        <div class="arrow"></div>
+      </div>
+      <div class="machine personal">
+        <div class="label">💻 개인 맥</div>
+        <div class="role">저녁·주말<br/>자동화 본거지<br/><span class="muted">launchd cron</span></div>
+      </div>
+      <div class="data-flow work-to-vault"></div>
+    </div>
+    <p class="muted" style="margin-top: 16px;">⚠️ 공통 룰 파일(CLAUDE.md·index.md·log.md·setup/) 수정 시 pull→편집→push 강제.</p>
+  </div>
+</section>
+
+<!-- Section 2: Vault structure -->
+<section id="vault">
+  <h2><span class="num">2</span>Vault 5층 구조</h2>
+  <div class="panel">
+    <p class="muted">권한·보안·동기화 범위가 5층으로 분리. Karpathy 원본보다 진화된 박정운 구조.</p>
+    <div class="vault-stack">
+      <div class="layer wiki">
+        <div><span class="icon">📚</span><span class="name">wiki/</span>
+          <span class="desc">정리된 지식 (projects·areas·resources·daily·archives)</span></div>
+        <span class="tag">258 페이지 · 공개</span>
+      </div>
+      <div class="layer raw">
+        <div><span class="icon">📥</span><span class="name">raw/</span>
+          <span class="desc">원본 자료 (immutable, LLM 읽기만)</span></div>
+        <span class="tag">41 파일 · 공개</span>
+      </div>
+      <div class="layer work">
+        <div><span class="icon">🏢</span><span class="name">work-private/</span>
+          <span class="desc">회사 정리 자료 (baemin-android·mobile-platform-team 등)</span></div>
+        <span class="tag">Private repo</span>
+      </div>
+      <div class="layer personal">
+        <div><span class="icon">🔒</span><span class="name">personal-private/</span>
+          <span class="desc">사적 자료 (finance·health·contracts·.config)</span></div>
+        <span class="tag">로컬+iCloud만</span>
+      </div>
+      <div class="layer setup">
+        <div><span class="icon">🔧</span><span class="name">setup/ + scripts/</span>
+          <span class="desc">인프라 (sync-global.sh·agents/·commands/·bootstrap.sh)</span></div>
+        <span class="tag">운영 도구</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section 3: 3-동작 -->
+<section id="operations">
+  <h2><span class="num">3</span>Karpathy 3-동작 사이클 (Ingest · Query · Lint)</h2>
+  <div class="panel">
+    <p class="muted">Jungki 운영의 핵심 3가지 동작. 오늘 처음으로 모두 실제 가동 (Lint 첫 실행).</p>
+    <div class="cycle">
+      <div class="cycle-node ingest active">
+        <div class="emoji">📥</div>
+        <div class="name">Ingest</div>
+        <div class="sub">자료 → raw + wiki</div>
+      </div>
+      <div class="cycle-node query active">
+        <div class="emoji">🔍</div>
+        <div class="name">Query</div>
+        <div class="sub">위키 질의 + file back</div>
+      </div>
+      <div class="cycle-node lint active">
+        <div class="emoji">🩺</div>
+        <div class="name">Lint</div>
+        <div class="sub">모순·고아·stale 점검</div>
+      </div>
+    </div>
+    <div class="grid grid-3">
+      <div>
+        <strong style="color: var(--green);">Ingest ✅ 매우 활발</strong>
+        <div class="muted">오늘 9건 처리 (yozm 6 + 도메인 3)</div>
+      </div>
+      <div>
+        <strong style="color: var(--yellow);">Query 🟡 부분</strong>
+        <div class="muted">자연어 의존, 별도 슬래시 X</div>
+      </div>
+      <div>
+        <strong style="color: var(--green);">Lint ✅ 첫 실행</strong>
+        <div class="muted">archives 0→1, stub 145 발견</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section 4: Slash → Model -->
+<section id="models">
+  <h2><span class="num">4</span>슬래시 25개 → 모델 자동 분기</h2>
+  <div class="panel">
+    <p class="muted">박정운 슬래시 호출 시 frontmatter <code>model:</code> 따라 자동 spawning. 비용 ~$200/월 → ~$60~80/월 (60~70% 절감 추정).</p>
+
+    <div class="slash-flow">
+      <div class="slash-group">
+        <div class="model-badge haiku">Haiku (4)</div>
+        <span class="arrow-h">←</span>
+        <div class="slash-list">
+          <span class="slash-tag haiku">/daily</span>
+          <span class="slash-tag haiku">/daily-end</span>
+          <span class="slash-tag haiku">/inbox</span>
+          <span class="slash-tag haiku">/lint</span>
+        </div>
+      </div>
+      <div class="slash-group">
+        <div class="model-badge sonnet">Sonnet (19)</div>
+        <span class="arrow-h">←</span>
+        <div class="slash-list">
+          <span class="slash-tag sonnet">/ingest</span>
+          <span class="slash-tag sonnet">/worklog</span>
+          <span class="slash-tag sonnet">/research</span>
+          <span class="slash-tag sonnet">/review</span>
+          <span class="slash-tag sonnet">/architecture-check</span>
+          <span class="slash-tag sonnet">/compose-migrate</span>
+          <span class="slash-tag sonnet">/compose-optimize</span>
+          <span class="slash-tag sonnet">/kotlin-refactor</span>
+          <span class="slash-tag sonnet">/test-gen</span>
+          <span class="slash-tag sonnet">/cleanup</span>
+          <span class="slash-tag sonnet">/explain</span>
+          <span class="slash-tag sonnet">/summary</span>
+          <span class="slash-tag sonnet">/tidy</span>
+          <span class="slash-tag sonnet">/weekly</span>
+          <span class="slash-tag sonnet">/monthly</span>
+          <span class="slash-tag sonnet">/planning</span>
+          <span class="slash-tag sonnet">/commit-push-mr</span>
+          <span class="slash-tag sonnet">/append</span>
+          <span class="slash-tag sonnet">/analyze-video</span>
+        </div>
+      </div>
+      <div class="slash-group">
+        <div class="model-badge opus">Opus (2)</div>
+        <span class="arrow-h">←</span>
+        <div class="slash-list">
+          <span class="slash-tag opus">/project-kickoff</span>
+          <span class="slash-tag opus">/quarterly</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="muted" style="margin-top: 16px;">📌 4개 (<code>cleanup·explain·summary·tidy</code>)는 박정운 검증 후 Haiku → Sonnet 안전 상향 (reasoning 의존).</p>
+  </div>
+</section>
+
+<!-- Section 5: Agent routing + Escalation -->
+<section id="routing">
+  <h2><span class="num">5</span>자연어 → Agent 자동 라우팅 + 동적 Escalation</h2>
+  <div class="panel">
+    <p class="muted">박정운이 자연어로 요청해도 메인 LLM이 agent description TRIGGER 매칭 → 자동 위임. 한계 감지 시 ai-engineer로 Escalation.</p>
+
+    <div class="routing-demo">
+      <div class="user-bubble">"이 안드로이드 코드 봐줘"</div>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">메인 LLM이 요청 1초 점검 → CLAUDE.md "Agent 우선 활용 매트릭스" 확인</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">TRIGGER 매칭: "안드로이드 코드", "코드 봐줘" → <span class="agent">android-developer-agent</span> + <span class="agent">code-quality-agent</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">단일 메시지에 multiple Agent tool 호출 → <span class="model">병렬 spawning (Sonnet × 2)</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">각 agent 결과 → 메인 LLM이 통합 → 박정운에게 보고</div>
+      </div>
+
+      <div class="escalation">
+        ⚡ <strong>한계 감지 시 Escalation</strong>: 다층 trade-off 분석 필요 → "<span class="agent">ai-engineer</span>(Opus)에 위임합니다" 한 줄 보고 후 Opus 호출
+      </div>
+    </div>
+
+    <div class="grid grid-3" style="margin-top: 16px;">
+      <div>
+        <strong>21 specialized agents 등록</strong>
+        <div class="muted">ai-engineer · android-developer · code-quality · tester · error-detective · doc-manager · planner · 14 GSD 등</div>
+      </div>
+      <div>
+        <strong>7개 description PROACTIVELY 보강</strong>
+        <div class="muted">한국어/영어 TRIGGER 키워드 추가 → 자동 위임률 ↑</div>
+      </div>
+      <div>
+        <strong>모델 사다리</strong>
+        <div class="muted">Haiku (slash default) → Sonnet (agent default) → Opus (ai-engineer escalation)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section 6: Sync -->
+<section id="sync">
+  <h2><span class="num">6</span>글로벌 ↔ Vault 동기화 (sync-global.sh)</h2>
+  <div class="panel">
+    <p class="muted">머신별 글로벌 자산을 vault 마스터와 양방향 sync. mtime 기반 git-like — 더 최신 쪽이 truth.</p>
+
+    <div class="sync-diagram">
+      <div class="sync-side">
+        <h4>🖥️ 글로벌 (머신별)</h4>
+        <ul>
+          <li>~/.claude/CLAUDE.md</li>
+          <li>~/.claude/agents/*.md (21)</li>
+          <li>~/.claude/commands/*.md (25)</li>
+        </ul>
+      </div>
+      <div class="sync-arrows">
+        <div class="sync-arrow l-to-r"></div>
+        <div class="sync-label">--push<br/>--auto (더 최신)</div>
+        <div class="sync-arrow r-to-l"></div>
+        <div class="sync-label">--pull<br/>--auto (더 최신)</div>
+      </div>
+      <div class="sync-side">
+        <h4>☁️ Vault 마스터</h4>
+        <ul>
+          <li>setup/global-CLAUDE.md</li>
+          <li>setup/agents/*.md (21)</li>
+          <li>setup/commands/*.md (25)</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="muted" style="margin-top: 16px;">
+      <strong>4 모드</strong>: <code>--auto</code> (권장, git-like 양방향) · <code>--check</code> (diff만) · <code>--pull</code> (vault→글로벌) · <code>--push</code> (글로벌→vault) · <code>--clean-old</code> (30일+ .bak 정리)
+    </p>
+    <p class="muted">자동 트리거 후보: 머신 부팅 시 · <code>/daily-end</code> · <code>/lint</code> 월 1회</p>
+  </div>
+</section>
+
+<!-- Section 7: Today's changes -->
+<section id="today">
+  <h2><span class="num">7</span>오늘 5/22 하루 변화</h2>
+  <div class="summary-grid">
+    <div class="summary-card"><div class="num">9</div><div class="label">Ingest 자료</div></div>
+    <div class="summary-card"><div class="num">+82</div><div class="label">wiki 페이지 정리 (321→258, stub 63 삭제)</div></div>
+    <div class="summary-card"><div class="num">1</div><div class="label">archives/lint 첫 보고서 (0→1)</div></div>
+    <div class="summary-card"><div class="num">7</div><div class="label">신규 정책 (CLAUDE.md 룰 변경 이력)</div></div>
+    <div class="summary-card"><div class="num">25</div><div class="label">슬래시 모델 frontmatter 적용</div></div>
+    <div class="summary-card"><div class="num">21</div><div class="label">agents description PROACTIVELY 보강 (7개) / 마스터 백업 (21개)</div></div>
+    <div class="summary-card"><div class="num">76→90</div><div class="label">하네스 점수 (B+ → A)</div></div>
+    <div class="summary-card"><div class="num">~70%</div><div class="label">예상 월 LLM 비용 절감</div></div>
+  </div>
+</section>
+
+<!-- Section 8: Validation -->
+<section id="check">
+  <h2><span class="num">8</span>박정운 이해 검증 체크리스트</h2>
+  <div class="panel">
+    <p class="muted">아래 항목을 보고 "맞다/이해 됨"이면 ✓, "헷갈림"이면 표시 후 알려주세요.</p>
+    <ul class="check-list">
+      <li>Jungki vault는 iCloud + Git 양쪽 동기화, 5층 분리(wiki/raw/work-private/personal-private/setup)</li>
+      <li>회사 맥은 본업 + 수동 / 개인 맥은 자동화 본거지 (cron·launchd 한 대만)</li>
+      <li>공통 룰 파일(CLAUDE.md·index·log·setup) 수정은 pull→편집→push 강제</li>
+      <li>Karpathy 3-동작(Ingest·Query·Lint) — 오늘 Lint 첫 실행으로 모두 가동</li>
+      <li>슬래시 25개는 frontmatter <code>model:</code>로 자동 모델 분기 (Haiku 4·Sonnet 19·Opus 2)</li>
+      <li>자연어로 요청해도 메인 LLM이 agent TRIGGER 매칭으로 자동 위임 시도 (PROACTIVELY)</li>
+      <li>한계 감지 시 ai-engineer(Opus)로 Escalation = 반-자동 안전망</li>
+      <li>setup/global-CLAUDE.md가 글로벌 룰 단일 소스, ~/.claude/CLAUDE.md는 sync 사본</li>
+      <li>sync-global.sh --auto는 mtime 비교해서 더 최신 쪽으로 자동 양방향 sync</li>
+      <li>새 프로젝트는 overview만 생성 (Lazy Seed) — 5종 stub 미리 만들지 않음</li>
+      <li>비용 추적 wiki(jungki-llm-costs.md)에 routine별 토큰·비용 누적 예정</li>
+      <li>다음 한 수: 개인 맥에서 launchd 등록 (worklog 22:30 / daily-end 23:55)</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  생성: 2026-05-22 · 박정운 Jungki 시스템 시각화 · 단일 HTML 파일 (외부 의존성 없음)
+</footer>
+
+<script>
+  // 부드러운 스크롤
+  document.querySelectorAll('nav a').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // Layer 클릭 시 colored flash
+  document.querySelectorAll('.layer').forEach(l => {
+    l.addEventListener('click', () => {
+      l.style.background = 'rgba(88,166,255,.2)';
+      setTimeout(() => l.style.background = '', 400);
+    });
+  });
+</script>
+
+</body>
+</html>
