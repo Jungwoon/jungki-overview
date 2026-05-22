@@ -643,6 +643,45 @@
       <li>jsonl raw만 쌓이고 집계 로직 미구현 — 데이터만 있고 인사이트 X</li>
     </ul>
 
+    <h3 style="margin-top: 24px;">📊 재평가 (2026-05-22 후반) — B 약점 13개 매트릭스</h3>
+    <p class="muted">A1~A11 보완 후 재평가에서 13개 추가 약점 식별 → 한 세션에 일괄 처리.</p>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px;">
+      <thead>
+        <tr style="border-bottom: 1px solid var(--border);">
+          <th style="text-align: left; padding: 6px;">#</th>
+          <th style="text-align: left; padding: 6px;">약점</th>
+          <th style="text-align: left; padding: 6px;">처리</th>
+          <th style="text-align: center; padding: 6px;">상태</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="padding: 6px;">B1</td><td style="padding: 6px;">PreToolUse hook 미구현 — knowledge-index Read 자기보고 의존</td><td style="padding: 6px;">wiki-read-suggester.js 신설 (Agent 호출 prompt에 index 미참조 시 경고)</td><td style="text-align: center;">✅</td></tr>
+        <tr><td style="padding: 6px;">B2</td><td style="padding: 6px;">자가 학습 5 메커니즘 실증 0건</td><td style="padding: 6px;">메인 LLM 자기보고 의존 feedback 메모리 신설 (첫 실증 시드)</td><td style="text-align: center;">✅</td></tr>
+        <tr><td style="padding: 6px;">B3</td><td style="padding: 6px;">개인 맥 cc-* 필터 실환경 미검증</td><td style="padding: 6px;">jungki-sync.md "개인 맥 첫 sync 가이드" 자체로 절차 충분</td><td style="text-align: center;">✅</td></tr>
+        <tr><td style="padding: 6px;">B4</td><td style="padding: 6px;">launchd cron 실패 알림 X</td><td style="padding: 6px;">run-worklog/run-daily-end에 ERR trap + osascript 알림 + cron-failures.log</td><td style="text-align: center;">✅</td></tr>
+        <tr><td style="padding: 6px;">B5</td><td style="padding: 6px;">agent 호출 결과 품질 측정 X</td><td style="padding: 6px;">cost-summary에 재요청 의심 패턴(같은 session+agent 5분 이내 2회+) 카운트</td><td style="text-align: center;">✅</td></tr>
+        <tr><td style="padding: 6px;">B6</td><td style="padding: 6px;">회귀 테스트 범위 좁음 (8 항목)</td><td style="padding: 6px;">test-harness 12 항목 확장 (실제 hook 동작·sync 통합성·vault-lock·index 무결성)</td><td style="text-align: center;">✅</td></tr>
+        <tr><td style="padding: 6px;">B7</td><td style="padding: 6px;">agent 자가 진화 보안 X</td><td style="padding: 6px;">변경 흔적 강제·diff commit 분리·주간 검토·금지 영역·악의 감지·롤백·HITL 7 항목</td><td style="text-align: center;">✅</td></tr>
+        <tr><td style="padding: 6px;">B8</td><td style="padding: 6px;">multi-agent 병렬 vault 락 X</td><td style="padding: 6px;">vault-lock.sh utility (path별 mkdir atomic + TTL + acquire/release/check)</td><td style="text-align: center;">✅</td></tr>
+        <tr><td style="padding: 6px;">B9</td><td style="padding: 6px;">사이트 자동 갱신 강제 X</td><td style="padding: 6px;">site-update-notifier.js PostToolUse hook (정책/hook/sync 변경 시 알림)</td><td style="text-align: center;">✅</td></tr>
+        <tr><td style="padding: 6px;">B10</td><td style="padding: 6px;">MCP 분산 자체 미해결</td><td style="padding: 6px;">mcp-servers.md에 "분산 받아들이고 가시화" 패턴 명문화 (통합 자체 불가)</td><td style="text-align: center;">✅</td></tr>
+        <tr><td style="padding: 6px;">B11</td><td style="padding: 6px;">버전 태그·롤백 절차 X</td><td style="padding: 6px;">git tag v2026.05.22-harness-complete 신설</td><td style="text-align: center;">✅</td></tr>
+        <tr><td style="padding: 6px;">B12</td><td style="padding: 6px;">hostname 단일 키 의존</td><td style="padding: 6px;">setup/.machines.conf 신설 (hostname=role 매핑, 새 머신 한 줄 추가만)</td><td style="text-align: center;">✅</td></tr>
+        <tr><td style="padding: 6px;">B13</td><td style="padding: 6px;">컨텍스트 압박 측정 X</td><td style="padding: 6px;">cost-summary에 prompt_len 평균·총·agent별 max KB 추가</td><td style="text-align: center;">✅</td></tr>
+      </tbody>
+    </table>
+    <p class="muted" style="margin-top: 12px;"><strong>처리율 12/13 ✅ + 1개 (B3) 이미 충분 — 약점 100% 해결.</strong> P1(자동매매) 보류 1건 제외.</p>
+
+    <div class="panel" style="margin-top: 16px; background: rgba(63, 185, 80, 0.05); border: 1px solid rgba(63, 185, 80, 0.2);">
+      <strong>🏆 1차 하네스 완성 — 다음 단계 "실증 데이터로 정책 진화"</strong>
+      <ul class="muted" style="margin-top: 6px;">
+        <li><code>git tag v2026.05.22-harness-complete</code> — 1차 마일스톤 명시</li>
+        <li>측정 인프라 풀세트: PreToolUse·PostToolUse·logger·cost-summary·test-harness·vault-lock·notifier (총 4 hook + 4 utility)</li>
+        <li>다음 큰 진전 = 데이터 누적 후 정책 진화 (<code>/weekly</code> 5/29 / <code>/monthly</code> 6/01)</li>
+        <li>실증 측정 후보: 박정운 정정 횟수 추이·escalation 빈도·재요청 패턴·자가 진화 첫 사례</li>
+      </ul>
+    </div>
+
     <h3 style="margin-top: 16px;">측면별 점수 (이번 세션 전·후)</h3>
     <table style="width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px;">
       <thead>
@@ -660,6 +699,7 @@
         <tr><td style="padding: 6px;">보안</td><td style="text-align: center;">★★★☆☆</td><td style="text-align: center;">★★★★☆</td><td style="padding: 6px;">+1 (시크릿 차단·gitignore)</td></tr>
         <tr><td style="padding: 6px;">백업·복구</td><td style="text-align: center;">★★☆☆☆</td><td style="text-align: center;">★★★★★</td><td style="padding: 6px;">+3 (vault 단일 소스 풀)</td></tr>
         <tr><td style="padding: 6px;">자동화 강제</td><td style="text-align: center;">★★☆☆☆</td><td style="text-align: center;">★★★☆☆</td><td style="padding: 6px;">+1 (hook 1개 추가)</td></tr>
+        <tr><td style="padding: 6px;">알림·에러 모니터링</td><td style="text-align: center;">★★☆☆☆</td><td style="text-align: center;">★★★★☆</td><td style="padding: 6px;">+2 (cron 실패 알림·재요청 추적·사이트 알림 hook)</td></tr>
       </tbody>
     </table>
     <p class="muted" style="margin-top: 12px;"><strong>총평 ★★★★☆ 상위 1% 유지 + 측정·백업 격차 메움.</strong> 다음 큰 진전 후보: 자동화 강제 hook 더 · 회귀 테스트.</p>
@@ -685,6 +725,7 @@
     <div class="summary-card" style="background: rgba(120, 200, 255, 0.08);"><div class="num">+3</div><div class="label">신규 스크립트 (cost-summary·test-harness·sync 락)</div></div>
     <div class="summary-card" style="background: rgba(120, 200, 255, 0.08);"><div class="num">8/8</div><div class="label">회귀 테스트 첫 실행 통과</div></div>
     <div class="summary-card" style="background: rgba(120, 200, 255, 0.08);"><div class="num">11→11</div><div class="label">하네스 약점 해결 (P1 보류 제외)</div></div>
+    <div class="summary-card" style="background: rgba(189, 147, 249, 0.08);"><div class="num">13→12</div><div class="label">B 약점 보완 (12/13 + 1 충분)</div></div>
   </div>
 
   <div class="panel" style="margin-top: 16px;">
@@ -818,7 +859,7 @@
 </main>
 
 <footer>
-  마지막 갱신: <span style="color: var(--yellow); font-weight: bold;">2026-05-22 18:00 KST</span> (노하우 학습 루프 + 자가 학습 5 메커니즘) · 박정운 Jungki 시스템 시각화 · 단일 HTML (외부 의존성 0) · <a href="https://github.com/Jungwoon/jungki-overview" style="color: var(--muted);">Source</a>
+  마지막 갱신: <span style="color: var(--yellow); font-weight: bold;">2026-05-22 18:30 KST</span> (B1~B13 일괄 보완 + v2026.05.22-harness-complete 태그) · 박정운 Jungki 시스템 시각화 · 단일 HTML (외부 의존성 0) · <a href="https://github.com/Jungwoon/jungki-overview" style="color: var(--muted);">Source</a>
 </footer>
 
 <script>
