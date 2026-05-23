@@ -2,7 +2,8 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>Jungki — 박정운의 LLM Wiki 시스템 (2026-05-22 스냅샷)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jungki — 박정운의 LLM Wiki + AI 하네스</title>
 <style>
   :root {
     --bg: #0d1117;
@@ -18,76 +19,117 @@
     --purple: #bc8cff;
     --yellow: #d29922;
     --cyan: #39c5cf;
+    --pink: #ff79c6;
   }
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
   body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Pretendard', sans-serif;
     background: var(--bg);
     color: var(--text);
-    line-height: 1.6;
+    line-height: 1.65;
   }
   header {
-    padding: 40px 32px 24px;
+    padding: 48px 32px 28px;
     border-bottom: 1px solid var(--border);
     background: linear-gradient(180deg, #1c2128 0%, var(--bg) 100%);
   }
   header h1 {
-    margin: 0 0 8px;
-    font-size: 28px;
-    background: linear-gradient(90deg, var(--accent), var(--purple));
+    margin: 0 0 10px;
+    font-size: 30px;
+    background: linear-gradient(90deg, var(--accent), var(--purple), var(--pink));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
   header .sub { color: var(--muted); font-size: 14px; }
+  header .one-liner {
+    margin-top: 18px;
+    padding: 14px 18px;
+    background: rgba(88,166,255,.08);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--text);
+  }
+  header .one-liner strong { color: var(--accent); }
+  .badge {
+    display: inline-block; padding: 2px 8px; border-radius: 4px;
+    font-size: 11px; font-weight: 600;
+    background: var(--panel-2); border: 1px solid var(--border);
+    color: var(--muted); margin-left: 6px;
+    vertical-align: middle;
+  }
+  .badge.new { background: rgba(63,185,80,.15); color: var(--green); border-color: var(--green); }
+  .badge.updated { background: rgba(88,166,255,.15); color: var(--accent); border-color: var(--accent); }
+  .badge.deprecated { background: rgba(248,81,73,.12); color: var(--red); border-color: var(--red); text-decoration: line-through; }
   nav {
-    display: flex; gap: 12px; flex-wrap: wrap;
-    padding: 16px 32px; border-bottom: 1px solid var(--border);
-    position: sticky; top: 0; background: var(--bg); z-index: 100;
+    display: flex; gap: 8px; flex-wrap: wrap;
+    padding: 14px 32px; border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; background: rgba(13,17,23,.95); backdrop-filter: blur(8px); z-index: 100;
   }
   nav a {
     color: var(--accent); text-decoration: none; padding: 6px 12px;
-    border: 1px solid var(--border); border-radius: 6px; font-size: 13px;
+    border: 1px solid var(--border); border-radius: 6px; font-size: 12.5px;
     transition: all .2s;
   }
-  nav a:hover { background: var(--panel); border-color: var(--accent); }
+  nav a:hover { background: var(--panel); border-color: var(--accent); transform: translateY(-1px); }
   main { max-width: 1200px; margin: 0 auto; padding: 24px 32px 60px; }
-  section { margin-bottom: 56px; }
+  section { margin-bottom: 56px; scroll-margin-top: 80px; }
   section h2 {
-    font-size: 20px; margin: 0 0 16px;
+    font-size: 22px; margin: 0 0 8px;
     padding-bottom: 8px; border-bottom: 1px solid var(--border);
   }
   section h2 .num {
-    display: inline-block; width: 28px; height: 28px;
+    display: inline-block; width: 30px; height: 30px;
     border-radius: 50%; background: var(--accent); color: var(--bg);
-    text-align: center; line-height: 28px; font-weight: bold;
+    text-align: center; line-height: 30px; font-weight: bold;
     margin-right: 10px; font-size: 14px;
+    vertical-align: middle;
   }
+  section .lead {
+    color: var(--muted); font-size: 14px; margin: 0 0 18px;
+    padding: 10px 14px;
+    background: rgba(255,255,255,.02);
+    border-left: 3px solid var(--muted);
+    border-radius: 4px;
+  }
+  section .lead strong { color: var(--text); }
   .panel {
     background: var(--panel); border: 1px solid var(--border);
-    border-radius: 10px; padding: 20px; margin-bottom: 16px;
+    border-radius: 10px; padding: 22px; margin-bottom: 16px;
   }
   .panel h3 { margin: 0 0 12px; font-size: 16px; color: var(--accent); }
   .muted { color: var(--muted); font-size: 13px; }
-  .grid { display: grid; gap: 16px; }
+  code {
+    background: var(--panel-2); color: var(--cyan);
+    padding: 2px 6px; border-radius: 4px; font-size: 12.5px;
+    font-family: 'SF Mono', Menlo, monospace;
+  }
+  .grid { display: grid; gap: 14px; }
   .grid-2 { grid-template-columns: 1fr 1fr; }
-  .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
-  .grid-5 { grid-template-columns: repeat(5, 1fr); }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+  .grid-auto { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
   @media (max-width: 768px) {
-    .grid-2, .grid-3, .grid-5 { grid-template-columns: 1fr; }
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    nav { padding: 10px 16px; gap: 6px; }
+    nav a { padding: 4px 8px; font-size: 11.5px; }
+    header { padding: 28px 20px 20px; }
+    header h1 { font-size: 22px; }
+    main { padding: 16px 20px 40px; }
   }
 
-  /* ===== Section 1: Multi-machine ===== */
+  /* ===== Section: Machines ===== */
   .machine-flow {
     display: flex; align-items: center; justify-content: space-between;
-    gap: 16px; padding: 32px 16px; position: relative;
+    gap: 16px; padding: 28px 8px;
   }
   .machine {
     flex: 1; min-width: 0;
     background: var(--panel-2); border: 1px solid var(--border);
     border-radius: 12px; padding: 16px; text-align: center;
-    position: relative;
   }
   .machine .label { font-size: 14px; font-weight: bold; margin-bottom: 4px; }
   .machine .role { font-size: 11px; color: var(--muted); }
@@ -100,73 +142,114 @@
   }
   .central .title { font-size: 15px; font-weight: bold; color: var(--green); }
   .central .meta { font-size: 12px; color: var(--muted); margin-top: 6px; }
-  .arrow-row { display: flex; align-items: center; gap: 4px; flex: 0 0 60px; }
-  .arrow {
-    flex: 1; height: 2px; background: linear-gradient(90deg, var(--cyan), var(--accent));
-    position: relative;
-  }
-  .arrow::after {
-    content: ''; position: absolute; right: -1px; top: -4px;
-    border: 5px solid transparent; border-left-color: var(--accent);
-  }
-  /* Animated data dot */
-  .data-flow { position: absolute; width: 8px; height: 8px;
-    background: var(--yellow); border-radius: 50%;
-    box-shadow: 0 0 12px var(--yellow);
-  }
-  @keyframes flow-right {
-    0% { left: 0%; opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { left: 100%; opacity: 0; }
-  }
-  .machine-flow .data-flow.work-to-vault { top: 50%; left: 18%; width: 30%; height: 2px;
-    background: transparent; }
-  .machine-flow .data-flow.work-to-vault::before {
-    content: '●'; color: var(--yellow); position: absolute; left: 0;
-    animation: dot-slide 3s linear infinite; font-size: 16px;
-  }
-  .machine-flow .data-flow.vault-to-personal::before {
-    content: '●'; color: var(--cyan); position: absolute; left: 0;
-    animation: dot-slide 3s linear infinite 1.5s; font-size: 16px;
-  }
-  @keyframes dot-slide {
-    0% { left: 0; opacity: 0; }
-    15% { opacity: 1; }
-    85% { opacity: 1; }
-    100% { left: calc(100% - 16px); opacity: 0; }
-  }
+  .arrow-row { display: flex; flex: 0 0 50px; }
+  .arrow { flex: 1; height: 2px; background: linear-gradient(90deg, var(--cyan), var(--accent)); position: relative; }
+  .arrow::after { content: ''; position: absolute; right: -1px; top: -4px; border: 5px solid transparent; border-left-color: var(--accent); }
 
-  /* ===== Section 2: Vault Structure ===== */
-  .vault-stack {
-    display: flex; flex-direction: column; gap: 8px; padding: 16px;
-  }
+  /* ===== Vault ===== */
+  .vault-stack { display: flex; flex-direction: column; gap: 8px; }
   .layer {
-    padding: 14px 18px; border-radius: 8px; border: 1px solid var(--border);
-    background: var(--panel-2); cursor: pointer;
-    transition: all .2s; display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--panel-2); transition: all .2s;
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
   }
   .layer:hover { transform: translateX(4px); border-color: var(--accent); }
-  .layer .icon { font-size: 20px; margin-right: 12px; }
   .layer .name { font-weight: bold; }
-  .layer .desc { font-size: 12px; color: var(--muted); margin-left: 8px; }
-  .layer .tag {
-    font-size: 11px; padding: 2px 8px; border-radius: 4px;
-    background: var(--panel); color: var(--muted);
-  }
+  .layer .desc { font-size: 12.5px; color: var(--muted); margin-left: 6px; }
+  .layer .tag { font-size: 11px; padding: 2px 8px; border-radius: 4px; background: var(--panel); color: var(--muted); white-space: nowrap; }
   .layer.wiki { border-left: 4px solid var(--accent); }
   .layer.raw { border-left: 4px solid var(--cyan); }
   .layer.work { border-left: 4px solid var(--yellow); }
   .layer.personal { border-left: 4px solid var(--red); }
   .layer.setup { border-left: 4px solid var(--purple); }
 
-  /* ===== Section 3: 3-동작 Cycle ===== */
+  /* ===== Crew ===== */
+  .dept {
+    background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px; margin-bottom: 14px;
+  }
+  .dept-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border);
+  }
+  .dept-title { font-size: 15px; font-weight: 600; }
+  .dept-count { font-size: 12px; color: var(--muted); }
+  .agent-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+  .agent {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 6px; padding: 10px 12px;
+    transition: all .15s;
+  }
+  .agent:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .agent .name { font-family: 'SF Mono', Menlo, monospace; font-size: 12.5px; color: var(--cyan); font-weight: 600; }
+  .agent .desc { font-size: 11.5px; color: var(--muted); margin-top: 4px; line-height: 1.45; }
+  .agent .triggers { font-size: 10.5px; color: var(--muted); margin-top: 6px; }
+  .agent .triggers strong { color: var(--yellow); }
+
+  /* ===== Slash ===== */
+  .slash-cat {
+    background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px; margin-bottom: 12px;
+  }
+  .slash-cat h3 { margin: 0 0 10px; font-size: 14px; color: var(--accent); }
+  .slash-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .slash-item {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 6px; padding: 6px 10px; font-size: 12px;
+    font-family: 'SF Mono', Menlo, monospace; color: var(--cyan);
+    cursor: help; transition: all .15s;
+  }
+  .slash-item:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .slash-item .desc-tooltip {
+    display: none; position: absolute; z-index: 10;
+    background: #000; color: var(--text); padding: 6px 10px;
+    border-radius: 4px; font-size: 11px;
+    border: 1px solid var(--accent);
+    max-width: 240px; margin-top: 4px;
+  }
+  .slash-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .slash-table th, .slash-table td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border); }
+  .slash-table th { color: var(--accent); font-size: 12px; }
+  .slash-table code { font-size: 12px; }
+
+  /* ===== Memory ===== */
+  .memory-card {
+    background: var(--panel-2); border: 1px solid var(--border);
+    border-left: 4px solid var(--purple);
+    border-radius: 8px; padding: 14px;
+  }
+  .memory-card .name { font-family: 'SF Mono', Menlo, monospace; font-size: 13px; color: var(--purple); font-weight: bold; }
+  .memory-card .count { font-size: 11px; color: var(--muted); margin-left: 8px; }
+  .memory-card .examples { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.6; }
+
+  /* ===== Learning cycle ===== */
+  .learn-cycle {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px;
+  }
+  @media (max-width: 768px) { .learn-cycle { grid-template-columns: 1fr; } }
+  .learn-node {
+    background: var(--panel-2); border: 1px solid var(--border);
+    border-top: 3px solid var(--cyan);
+    border-radius: 8px; padding: 14px; text-align: center;
+    transition: transform .2s;
+  }
+  .learn-node:hover { transform: translateY(-3px); border-top-color: var(--accent); }
+  .learn-node .num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--cyan); color: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; margin: 0 auto 8px;
+  }
+  .learn-node .title { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+  .learn-node .desc { font-size: 11.5px; color: var(--muted); line-height: 1.5; }
+
+  /* ===== 3-동작 cycle ===== */
   .cycle {
     display: flex; justify-content: space-around; align-items: center;
-    padding: 32px 0; position: relative;
+    padding: 28px 0; gap: 20px; flex-wrap: wrap;
   }
   .cycle-node {
-    width: 140px; height: 140px; border-radius: 50%;
+    width: 130px; height: 130px; border-radius: 50%;
     display: flex; flex-direction: column; justify-content: center; align-items: center;
     border: 2px solid var(--border); background: var(--panel-2);
     text-align: center; padding: 8px;
@@ -178,111 +261,64 @@
   .cycle-node .emoji { font-size: 28px; margin-bottom: 4px; }
   .cycle-node .name { font-weight: bold; font-size: 14px; }
   .cycle-node .sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
-  .cycle-node.ingest.active { animation: pulse-blue 6s infinite; }
-  .cycle-node.query.active { animation: pulse-blue 6s infinite 2s; }
-  .cycle-node.lint.active { animation: pulse-blue 6s infinite 4s; }
-  @keyframes pulse-blue {
-    0%, 33% { box-shadow: 0 0 20px rgba(88,166,255,.6); border-color: var(--accent); }
-    34%, 100% { box-shadow: none; border-color: var(--border); }
-  }
 
-  /* ===== Section 4: Slash → Model ===== */
-  .slash-flow { padding: 16px 0; }
-  .slash-group { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-  .slash-tag {
-    padding: 4px 10px; border-radius: 12px; font-size: 12px;
-    background: var(--panel-2); border: 1px solid var(--border);
-    cursor: pointer; transition: all .2s;
-  }
-  .slash-tag:hover { transform: translateY(-2px); }
-  .slash-tag.haiku { border-color: var(--green); color: var(--green); }
-  .slash-tag.sonnet { border-color: var(--accent); color: var(--accent); }
-  .slash-tag.opus { border-color: var(--purple); color: var(--purple); }
-  .model-badge {
-    padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: bold;
-    min-width: 80px; text-align: center;
-  }
+  /* ===== Model badges ===== */
+  .model-badge { padding: 3px 10px; border-radius: 6px; font-size: 11.5px; font-weight: 600; }
   .model-badge.haiku { background: rgba(63,185,80,.15); color: var(--green); border: 1px solid var(--green); }
   .model-badge.sonnet { background: rgba(88,166,255,.15); color: var(--accent); border: 1px solid var(--accent); }
   .model-badge.opus { background: rgba(188,140,255,.15); color: var(--purple); border: 1px solid var(--purple); }
-  .arrow-h { color: var(--muted); font-size: 18px; }
-  .slash-list { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
 
-  /* ===== Section 5: Agent routing ===== */
-  .routing-demo {
-    background: var(--panel-2); border: 1px solid var(--border);
-    border-radius: 10px; padding: 24px; margin: 16px 0;
-  }
-  .user-bubble {
-    background: var(--accent); color: var(--bg); padding: 10px 14px;
-    border-radius: 14px 14px 4px 14px; display: inline-block; max-width: 80%;
-    font-size: 14px; margin-bottom: 16px;
-  }
-  .step { display: flex; gap: 12px; margin: 8px 0; align-items: flex-start; }
-  .step-num {
-    width: 24px; height: 24px; border-radius: 50%;
-    background: var(--panel); border: 1px solid var(--accent);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; flex-shrink: 0; color: var(--accent);
-  }
-  .step-content { font-size: 13px; color: var(--text); }
-  .step-content .agent { color: var(--purple); font-weight: bold; }
-  .step-content .model { color: var(--green); }
-  .escalation {
-    margin-top: 16px; padding: 12px; border-radius: 8px;
-    background: rgba(240,136,62,.1); border: 1px dashed var(--orange);
-    color: var(--orange); font-size: 13px;
-  }
-
-  /* ===== Section 6: Sync ===== */
-  .sync-diagram {
-    display: grid; grid-template-columns: 1fr 80px 1fr;
-    gap: 0; padding: 24px 16px; align-items: center;
-  }
-  .sync-side {
-    background: var(--panel-2); border: 1px solid var(--border);
-    border-radius: 10px; padding: 16px;
-  }
+  /* ===== Sync diagram ===== */
+  .sync-diagram { display: grid; grid-template-columns: 1fr 80px 1fr; gap: 0; padding: 16px 8px; align-items: center; }
+  @media (max-width: 768px) { .sync-diagram { grid-template-columns: 1fr; } }
+  .sync-side { background: var(--panel-2); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
   .sync-side h4 { margin: 0 0 12px; font-size: 14px; color: var(--accent); }
-  .sync-side ul { margin: 0; padding-left: 18px; font-size: 12px; color: var(--muted); }
-  .sync-arrows {
-    display: flex; flex-direction: column; align-items: center;
-    gap: 12px; position: relative;
-  }
-  .sync-arrow {
-    width: 100%; height: 2px; background: var(--cyan); position: relative;
-  }
-  .sync-arrow.l-to-r::after {
-    content: '▶'; position: absolute; right: -4px; top: -8px;
-    color: var(--cyan); font-size: 14px;
-  }
-  .sync-arrow.r-to-l::before {
-    content: '◀'; position: absolute; left: -4px; top: -8px;
-    color: var(--cyan); font-size: 14px;
-  }
+  .sync-side ul { margin: 0; padding-left: 18px; font-size: 12px; color: var(--muted); line-height: 1.8; }
+  .sync-arrows { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .sync-arrow { width: 60px; height: 2px; background: var(--cyan); position: relative; }
+  .sync-arrow.l-to-r::after { content: '▶'; position: absolute; right: -4px; top: -8px; color: var(--cyan); font-size: 14px; }
+  .sync-arrow.r-to-l::before { content: '◀'; position: absolute; left: -4px; top: -8px; color: var(--cyan); font-size: 14px; }
   .sync-label { font-size: 10px; color: var(--muted); text-align: center; }
 
-  /* ===== Today Summary ===== */
-  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
-  .summary-card {
-    background: var(--panel-2); padding: 16px; border-radius: 10px;
-    border-left: 4px solid var(--accent);
+  /* ===== Changelog ===== */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before {
+    content: ''; position: absolute; left: 8px; top: 4px; bottom: 4px;
+    width: 2px; background: var(--border);
   }
-  .summary-card .num { font-size: 28px; font-weight: bold; color: var(--accent); }
-  .summary-card .label { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .timeline-entry { position: relative; padding-bottom: 22px; }
+  .timeline-entry::before {
+    content: ''; position: absolute; left: -25px; top: 6px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--accent); border: 3px solid var(--bg);
+  }
+  .timeline-entry.today::before { background: var(--green); box-shadow: 0 0 10px var(--green); }
+  .timeline-date { font-size: 13px; font-weight: 600; color: var(--accent); }
+  .timeline-date.today { color: var(--green); }
+  .timeline-content { font-size: 13px; color: var(--text); margin-top: 4px; line-height: 1.7; }
+  .timeline-content ul { margin: 6px 0 0; padding-left: 18px; color: var(--muted); }
+  .timeline-content ul li { margin: 3px 0; }
 
-  /* Validation prompt */
-  .check-list { padding: 0; list-style: none; }
-  .check-list li {
-    padding: 10px 14px; margin: 6px 0;
+  /* ===== Search ===== */
+  .search-box {
+    width: 100%; padding: 10px 14px;
     background: var(--panel-2); border: 1px solid var(--border);
-    border-radius: 8px; font-size: 13px;
-    display: flex; align-items: flex-start; gap: 10px;
+    border-radius: 8px; color: var(--text); font-size: 14px;
+    margin-bottom: 18px;
   }
-  .check-list li::before { content: '✓'; color: var(--green); font-weight: bold; }
+  .search-box:focus { outline: none; border-color: var(--accent); }
+
+  /* ===== Misc ===== */
+  details {
+    background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 12px 14px; margin: 8px 0;
+  }
+  details summary { cursor: pointer; font-weight: 600; font-size: 13px; color: var(--accent); }
+  details summary:hover { color: var(--cyan); }
+  details > *:not(summary) { margin-top: 10px; }
 
   footer {
-    padding: 24px 32px; text-align: center; color: var(--muted);
+    padding: 28px 32px; text-align: center; color: var(--muted);
     border-top: 1px solid var(--border); font-size: 12px;
   }
   .highlight { color: var(--yellow); font-weight: bold; }
@@ -291,96 +327,553 @@
 <body>
 
 <header>
-  <h1>🧠 Jungki — 박정운의 LLM Wiki + AI 하네스 시스템</h1>
-  <div class="sub">2026-05-22 스냅샷 · LLM Wiki + My AI System 설명용 · <span class="highlight">변경 즉시 자동 갱신</span></div>
+  <h1>🧠 Jungki — 박정운의 LLM Wiki + AI 하네스</h1>
+  <div class="sub">2026-05-24 갱신 · 박정운 본인 reference 사이트 · <span class="highlight">변경 즉시 자동 갱신</span></div>
+  <div class="one-liner">
+    <strong>한 줄 요약</strong> — 박정운은 ① <em>Jungki vault</em> (개인 영구 지식 베이스) ② <em>BYJW Studio crew 34 agents</em> (작업별 전문가 위임) ③ <em>23 슬래시 명령</em> (운영 자동화) ④ <em>4 종 메모리</em> (user·feedback·project·reference) ⑤ <em>자가 학습 5 메커니즘</em>으로 LLM 협업을 운영. 글로벌 ↔ vault 단일 소스, 머신 간 자동 sync.
+  </div>
 </header>
 
 <nav>
-  <a href="#machines">① 멀티 머신</a>
-  <a href="#vault">② Vault 5층</a>
-  <a href="#operations">③ 3-동작</a>
-  <a href="#models">④ 모델 분기</a>
-  <a href="#routing">⑤ Agent 라우팅</a>
-  <a href="#sync">⑥ 글로벌 ↔ vault Sync</a>
-  <a href="#harness">⑦ 하네스 평가·진화</a>
-  <a href="#today">⑧ 오늘 변화</a>
-  <a href="#check">⑨ 이해 체크</a>
-  <a href="#autoupdate">⑩ 자동 갱신</a>
-  <a href="#learning">⑪ 노하우 학습</a>
+  <a href="#core">① 핵심</a>
+  <a href="#machines">② 멀티 머신</a>
+  <a href="#vault">③ Vault 5층</a>
+  <a href="#crew">④ Crew 34명</a>
+  <a href="#slash">⑤ 슬래시 23개</a>
+  <a href="#memory">⑥ 메모리 4종</a>
+  <a href="#learning">⑦ 자가 학습</a>
+  <a href="#operations">⑧ 3-동작</a>
+  <a href="#models">⑨ 모델 분기</a>
+  <a href="#sync">⑩ Sync</a>
+  <a href="#changelog">⑪ 변경 이력</a>
+  <a href="#autoupdate">⑫ 자동 갱신</a>
 </nav>
 
 <main>
 
-<!-- Section 1: Multi-machine -->
-<section id="machines">
-  <h2><span class="num">1</span>멀티 머신 운영 — 회사 맥 + 개인 맥 + 동기화</h2>
-  <div class="panel">
-    <p class="muted">박정운은 회사 맥(주간 본업) + 개인 맥(저녁·자동화 본거지)을 시간대 분리로 사용. 같은 파일 동시 편집 거의 X.</p>
-    <div class="machine-flow">
-      <div class="machine work">
-        <div class="label">🖥️ 회사 맥</div>
-        <div class="role">주간 본업<br/>~/StudioProjects/baemin-android<br/><span class="muted">수동 /worklog</span></div>
-      </div>
-      <div class="arrow-row">
-        <div class="arrow"></div>
-      </div>
-      <div class="central">
-        <div class="title">☁️ Jungki Vault</div>
-        <div class="meta">iCloud Drive + GitHub Private<br/>~/jungki (심볼릭 링크)</div>
-      </div>
-      <div class="arrow-row">
-        <div class="arrow"></div>
-      </div>
-      <div class="machine personal">
-        <div class="label">💻 개인 맥</div>
-        <div class="role">저녁·주말<br/>자동화 본거지<br/><span class="muted">launchd cron</span></div>
-      </div>
-      <div class="data-flow work-to-vault"></div>
+<!-- Section 1: Core -->
+<section id="core">
+  <h2><span class="num">1</span>핵심 — Jungki란?</h2>
+  <p class="lead"><strong>한 줄 정의</strong>: Andrej Karpathy의 LLM Wiki 패턴(2025) 기반으로 박정운이 진화시킨 <strong>영구 개인 지식 베이스 + LLM 협업 하네스</strong>. 매 세션에서 동일한 룰·메모리·agent를 자동 로드해서 LLM이 박정운의 작업 맥락을 항상 이해하도록 함.</p>
+
+  <div class="grid grid-3">
+    <div class="panel">
+      <h3>📚 Jungki Vault</h3>
+      <p class="muted">박정운이 검증·정리·누적해온 영구 지식. iCloud Drive + GitHub Private 백업. 모든 머신 동일.</p>
+      <p style="margin-top:8px;"><code>~/jungki</code> (심볼릭 링크 → iCloud)</p>
     </div>
-    <p class="muted" style="margin-top: 16px;">⚠️ 공통 룰 파일(CLAUDE.md·index.md·log.md·setup/) 수정 시 pull→편집→push 강제.</p>
+    <div class="panel">
+      <h3>🤖 LLM 하네스</h3>
+      <p class="muted">Claude Code 위에 hook · slash · agent · memory · policy를 얹어서 박정운 작업 맥락을 자동 주입.</p>
+      <p style="margin-top:8px;"><code>~/.claude/</code> (vault에서 sync)</p>
+    </div>
+    <div class="panel">
+      <h3>🔄 단일 소스</h3>
+      <p class="muted">정책·룰은 vault에만. <code>sync-global.sh --auto</code>로 mtime 기반 양방향 동기화. 머신 간 drift 0.</p>
+      <p style="margin-top:8px;"><code>setup/sync-global.sh</code></p>
+    </div>
   </div>
 </section>
 
-<!-- Section 2: Vault structure -->
-<section id="vault">
-  <h2><span class="num">2</span>Vault 5층 구조</h2>
+<!-- Section 2: Multi-machine -->
+<section id="machines">
+  <h2><span class="num">2</span>멀티 머신 운영</h2>
+  <p class="lead">회사 맥(주간 본업) + 개인 맥(저녁·자동화) 시간대 분리 사용. 같은 파일 동시 편집 거의 없음. <strong>2026-05-24: cc-* 머신별 분리 정책 폐기 → byjw-* 단일 통합</strong> <span class="badge updated">UPDATED</span></p>
+
   <div class="panel">
-    <p class="muted">권한·보안·동기화 범위가 5층으로 분리. Karpathy 원본보다 진화된 박정운 구조.</p>
+    <div class="machine-flow">
+      <div class="machine work">
+        <div class="label">🖥️ 회사 맥</div>
+        <div class="role">주간 본업<br/>~/StudioProjects/baemin-android</div>
+      </div>
+      <div class="arrow-row"><div class="arrow"></div></div>
+      <div class="central">
+        <div class="title">☁️ Jungki Vault</div>
+        <div class="meta">iCloud + GitHub Private<br/><code>~/jungki</code></div>
+      </div>
+      <div class="arrow-row"><div class="arrow"></div></div>
+      <div class="machine personal">
+        <div class="label">💻 개인 맥</div>
+        <div class="role">저녁·주말<br/>자동화·사이드 프로젝트</div>
+      </div>
+    </div>
+    <p class="muted" style="margin-top: 14px;">⚠️ 공통 룰 파일(<code>CLAUDE.md</code>·<code>setup/</code>) 수정 시 <code>pull→편집→push</code>. SessionStart hook이 vault git fetch 자동.</p>
+  </div>
+</section>
+
+<!-- Section 3: Vault -->
+<section id="vault">
+  <h2><span class="num">3</span>Vault 5층 구조</h2>
+  <p class="lead">권한·보안·동기화 범위가 5층으로 분리. Karpathy 원본보다 진화된 박정운 구조.</p>
+
+  <div class="panel">
     <div class="vault-stack">
       <div class="layer wiki">
-        <div><span class="icon">📚</span><span class="name">wiki/</span>
-          <span class="desc">정리된 지식 (projects·areas·resources·daily·archives)</span></div>
-        <span class="tag">258 페이지 · 공개</span>
+        <div>📚 <span class="name">wiki/</span> <span class="desc">정리된 지식 (projects·areas·resources·daily·archives)</span></div>
+        <span class="tag">258+ 페이지 · 공개 repo</span>
       </div>
       <div class="layer raw">
-        <div><span class="icon">📥</span><span class="name">raw/</span>
-          <span class="desc">원본 자료 (immutable, LLM 읽기만)</span></div>
-        <span class="tag">41 파일 · 공개</span>
+        <div>📥 <span class="name">raw/</span> <span class="desc">원본 자료 (immutable, LLM 읽기만)</span></div>
+        <span class="tag">공개 repo</span>
       </div>
       <div class="layer work">
-        <div><span class="icon">🏢</span><span class="name">work-private/</span>
-          <span class="desc">회사 정리 자료 (baemin-android·mobile-platform-team 등)</span></div>
+        <div>🏢 <span class="name">work-private/</span> <span class="desc">회사 정리 자료 (baemin-android·mobile-platform-team)</span></div>
         <span class="tag">Private repo</span>
       </div>
       <div class="layer personal">
-        <div><span class="icon">🔒</span><span class="name">personal-private/</span>
-          <span class="desc">사적 자료 (finance·health·contracts·.config)</span></div>
-        <span class="tag">로컬+iCloud만</span>
+        <div>🔒 <span class="name">personal-private/</span> <span class="desc">사적 자료 (finance·health·contracts)</span></div>
+        <span class="tag">로컬 + iCloud만</span>
       </div>
       <div class="layer setup">
-        <div><span class="icon">🔧</span><span class="name">setup/ + scripts/</span>
-          <span class="desc">인프라 (sync-global.sh·agents/·commands/·bootstrap.sh)</span></div>
+        <div>🔧 <span class="name">setup/</span> <span class="desc">인프라 (sync-global.sh·agents/·commands/·hooks/·policies/)</span></div>
         <span class="tag">운영 도구</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Section 3: 3-동작 -->
+<!-- Section 4: Crew -->
+<section id="crew">
+  <h2><span class="num">4</span>BYJW Studio Crew 34명 <span class="badge new">NEW 2026-05-23</span></h2>
+  <p class="lead"><strong>BYJW Studio</strong>는 박정운 개인 사업자명. crew는 그 사내 조직 컨셉 — 10 본부 34 agents가 영역별로 박정운 작업을 위임받음. <code>~/.claude/agents/byjw-*.md</code>. 자연어 요청이 들어오면 메인 LLM이 각 agent의 description에 적힌 <strong>TRIGGER 키워드</strong>를 매칭해서 자동 호출.</p>
+
+  <input class="search-box" placeholder="🔍 agent 검색 (이름·키워드·역할로)" oninput="filterAgents(this.value)" id="agentSearch">
+
+  <!-- 임원 -->
+  <div class="dept" data-dept="exec">
+    <div class="dept-header">
+      <span class="dept-title">🎯 임원실 (exec)</span>
+      <span class="dept-count">2명</span>
+    </div>
+    <div class="agent-grid">
+      <div class="agent" data-keywords="ceo orchestrator 오케스트레이터 워크플로우 통합 위임">
+        <div class="name">byjw-exec-ceo</div>
+        <div class="desc">에이전트 오케스트레이터. 다층 trade-off 추론 필요한 작업 통합·분배. Opus 모델.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 전체 검증 · 새 기능 만들자 · 릴리즈 준비 · 어떤 에이전트 써야할지 모를 때</div>
+      </div>
+      <div class="agent" data-keywords="prompt llm 시스템 프롬프트 설계">
+        <div class="name">byjw-exec-prompt</div>
+        <div class="desc">프롬프트·LLM 설계 전담. agent description 최적화·시스템 프롬프트 설계.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 프롬프트 · LLM 설계 · 시스템 프롬프트</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 개발 -->
+  <div class="dept" data-dept="dev">
+    <div class="dept-header">
+      <span class="dept-title">💻 개발 본부 (dev)</span>
+      <span class="dept-count">7명</span>
+    </div>
+    <div class="agent-grid">
+      <div class="agent" data-keywords="android kotlin compose 안드로이드 코루틴 mvvm clean architecture 리컴포지션">
+        <div class="name">byjw-dev-android</div>
+        <div class="desc">Android/Compose 전문. Kotlin·Coroutines·Clean Arch+MVVM. 박정운 본업 매핑. <strong>baemin-android wiki 자동 Read</strong>.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 안드로이드 · Compose · 리컴포지션 · 코루틴 · MVVM · 메모리 릭</div>
+      </div>
+      <div class="agent" data-keywords="platform 딥링크 푸시 빌드 gradle proguard">
+        <div class="name">byjw-dev-platform</div>
+        <div class="desc">Android 플랫폼 (딥링크·푸시·성능·빌드·ProGuard). Compose 외 영역.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 딥링크 · 푸시 알림 · ProGuard · 빌드</div>
+      </div>
+      <div class="agent" data-keywords="ios swift swiftui combine async await">
+        <div class="name">byjw-dev-ios</div>
+        <div class="desc">iOS 개발. Swift·SwiftUI·Combine·async/await·MVVM·CoreData·인앱결제.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> iOS · Swift · SwiftUI · Combine · 앱스토어 · 인앱결제</div>
+      </div>
+      <div class="agent" data-keywords="frontend react vue nextjs typescript tailwind 프론트">
+        <div class="name">byjw-dev-frontend</div>
+        <div class="desc">프론트엔드. React·Next.js·Vue·TypeScript·Tailwind·shadcn/ui·SSR/CSR.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 프론트엔드 · React · Vue · Next.js · 컴포넌트 · 렌더링</div>
+      </div>
+      <div class="agent" data-keywords="backend spring node django graphql rest api 서버">
+        <div class="name">byjw-dev-backend</div>
+        <div class="desc">백엔드. Spring Boot·Node.js·Django·FastAPI·REST/GraphQL·DB 설계·인증.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 백엔드 · API · REST · GraphQL · 인증 · DB 설계</div>
+      </div>
+      <div class="agent" data-keywords="cloud aws gcp docker kubernetes terraform 인프라 ci cd">
+        <div class="name">byjw-dev-cloud</div>
+        <div class="desc">클라우드 인프라. AWS·GCP·Docker·Kubernetes·Terraform·CI/CD·IAM·관찰성.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 인프라 · AWS · GCP · Docker · K8s · CI/CD · Terraform</div>
+      </div>
+      <div class="agent" data-keywords="deploy release 배포 롤백 카나리 블루그린 버저닝 feature flag">
+        <div class="name">byjw-dev-deploy</div>
+        <div class="desc">릴리스·배포. Blue-Green·Canary·Rolling·롤백·SemVer·feature flag·hotfix.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 릴리스 · 배포 · 롤백 · 카나리 · feature flag · hotfix</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 품질 -->
+  <div class="dept" data-dept="qa">
+    <div class="dept-header">
+      <span class="dept-title">🔍 품질 본부 (qa)</span>
+      <span class="dept-count">5명</span>
+    </div>
+    <div class="agent-grid">
+      <div class="agent" data-keywords="quality solid clean code uncle bob 코드 품질 리뷰 보안">
+        <div class="name">byjw-qa-quality</div>
+        <div class="desc">코드 품질 종합. SOLID·Clean Code·보안·코드 악취. Uncle Bob 기준.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 품질 점검 · SOLID · Clean Code · 코드 악취</div>
+      </div>
+      <div class="agent" data-keywords="review mr pr 코드 리뷰 보안 owasp">
+        <div class="name">byjw-qa-review</div>
+        <div class="desc">코드 리뷰 (읽기 전용). MR/PR 변경분 + 보안 (OWASP) + Before/After 예시.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> MR 리뷰 · PR 리뷰 · 보안 점검 · OWASP</div>
+      </div>
+      <div class="agent" data-keywords="test 단위 통합 e2e 커버리지 uat junit jest playwright">
+        <div class="name">byjw-qa-test</div>
+        <div class="desc">테스트 작성. 단위·통합·E2E·커버리지·UAT·mock 설계.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 테스트 작성 · 단위 테스트 · E2E · 커버리지 · UAT</div>
+      </div>
+      <div class="agent" data-keywords="visual qa 스크린샷 ui 검증">
+        <div class="name">byjw-qa-visual</div>
+        <div class="desc">UI/시각 QA. 스크린샷 기반 비교·디자인 정합성.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 스크린샷 QA · UI 검증 · 디자인 정합</div>
+      </div>
+      <div class="agent" data-keywords="debug 디버깅 크래시 anr logcat 에러">
+        <div class="name">byjw-qa-debug</div>
+        <div class="desc">에러·크래시·ANR 분석. Logcat·stack trace. 박정운 gotchas G번호 검색.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 크래시 · ANR · 에러 분석 · Logcat · stack trace</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 기획 -->
+  <div class="dept" data-dept="plan">
+    <div class="dept-header">
+      <span class="dept-title">📋 기획 본부 (plan)</span>
+      <span class="dept-count">4명</span>
+    </div>
+    <div class="agent-grid">
+      <div class="agent" data-keywords="discovery 신규 프로젝트 디스커버리 요구사항">
+        <div class="name">byjw-plan-discovery</div>
+        <div class="desc">신규 프로젝트 디스커버리. 심층 질문으로 ROADMAP·REQUIREMENTS 산출.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 신규 프로젝트 · 디스커버리 · 요구사항 추출</div>
+      </div>
+      <div class="agent" data-keywords="pm prd 유저 스토리 인수 기준 기획">
+        <div class="name">byjw-plan-pm</div>
+        <div class="desc">프로덕트 매니저. PRD·유저 스토리·인수 기준·경쟁사 리서치·KPI.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> PRD · 유저 스토리 · 인수 기준 · KPI</div>
+      </div>
+      <div class="agent" data-keywords="spec 기획서 분석 구현 검증">
+        <div class="name">byjw-plan-spec</div>
+        <div class="desc">기획서 분석·계획 수립·구현 검증. 기획↔코드 매핑.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 기획서 분석 · 구현 검증 · 스펙 매핑</div>
+      </div>
+      <div class="agent" data-keywords="architect 아키텍처 adr ddd 시스템 설계">
+        <div class="name">byjw-plan-architect</div>
+        <div class="desc">시스템 아키텍트. ADR·DDD·MSA vs Monolith·API 설계. Opus 권장.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 아키텍처 · ADR · MSA · 시스템 설계</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 디자인 -->
+  <div class="dept" data-dept="design">
+    <div class="dept-header">
+      <span class="dept-title">🎨 디자인 본부 (design)</span>
+      <span class="dept-count">2명</span>
+    </div>
+    <div class="agent-grid">
+      <div class="agent" data-keywords="uiux ui ux 디자인 시스템 사용자 경험">
+        <div class="name">byjw-design-uiux</div>
+        <div class="desc">UI/UX 디자인. 사용자 경험·디자인 시스템·접근성·정보 구조.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> UI · UX · 디자인 시스템 · 접근성</div>
+      </div>
+      <div class="agent" data-keywords="figma 시안 디자인 코드 검증">
+        <div class="name">byjw-design-figma</div>
+        <div class="desc">Figma 시안 ↔ 코드 검증. Figma MCP 활용.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> Figma · 시안 검증 · 디자인 정합</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 마케팅 -->
+  <div class="dept" data-dept="mkt">
+    <div class="dept-header">
+      <span class="dept-title">📢 마케팅 본부 (mkt)</span>
+      <span class="dept-count">6명</span>
+    </div>
+    <div class="agent-grid">
+      <div class="agent" data-keywords="strategist 전략 gtm stp 4p 포지셔닝">
+        <div class="name">byjw-mkt-strategist</div>
+        <div class="desc">마케팅 전략 수립. GTM·STP·4P/7P·포지셔닝·경쟁 분석.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 마케팅 전략 · GTM · STP · 포지셔닝</div>
+      </div>
+      <div class="agent" data-keywords="researcher 시장조사 경쟁사 페르소나 트렌드">
+        <div class="name">byjw-mkt-researcher</div>
+        <div class="desc">시장조사·소비자 심리·경쟁사·페르소나·트렌드 리서치.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 시장조사 · 경쟁사 · 페르소나</div>
+      </div>
+      <div class="agent" data-keywords="brand 브랜드 아이덴티티 네이밍 톤앤매너">
+        <div class="name">byjw-mkt-brand</div>
+        <div class="desc">브랜드 전략·아이덴티티·네이밍·톤앤매너·비주얼 가이드라인.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 브랜드 · 아이덴티티 · 네이밍 · 톤앤매너</div>
+      </div>
+      <div class="agent" data-keywords="copywriter 카피 헤드라인 광고 cta">
+        <div class="name">byjw-mkt-copywriter</div>
+        <div class="desc">광고 카피. 헤드라인·바디카피·CTA·앱스토어 설명·이메일.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 카피 · 헤드라인 · CTA · 앱스토어 설명</div>
+      </div>
+      <div class="agent" data-keywords="content 콘텐츠 블로그 sns 유튜브 뉴스레터">
+        <div class="name">byjw-mkt-content</div>
+        <div class="desc">콘텐츠 마케팅. 블로그·SNS·유튜브·뉴스레터·콘텐츠 캘린더.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 콘텐츠 · 블로그 · SNS · 유튜브</div>
+      </div>
+      <div class="agent" data-keywords="growth 그로스 aarrr 퍼널 aso seo crm">
+        <div class="name">byjw-mkt-growth</div>
+        <div class="desc">그로스해킹·퍼포먼스. AARRR·광고 캠페인·ASO·SEO·CRM·데이터 분석.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 그로스 · 퍼널 · ASO · SEO · 광고</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 운영 -->
+  <div class="dept" data-dept="ops">
+    <div class="dept-header">
+      <span class="dept-title">📄 운영 본부 (ops)</span>
+      <span class="dept-count">3명</span>
+    </div>
+    <div class="agent-grid">
+      <div class="agent" data-keywords="docs 문서 티켓 jira gitlab confluence">
+        <div class="name">byjw-ops-docs</div>
+        <div class="desc">문서·티켓 정리. Jira·GitLab·Confluence. Jungki vault 구조 자동 Read.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 문서 · 티켓 · Jira · 릴리스 노트</div>
+      </div>
+      <div class="agent" data-keywords="feedback 고객 피드백 리뷰 감성 분석 nps">
+        <div class="name">byjw-ops-feedback</div>
+        <div class="desc">고객 피드백 분석. 리뷰·NPS·인터뷰·감성 분석·개선 로드맵.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 피드백 분석 · 리뷰 분석 · NPS · 감성 분석</div>
+      </div>
+      <div class="agent" data-keywords="automation hooks 자동화 launchd cron">
+        <div class="name">byjw-ops-automation</div>
+        <div class="desc">자동화 운영. hooks·launchd·cron·sync·관찰성. smarthome 메모리 자동 참조.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 자동화 · hook · cron · 스마트홈</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 자산·금융 -->
+  <div class="dept" data-dept="fin">
+    <div class="dept-header">
+      <span class="dept-title">💰 자산·금융 본부 (fin)</span>
+      <span class="dept-count">3명</span>
+    </div>
+    <div class="agent-grid">
+      <div class="agent" data-keywords="stock 주식 종목 분석 매수 매도 시그널 kis">
+        <div class="name">byjw-fin-stock</div>
+        <div class="desc">국내(KIS) + 미국 주식 분석. 매매 시그널·재무. <strong>실주문 박정운 명시 승인 필수, 모의 기본</strong>.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 주식 · 종목 분석 · 매수/매도 · 포지션</div>
+      </div>
+      <div class="agent" data-keywords="realestate 부동산 매물 고양시 임장">
+        <div class="name">byjw-fin-realestate</div>
+        <div class="desc">부동산 분석. 박정운 거주지(고양시) 기준 매물·임장 리서치.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 부동산 · 매물 · 임장</div>
+      </div>
+      <div class="agent" data-keywords="portfolio 포트폴리오 자산 배분">
+        <div class="name">byjw-fin-portfolio</div>
+        <div class="desc">종합 포트폴리오. 자산 배분·리밸런싱·전체 자산 관점.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 포트폴리오 · 자산 배분 · 리밸런싱</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 법무 -->
+  <div class="dept" data-dept="legal">
+    <div class="dept-header">
+      <span class="dept-title">⚖️ 법무 (legal)</span>
+      <span class="dept-count">1명</span>
+    </div>
+    <div class="agent-grid">
+      <div class="agent" data-keywords="legal 법률 약관 개인정보 통신판매 저작권">
+        <div class="name">byjw-legal-kr</div>
+        <div class="desc">한국 법률 자문. 개인정보·전자상거래·저작권·근로기준·통신판매업·세법. byjwstudio 사업자 컨텍스트.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 법률 · 약관 · 개인정보 · 통신판매업</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 연구 -->
+  <div class="dept" data-dept="rnd">
+    <div class="dept-header">
+      <span class="dept-title">🔬 연구 (rnd)</span>
+      <span class="dept-count">1명</span>
+    </div>
+    <div class="agent-grid">
+      <div class="agent" data-keywords="rnd ingest 자료 분석 연구 회의록">
+        <div class="name">byjw-rnd-analyzer</div>
+        <div class="desc">자료 ingest·연구 분석. 회의록·기사·영상 자막 → wiki 정제. Jungki 흐름 자동 따름.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> ingest · 자료 분석 · 회의록 정리</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="muted" style="margin-top: 16px;">📌 자연어 라우팅 — 메인 LLM이 박정운 메시지를 받으면 각 agent description의 <strong>TRIGGER</strong> 키워드 매칭 시도. 매치되면 한 줄 보고 후 자동 위임. 독립 작업 여러 개면 단일 메시지에 multiple Agent tool로 <strong>병렬 실행</strong>.</p>
+</section>
+
+<!-- Section 5: Slash -->
+<section id="slash">
+  <h2><span class="num">5</span>슬래시 명령어 23개</h2>
+  <p class="lead">매 작업마다 박정운이 호출하는 자동화 명령. <strong>Jungki 운영(13) + BYJW 워크플로우(8) + 기타(2)</strong>. 각 명령은 `~/.claude/commands/*.md` 단일 파일에 설명·model·동작이 정의.</p>
+
+  <!-- Jungki 운영 -->
+  <div class="slash-cat">
+    <h3>📚 Jungki Vault 운영 (13)</h3>
+    <table class="slash-table">
+      <thead><tr><th>명령</th><th>설명</th><th>모델</th></tr></thead>
+      <tbody>
+        <tr><td><code>/daily</code></td><td>오늘 daily note 생성 (어제 미완료 자동 이월)</td><td><span class="model-badge haiku">Haiku</span></td></tr>
+        <tr><td><code>/daily-end</code></td><td>오늘 daily 마무리 (Inbox 분배 + 키워드 추정 + 미완료 이월)</td><td><span class="model-badge haiku">Haiku</span></td></tr>
+        <tr><td><code>/inbox</code></td><td>오늘 daily의 Inbox 섹션에 한 줄 메모 던지기</td><td><span class="model-badge haiku">Haiku</span></td></tr>
+        <tr><td><code>/lint</code></td><td>위키 점검 (모순·고아·stale·누락 cross-ref)</td><td><span class="model-badge haiku">Haiku</span></td></tr>
+        <tr><td><code>/tidy</code></td><td>위키 정리 (frontmatter 통일 + 중복 통합 + 추상화 추출)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
+        <tr><td><code>/ingest</code></td><td>큰 자료 raw 저장 + 위키 정제 페이지 자동 생성</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
+        <tr><td><code>/research</code></td><td>키워드 짧게 조사 + raw 보존 + resources에 정리 + daily 기록</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
+        <tr><td><code>/worklog</code></td><td>현재 코드 디렉토리의 오늘 git 작업을 daily에 기록 (commit hash 중복 방지)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
+        <tr><td><code>/append</code></td><td>Wiki 페이지에 내용 추가</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
+        <tr><td><code>/sync</code></td><td>vault 강제 최신화 (회사↔개인 머신 sync + 글로벌 ~/.claude 갱신)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
+        <tr><td><code>/weekly</code></td><td>주간 회고 (이번 주 daily 합성, 학습·함정·우선순위)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
+        <tr><td><code>/monthly</code></td><td>월간 리뷰 (이번 달 합성, 역량맵 갱신, 트렌드 분석)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
+        <tr><td><code>/quarterly</code></td><td>분기 정리 (raw archive + lint + tidy + 분기 회고)</td><td><span class="model-badge opus">Opus</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- BYJW 워크플로우 -->
+  <div class="slash-cat">
+    <h3>🎭 BYJW Studio 워크플로우 (8) <span class="badge new">NEW 2026-05-23</span></h3>
+    <table class="slash-table">
+      <thead><tr><th>명령</th><th>설명</th><th>모델</th></tr></thead>
+      <tbody>
+        <tr><td><code>/byjw</code></td><td>BYJW Studio crew에 문제 의뢰. byjw-exec-ceo가 분석·분배·통합</td><td><span class="model-badge opus">Opus</span></td></tr>
+        <tr><td><code>/byjw-new</code></td><td>신규 프로젝트 디스커버리. byjw-plan-discovery가 ROADMAP·REQUIREMENTS·PROJECT·PLAN 4가지 산출물 생성</td><td><span class="model-badge opus">Opus</span></td></tr>
+        <tr><td><code>/byjw-map</code></td><td>큰 코드베이스 처음 진입 시 병렬 분석으로 구조·기술·품질·보안 매핑</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
+        <tr><td><code>/byjw-quick</code></td><td>가벼운 1회 작업 — atomic commit + state tracking 유지하면서 빠르게</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
+        <tr><td><code>/byjw-pause</code></td><td>진행 중 작업 일시 정지 + 컨텍스트 핸드오프 문서 생성 (다른 머신·세션 복원 가능)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
+        <tr><td><code>/byjw-resume</code></td><td>/byjw-pause로 저장한 핸드오프 읽어 작업 컨텍스트 완전 복원</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
+        <tr><td><code>/byjw-verify</code></td><td>구현된 기능을 UAT 대화 형식으로 검증. 박정운이 실제 사용자처럼 확인</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
+        <tr><td><code>/byjw-audit</code></td><td>완료된 마일스톤 회고. 원래 의도 vs 실제 산출 비교. 다음 사이클 패턴·실패 추출</td><td><span class="model-badge opus">Opus</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 기타 -->
+  <div class="slash-cat">
+    <h3>🔧 기타 (2)</h3>
+    <table class="slash-table">
+      <thead><tr><th>명령</th><th>설명</th><th>모델</th></tr></thead>
+      <tbody>
+        <tr><td><code>/feedback-review</code></td><td>누적된 feedback 후보 검토 → user_*.md / feedback_*.md 메모리로 저장 (박정운 컨펌 필수)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
+        <tr><td><code>/summary</code></td><td>Wiki URL 읽고 Android 작업 사항 정리</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="muted" style="margin-top: 16px;">📌 GSD 워크플로우는 별도 — <code>/gsd:*</code> 슬래시 30+개. plan-phase·execute-phase·verify-work·debug 등.</p>
+</section>
+
+<!-- Section 6: Memory -->
+<section id="memory">
+  <h2><span class="num">6</span>메모리 시스템 — 4종</h2>
+  <p class="lead">박정운 개인 정보·정정·작업 컨텍스트를 <strong>매 세션 자동 로드</strong>하는 영구 저장소. <code>~/.claude/projects/-Users-jungwoon/memory/MEMORY.md</code>가 인덱스. CLAUDE.md는 메커니즘, 메모리는 박정운 개인 정보·동적 누적.</p>
+
+  <div class="grid grid-2">
+    <div class="memory-card">
+      <div class="name">user_*.md</div><span class="count">8개</span>
+      <p class="muted" style="margin-top:6px;">박정운 본인 정보·선호. 변경 가능한 동적 프로필.</p>
+      <div class="examples">
+        • <code>user_profile.md</code> — 1989-03-20, 안드로이드 10년차, 배민커머스<br>
+        • <code>user_response_style.md</code> — 두괄식·표·"모른다"·한국어<br>
+        • <code>user_android_stack.md</code> — Kotlin/Compose/Clean Arch+MVVM<br>
+        • <code>user_review_style.md</code> — Uncle Bob/SOLID/Clean Code<br>
+        • <code>user_business_style.md</code> — SWOT/SMART/린 캔버스<br>
+        • <code>user_business.md</code> — byjwstudio 사업자<br>
+        • <code>user_smarthome.md</code> — 아이폰/Apple Home 중심
+      </div>
+    </div>
+    <div class="memory-card">
+      <div class="name">feedback_*.md</div><span class="count">1개</span>
+      <p class="muted" style="margin-top:6px;">박정운 정정·확인 사항 영구 저장. 같은 실수 반복 차단. <strong>박정운 컨펌 후 저장</strong>.</p>
+      <div class="examples">
+        • <code>feedback_agent_oneline_description.md</code> — agent description은 oneline 필수 (YAML 멀티라인 파싱 실패)
+      </div>
+    </div>
+    <div class="memory-card">
+      <div class="name">project_*.md</div><span class="count">5개</span>
+      <p class="muted" style="margin-top:6px;">진행 프로젝트 컨텍스트 — 코드·git에 없는 의도·이유·이해관계.</p>
+      <div class="examples">
+        • <code>project_akashic_record.md</code> — 일반인용 AI 프롬프트 플랫폼<br>
+        • <code>project_akashic_strategy.md</code> — Option D 피봇 (4-Phase 완료)<br>
+        • <code>project_smarthome.md</code> — HA+OpenAI Assist<br>
+        • <code>project_hankyung_digest.md</code> — 월~토 07:00 KST 조간 브리핑
+      </div>
+    </div>
+    <div class="memory-card">
+      <div class="name">reference_*.md</div><span class="count">3개</span>
+      <p class="muted" style="margin-top:6px;">외부 시스템 위치·재인증 절차 등 포인터.</p>
+      <div class="examples">
+        • <code>reference_openclaw_reauth.md</code> — openai-codex OAuth 토큰 재인증<br>
+        • <code>reference_llm_wiki_pattern.md</code> — Karpathy 원본<br>
+        • <code>reference_claude_code_api_key.md</code> — 별도 ANTHROPIC_API_KEY
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section 7: Self-learning -->
+<section id="learning">
+  <h2><span class="num">7</span>자가 학습 5 메커니즘</h2>
+  <p class="lead">박정운이 같은 정정을 두 번 안 하도록 LLM이 작업 종료 시 자동 누적·학습. Claude 모델 가중치는 fine-tuning 안 됨 — 외부 지식 누적 + 자동 첨부로 학습 효과를 냄.</p>
+
+  <div class="learn-cycle">
+    <div class="learn-node">
+      <div class="num">1</div>
+      <div class="title">Feedback 메모리 자동 누적</div>
+      <div class="desc">UserPromptSubmit hook → 정정 패턴 감지 → <code>feedback-candidates.jsonl</code> append → /feedback-review에서 박정운 컨펌 후 영구 저장</div>
+    </div>
+    <div class="learn-node">
+      <div class="num">2</div>
+      <div class="title">Agent description 자동 진화</div>
+      <div class="desc">작업 종료 시 놓친 항목·새 TRIGGER 발견 → 본문 한 줄 자동 누적 (timestamp 주석 + 별도 commit). 자가 진화 7-가드.</div>
+    </div>
+    <div class="learn-node">
+      <div class="num">3</div>
+      <div class="title">Knowledge-index 자동 갱신</div>
+      <div class="desc">새 wiki 페이지·새 agent → <code>agent-knowledge-index.md</code>에 한 줄 추가. /lint 월 1회 stale 점검</div>
+    </div>
+    <div class="learn-node">
+      <div class="num">4</div>
+      <div class="title">메타 학습 회고</div>
+      <div class="desc">/weekly · /monthly에서 agent 호출 분포·미사용 agent·실패 패턴 분석 → agent 풀 진화</div>
+    </div>
+    <div class="learn-node">
+      <div class="num">5</div>
+      <div class="title">실패 학습 Postmortem</div>
+      <div class="desc">박정운 정정·재요청·작업 실패 시 → feedback 메모리 + gotchas.md G번호 추가 + 영향받는 agent 보강</div>
+    </div>
+  </div>
+
+  <details style="margin-top: 18px;">
+    <summary>자가 진화 안전 가드 7개</summary>
+    <ol style="font-size: 13px; color: var(--muted); line-height: 1.9;">
+      <li>변경 흔적 강제 (HTML 주석 timestamp + 이유)</li>
+      <li>diff commit 분리 (<code>chore(agent-evolve): ...</code>)</li>
+      <li>주간 검토 강제 (/weekly에서 박정운 유지/되돌리기 결정)</li>
+      <li>자동 진화 금지 영역: frontmatter (name·description·model·tools) · 기존 본문 삭제 · 박정운 안전 규칙</li>
+      <li>악의적 진화 감지 시그널 (rate limit·박정운 의도 반대 방향·자기 정당화)</li>
+      <li>롤백 절차 (<code>git revert</code> + feedback 메모리)</li>
+      <li>사람-in-the-loop 강제 영역: TRIGGER 키워드 추가/삭제·tools 목록·50줄+ 큰 본문</li>
+    </ol>
+  </details>
+</section>
+
+<!-- Section 8: 3-동작 -->
 <section id="operations">
-  <h2><span class="num">3</span>Karpathy 3-동작 사이클 (Ingest · Query · Lint)</h2>
+  <h2><span class="num">8</span>Karpathy 3-동작 사이클</h2>
+  <p class="lead">Jungki 운영의 핵심 동작 — Karpathy 원본 그대로. Ingest(자료 → wiki) · Query(위키 질의) · Lint(점검).</p>
+
   <div class="panel">
-    <p class="muted">Jungki 운영의 핵심 3가지 동작. 오늘 처음으로 모두 실제 가동 (Lint 첫 실행).</p>
     <div class="cycle">
       <div class="cycle-node ingest active">
         <div class="emoji">📥</div>
@@ -398,487 +891,193 @@
         <div class="sub">모순·고아·stale 점검</div>
       </div>
     </div>
-    <div class="grid grid-3">
-      <div>
-        <strong style="color: var(--green);">Ingest ✅ 매우 활발</strong>
-        <div class="muted">오늘 9건 처리 (yozm 6 + 도메인 3)</div>
-      </div>
-      <div>
-        <strong style="color: var(--yellow);">Query 🟡 부분</strong>
-        <div class="muted">자연어 의존, 별도 슬래시 X</div>
-      </div>
-      <div>
-        <strong style="color: var(--green);">Lint ✅ 첫 실행</strong>
-        <div class="muted">archives 0→1, stub 145 발견</div>
-      </div>
-    </div>
   </div>
 </section>
 
-<!-- Section 4: Slash → Model -->
+<!-- Section 9: Models -->
 <section id="models">
-  <h2><span class="num">4</span>슬래시 25개 → 모델 자동 분기</h2>
-  <div class="panel">
-    <p class="muted">박정운 슬래시 호출 시 frontmatter <code>model:</code> 따라 자동 spawning. 비용 ~$200/월 → ~$60~80/월 (60~70% 절감 추정).</p>
+  <h2><span class="num">9</span>모델 분기 정책</h2>
+  <p class="lead">슬래시 frontmatter <code>model:</code>로 자동 spawning. Haiku/Sonnet/Opus 비용 효율 최적화. <strong>동적 Escalation</strong>: 메인 LLM 한계 감지 시 byjw-exec-ceo(Opus) 위임.</p>
 
-    <div class="slash-flow">
-      <div class="slash-group">
-        <div class="model-badge haiku">Haiku (4)</div>
-        <span class="arrow-h">←</span>
-        <div class="slash-list">
-          <span class="slash-tag haiku">/daily</span>
-          <span class="slash-tag haiku">/daily-end</span>
-          <span class="slash-tag haiku">/inbox</span>
-          <span class="slash-tag haiku">/lint</span>
-        </div>
-      </div>
-      <div class="slash-group">
-        <div class="model-badge sonnet">Sonnet (19)</div>
-        <span class="arrow-h">←</span>
-        <div class="slash-list">
-          <span class="slash-tag sonnet">/ingest</span>
-          <span class="slash-tag sonnet">/worklog</span>
-          <span class="slash-tag sonnet">/research</span>
-          <span class="slash-tag sonnet">/review</span>
-          <span class="slash-tag sonnet">/architecture-check</span>
-          <span class="slash-tag sonnet">/compose-migrate</span>
-          <span class="slash-tag sonnet">/compose-optimize</span>
-          <span class="slash-tag sonnet">/kotlin-refactor</span>
-          <span class="slash-tag sonnet">/test-gen</span>
-          <span class="slash-tag sonnet">/cleanup</span>
-          <span class="slash-tag sonnet">/explain</span>
-          <span class="slash-tag sonnet">/summary</span>
-          <span class="slash-tag sonnet">/tidy</span>
-          <span class="slash-tag sonnet">/weekly</span>
-          <span class="slash-tag sonnet">/monthly</span>
-          <span class="slash-tag sonnet">/planning</span>
-          <span class="slash-tag sonnet">/commit-push-mr</span>
-          <span class="slash-tag sonnet">/append</span>
-          <span class="slash-tag sonnet">/analyze-video</span>
-        </div>
-      </div>
-      <div class="slash-group">
-        <div class="model-badge opus">Opus (2)</div>
-        <span class="arrow-h">←</span>
-        <div class="slash-list">
-          <span class="slash-tag opus">/project-kickoff</span>
-          <span class="slash-tag opus">/quarterly</span>
-        </div>
-      </div>
+  <div class="grid grid-3">
+    <div class="panel" style="border-top: 3px solid var(--green);">
+      <h3 style="color: var(--green);">Haiku</h3>
+      <p class="muted">단순 IO · 패턴 매칭 · daily 운영.</p>
+      <p style="font-size: 12px; margin-top: 8px;"><code>/daily · /daily-end · /inbox · /lint</code></p>
     </div>
-
-    <p class="muted" style="margin-top: 16px;">📌 4개 (<code>cleanup·explain·summary·tidy</code>)는 박정운 검증 후 Haiku → Sonnet 안전 상향 (reasoning 의존).</p>
-  </div>
-</section>
-
-<!-- Section 5: Agent routing + Escalation -->
-<section id="routing">
-  <h2><span class="num">5</span>자연어 → Agent 자동 라우팅 + 동적 Escalation</h2>
-  <div class="panel">
-    <p class="muted">박정운이 자연어로 요청해도 메인 LLM이 agent description TRIGGER 매칭 → 자동 위임. 한계 감지 시 ai-engineer로 Escalation.</p>
-
-    <div class="routing-demo">
-      <div class="user-bubble">"이 안드로이드 코드 봐줘"</div>
-
-      <div class="step">
-        <div class="step-num">1</div>
-        <div class="step-content">메인 LLM이 요청 1초 점검 → CLAUDE.md "Agent 우선 활용 매트릭스" 확인</div>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <div class="step-content">TRIGGER 매칭: "안드로이드 코드", "코드 봐줘" → <span class="agent">android-developer-agent</span> + <span class="agent">code-quality-agent</span></div>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <div class="step-content">단일 메시지에 multiple Agent tool 호출 → <span class="model">병렬 spawning (Sonnet × 2)</span></div>
-      </div>
-      <div class="step">
-        <div class="step-num">4</div>
-        <div class="step-content">각 agent 결과 → 메인 LLM이 통합 → 박정운에게 보고</div>
-      </div>
-
-      <div class="escalation">
-        ⚡ <strong>한계 감지 시 Escalation</strong>: 다층 trade-off 분석 필요 → "<span class="agent">ai-engineer</span>(Opus)에 위임합니다" 한 줄 보고 후 Opus 호출
-      </div>
+    <div class="panel" style="border-top: 3px solid var(--accent);">
+      <h3 style="color: var(--accent);">Sonnet <span class="badge">default</span></h3>
+      <p class="muted">일반 코드·자연어·ingest·planning·worklog.</p>
+      <p style="font-size: 12px; margin-top: 8px;">대부분의 슬래시 + agent 기본</p>
     </div>
-
-    <div class="grid grid-3" style="margin-top: 16px;">
-      <div>
-        <strong>회사 맥 28 agents</strong>
-        <div class="muted">specialized 10 · gsd-* 11 · mk-* 6 · ai-engineer · claude</div>
-      </div>
-      <div>
-        <strong>cc-* 12개 = 개인 맥 전용 ⭐</strong>
-        <div class="muted">박정운이 풀스택 팀(<code>/code-crew</code>)용으로 만든 것 → vault <code>setup/agents-personal/</code> 보존 + sync hostname 분기로 회사 맥 자동 skip</div>
-      </div>
-      <div>
-        <strong>모델 사다리</strong>
-        <div class="muted">Haiku (slash default) → Sonnet (agent default) → Opus (ai-engineer escalation)</div>
-      </div>
-    </div>
-
-    <div class="panel" style="margin-top: 16px; background: rgba(255, 200, 0, 0.05); border: 1px solid rgba(255, 200, 0, 0.2);">
-      <strong>📊 자동 호출 로깅 (2026-05-22 P2 신설)</strong>
-      <p class="muted" style="margin-top: 6px;">
-        <code>~/.claude/hooks/agent-call-logger.js</code> PostToolUse hook → Agent tool 호출마다 <code>~/jungki/.metrics/agent-calls.jsonl</code>에 자동 append (ts·subagent·description·tokens). <code>/daily-end</code>가 향후 합산해 <code>jungki-llm-costs.md</code>에 누적 예정.
-      </p>
+    <div class="panel" style="border-top: 3px solid var(--purple);">
+      <h3 style="color: var(--purple);">Opus</h3>
+      <p class="muted">다층 reasoning · 분기 회고 · 아키텍처 결정.</p>
+      <p style="font-size: 12px; margin-top: 8px;"><code>/quarterly · /byjw · /byjw-new · /byjw-audit · byjw-exec-ceo · byjw-plan-architect</code></p>
     </div>
   </div>
 </section>
 
-<!-- Section 6: Sync -->
+<!-- Section 10: Sync -->
 <section id="sync">
-  <h2><span class="num">6</span>글로벌 ↔ Vault 동기화 (sync-global.sh)</h2>
-  <div class="panel">
-    <p class="muted">머신별 글로벌 자산을 vault 마스터와 양방향 sync. mtime 기반 git-like — 더 최신 쪽이 truth.</p>
+  <h2><span class="num">10</span>글로벌 ↔ Vault Sync</h2>
+  <p class="lead"><code>sync-global.sh</code>가 mtime 기반 git-like 양방향 동기화. <strong>2026-05-24: 머신별 분기 제거 → 단일 흐름</strong> <span class="badge updated">SIMPLIFIED</span></p>
 
+  <div class="panel">
     <div class="sync-diagram">
       <div class="sync-side">
         <h4>🖥️ 글로벌 (머신별)</h4>
         <ul>
-          <li>~/.claude/CLAUDE.md (191줄)</li>
-          <li>~/.claude/agents/*.md (28 회사 맥 / +12 cc-* 개인 맥)</li>
-          <li>~/.claude/commands/*.md (25)</li>
-          <li>~/.claude/commands/gsd/*.md (32) ⭐</li>
-          <li>~/.claude/hooks/*.js (4) ⭐</li>
-          <li>~/.claude/settings.json ⭐</li>
+          <li><code>~/.claude/CLAUDE.md</code></li>
+          <li><code>~/.claude/agents/byjw-*.md</code> (34)</li>
+          <li><code>~/.claude/commands/*.md</code> (23)</li>
+          <li><code>~/.claude/commands/gsd/*.md</code></li>
+          <li><code>~/.claude/hooks/*.js</code> (7)</li>
+          <li><code>~/.claude/settings.json</code></li>
         </ul>
       </div>
       <div class="sync-arrows">
         <div class="sync-arrow l-to-r"></div>
-        <div class="sync-label">--push<br/>--auto (더 최신)</div>
+        <div class="sync-label">--push<br/>--auto (최신)</div>
         <div class="sync-arrow r-to-l"></div>
-        <div class="sync-label">--pull<br/>--auto (더 최신)</div>
+        <div class="sync-label">--pull<br/>--auto (최신)</div>
       </div>
       <div class="sync-side">
         <h4>☁️ Vault 마스터</h4>
         <ul>
-          <li>setup/global-CLAUDE.md</li>
-          <li>setup/agents/*.md (공통)</li>
-          <li>setup/agents-personal/cc-*.md (개인 맥 전용 ⭐)</li>
-          <li>setup/policies/*.md (6 — P3 분리 ⭐)</li>
-          <li>setup/commands/*.md</li>
-          <li>setup/commands-gsd/gsd/*.md ⭐</li>
-          <li>setup/hooks/*.js ⭐</li>
-          <li>setup/settings/settings.json ⭐</li>
+          <li><code>setup/global-CLAUDE.md</code></li>
+          <li><code>setup/agents/byjw-*.md</code></li>
+          <li><code>setup/policies/*.md</code> (6)</li>
+          <li><code>setup/commands/*.md</code></li>
+          <li><code>setup/hooks/*.js</code></li>
+          <li><code>setup/settings/settings.json</code></li>
         </ul>
       </div>
     </div>
+    <p class="muted" style="margin-top: 14px;"><strong>4 모드</strong>: <code>--auto</code> (권장) · <code>--check</code> · <code>--pull</code> · <code>--push</code> · <code>--clean-old</code> (30일+ .bak 정리)</p>
+  </div>
+</section>
 
-    <p class="muted" style="margin-top: 16px;">
-      <strong>4 모드</strong>: <code>--auto</code> (권장, git-like 양방향) · <code>--check</code> (diff만) · <code>--pull</code> (vault→글로벌) · <code>--push</code> (글로벌→vault) · <code>--clean-old</code> (30일+ .bak 정리)
-    </p>
-    <p class="muted">자동 트리거 후보: 머신 부팅 시 · <code>/daily-end</code> · <code>/lint</code> 월 1회</p>
+<!-- Section 11: Changelog -->
+<section id="changelog">
+  <h2><span class="num">11</span>변경 이력 — 2026-05-22 ~ 2026-05-24</h2>
+  <p class="lead">박정운이 어제·오늘 진행한 큰 변경 (이걸 reference 사이트에 반영하기 위해 이번 갱신).</p>
 
-    <div class="panel" style="margin-top: 16px; background: rgba(120, 200, 255, 0.05); border: 1px solid rgba(120, 200, 255, 0.2);">
-      <strong>🎯 머신별 분기 (2026-05-22 P4 적용)</strong>
-      <p class="muted" style="margin-top: 6px;">
-        <code>WORK_MACHINE_HOSTNAME="MacBookPro-DW2K7P1W9V"</code> 변수로 회사 맥 식별.<br/>
-        • <strong>회사 맥</strong>: agents-personal/ skip — "cc-* 풀스택 팀 불필요" 로그<br/>
-        • <strong>개인 맥</strong>: agents/는 cc-* <em>제외</em> sync + agents-personal/은 cc-* <em>패턴</em> 전용 sync<br/>
-        → vault 단일 소스 유지 + 머신마다 다른 agent 풀
-      </p>
+  <div class="timeline">
+    <div class="timeline-entry today">
+      <div class="timeline-date today">2026-05-24 (오늘)</div>
+      <div class="timeline-content">
+        <strong>하네스 정리 일괄 작업</strong>
+        <ul>
+          <li>글로벌 CLAUDE.md에서 Spokenly 룰 제거 (voiceEnabled=false라 모순)</li>
+          <li>cc-* (Code Crew) 12개 → byjw-* prefix로 완전 통합. 머신별 분리(P4) 정책 폐기</li>
+          <li><code>~/.claude/teams/code-crew/</code> (3월 Tetris 옛 팀) 삭제 — 시스템 리마인더 cc-* 노출 원인 제거</li>
+          <li>10개 agent description을 옛 "Code Crew" → 새 "BYJW Studio crew" 형식 + Use PROACTIVELY + TRIGGER 한국어/English 재작성</li>
+          <li>6개 agent 본문 옛 이름(planner-agent·designer-agent·ai-engineer 등) → byjw-* 정정</li>
+          <li><code>sync-global.sh</code> hostname 분기·agents-personal/ 로직 모두 제거 (400→270줄)</li>
+          <li><code>.machines.conf</code> 삭제 (dead config)</li>
+          <li><code>policies/agent-routing.md</code> P4 머신별 분리 섹션 35줄 제거</li>
+          <li>feedback-candidate-detector.js의 "다시 시도" 트리거 제거 (단순 재실행이라 정정 아님)</li>
+          <li>📌 <strong>이 사이트 (jungki-overview) 전면 개편</strong> — 12 섹션·crew 카탈로그·메모리·자가 학습·UI 카드 그리드·검색·접기</li>
+        </ul>
+      </div>
     </div>
-    <div class="panel" style="margin-top: 12px; background: rgba(200, 120, 255, 0.05); border: 1px solid rgba(200, 120, 255, 0.2);">
-      <strong>🔐 Vault 락 (2026-05-22 A8 보완)</strong>
-      <p class="muted" style="margin-top: 6px;">
-        <code>--pull</code>/<code>--push</code>/<code>--auto</code> 시작 시 <code>~/jungki/setup/.sync.lock</code> mkdir(atomic). 동시 실행 차단 + EXIT/INT/TERM trap으로 자동 정리. 10분+ stale 락은 자동 재획득. <code>--check</code>는 read-only라 락 불필요.
-      </p>
+    <div class="timeline-entry">
+      <div class="timeline-date">2026-05-23</div>
+      <div class="timeline-content">
+        <strong>BYJW Studio crew 신설 + 8개 워크플로우 슬래시 도입</strong>
+        <ul>
+          <li>10 본부 34 agents 일괄 신설 (byjw-* prefix lock-in)</li>
+          <li>/byjw · /byjw-new · /byjw-map · /byjw-quick · /byjw-pause · /byjw-resume · /byjw-verify · /byjw-audit</li>
+          <li>agent-knowledge-index.md 신설 — 영역별 우선 Read wiki·메모리 매트릭스</li>
+          <li>byjw-studio-crew/charter.md 신설 — 채용·해고 룰</li>
+          <li>vault P3 슬림화 (-67%) — 745→약 250줄, 9개 정책 본문 setup/policies/jungki/*.md로 분리</li>
+        </ul>
+      </div>
     </div>
-    <div class="panel" style="margin-top: 12px; background: rgba(255, 80, 80, 0.05); border: 1px solid rgba(255, 80, 80, 0.2);">
-      <strong>🔒 시크릿 영구 차단 (2026-05-22)</strong>
-      <p class="muted" style="margin-top: 6px;">
-        <code>**/settings.local.json</code>은 sync 대상이 아니라 <code>.gitignore</code>로 영구 차단. P5 작업 중 Confluence/Jira API 토큰 평문 발견 → vault 미오염 차단됨.
-      </p>
+    <div class="timeline-entry">
+      <div class="timeline-date">2026-05-22</div>
+      <div class="timeline-content">
+        <strong>하네스 엔지니어링 대규모 정리</strong>
+        <ul>
+          <li>글로벌 CLAUDE.md P3 슬림화 — policies/*.md 6종 분리</li>
+          <li>sync-global.sh 신설 (글로벌 ↔ vault 단일 소스)</li>
+          <li>SessionStart vault sync hook · UserPromptSubmit feedback hook 도입</li>
+          <li>관찰 가능성 — observability-logger.js + aggregate.sh</li>
+          <li>모델 분기 정책 · Agent 우선 활용 정책 글로벌 이전</li>
+          <li>Lazy Seed 정책 — 새 프로젝트 wiki 5종 미리 만들지 않음</li>
+          <li>memory user/feedback/project/reference 4종 분리 운영</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- Section 7: Harness evaluation & evolution -->
-<section id="harness">
-  <h2><span class="num">7</span>하네스 평가·진화 (2026-05-22 박정운 평가 + 적용)</h2>
-  <div class="panel">
-    <p class="muted">"PKM은 상위 1%, 측정·자동화는 약함" 진단 → 약점 11개 식별 → 한 세션에 7개 해결.</p>
-
-    <h3 style="margin-top: 16px;">평가 → 해결 매트릭스</h3>
-    <table style="width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px;">
-      <thead>
-        <tr style="border-bottom: 1px solid var(--border);">
-          <th style="text-align: left; padding: 6px;">#</th>
-          <th style="text-align: left; padding: 6px;">약점</th>
-          <th style="text-align: left; padding: 6px;">처리</th>
-          <th style="text-align: center; padding: 6px;">상태</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td style="padding: 6px;">A1</td><td style="padding: 6px;">Hooks 활용 미흡 (2개)</td><td style="padding: 6px;">P2: agent-call-logger 추가 (3개)</td><td style="text-align: center;">✅</td></tr>
-        <tr><td style="padding: 6px;">A2</td><td style="padding: 6px;">자동매매 코드 가드 X</td><td style="padding: 6px;">P1 보류 (봇 테스트 중)</td><td style="text-align: center;">⏸</td></tr>
-        <tr><td style="padding: 6px;">A3</td><td style="padding: 6px;">CLAUDE.md 비대 (710줄)</td><td style="padding: 6px;">P3: 글로벌 523→191 (-63%) + policies 6 분리</td><td style="text-align: center;">✅</td></tr>
-        <tr><td style="padding: 6px;">A4</td><td style="padding: 6px;">Agent 중복 (cc-* vs specialized)</td><td style="padding: 6px;">P4: 머신별 install 분기 (vault 보존)</td><td style="text-align: center;">✅</td></tr>
-        <tr><td style="padding: 6px;">A5</td><td style="padding: 6px;">모델 분기 자기보고 의존</td><td style="padding: 6px;">agent-cost-summary.sh로 ai-engineer 호출=escalation 일별 카운트 자동 집계</td><td style="text-align: center;">✅</td></tr>
-        <tr><td style="padding: 6px;">A6</td><td style="padding: 6px;">비용 추적 자동화 부재</td><td style="padding: 6px;">agent-cost-summary.sh — jsonl 합산 → jungki-llm-costs.md 자동 갱신 (subagent별 카운트·escalation·예상 비용)</td><td style="text-align: center;">✅</td></tr>
-        <tr><td style="padding: 6px;">A7</td><td style="padding: 6px;">회귀 테스트 부재</td><td style="padding: 6px;">test-harness.sh 신설 — 8개 항목 검증 (sync·hooks·agents·policies·gitignore·락 누수)</td><td style="text-align: center;">✅</td></tr>
-        <tr><td style="padding: 6px;">A8</td><td style="padding: 6px;">병렬 Agent 충돌 가드 X</td><td style="padding: 6px;">sync-global.sh에 .sync.lock mkdir(atomic) + trap 자동 정리 + stale 락 재획득</td><td style="text-align: center;">✅</td></tr>
-        <tr><td style="padding: 6px;">A9</td><td style="padding: 6px;">MCP 서버 분산</td><td style="padding: 6px;">wiki/areas/mcp-servers.md 카탈로그 신설 — 위치 매트릭스·서버 목록·인증·추가 절차</td><td style="text-align: center;">✅</td></tr>
-        <tr><td style="padding: 6px;">A10</td><td style="padding: 6px;">하네스 자체 백업 부재</td><td style="padding: 6px;">P5: hooks·settings·gsd 풀 vault sync</td><td style="text-align: center;">✅</td></tr>
-        <tr><td style="padding: 6px;">A11</td><td style="padding: 6px;">관측가능성 부재</td><td style="padding: 6px;">P2 logger hook이 첫 measurement layer</td><td style="text-align: center;">✅</td></tr>
-      </tbody>
-    </table>
-    <p class="muted" style="margin-top: 12px;"><strong>처리율: 11/11 해결 + 1 보류(P1 자동매매)</strong> (한 세션 기준 매우 높음)</p>
-
-    <h3 style="margin-top: 20px;">새로 등장한 강점 (★)</h3>
-    <ul style="margin-top: 8px;">
-      <li><strong>머신별 install 분기 패턴 ★★★★★</strong> — hostname 기반 vault 단일 소스 + 머신별 다른 풀. 새 머신·새 역할 확장 가능</li>
-      <li><strong>박정운 정정 인사이트 메모리화 ★★★★★</strong> — "cc-*는 개인 맥 풀스택용" 같은 의도를 <code>feedback_*.md</code> 메모리로 영구 학습 → 재발 방지</li>
-      <li><strong>자동 보고 누적 규율 검증 ★★★★☆</strong> — 한 세션 4 작업 → 5 commits + daily + log + memory + policies 동시 갱신 작동</li>
-      <li><strong>시크릿 즉시 대응 ★★★★★</strong> — vault 진입 직전 평문 토큰 발견·차단</li>
-      <li><strong>측정 인프라 풀세트 완성 ★★★★★</strong> — agent-cost-summary(비용·escalation 일별 합산) + test-harness(8 항목 회귀) + mcp-servers 카탈로그까지 한 세션에 구축</li>
-    </ul>
-
-    <h3 style="margin-top: 16px;">새로 등장한 약점 (⚠️)</h3>
-    <ul>
-      <li>policies/*.md "Read 강제" 메커니즘 X → LLM이 트리거 시 정말 Read하는지 보장 없음</li>
-      <li>개인 맥 cc-* 필터(<code>auto_sync_dir_excluding</code>) 실환경 미검증 — 첫 실행 시 실패 가능</li>
-      <li>hostname 단일 키 의존 → 새 머신 추가 시 코드 수정 필요</li>
-      <li>jsonl raw만 쌓이고 집계 로직 미구현 — 데이터만 있고 인사이트 X</li>
-    </ul>
-
-    <h3 style="margin-top: 24px;">📊 재평가 (2026-05-22 후반) — B 약점 13개 매트릭스</h3>
-    <p class="muted">A1~A11 보완 후 재평가에서 13개 추가 약점 식별 → 한 세션에 일괄 처리.</p>
-    <table style="width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px;">
-      <thead>
-        <tr style="border-bottom: 1px solid var(--border);">
-          <th style="text-align: left; padding: 6px;">#</th>
-          <th style="text-align: left; padding: 6px;">약점</th>
-          <th style="text-align: left; padding: 6px;">처리</th>
-          <th style="text-align: center; padding: 6px;">상태</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td style="padding: 6px;">B1</td><td style="padding: 6px;">PreToolUse hook 미구현 — knowledge-index Read 자기보고 의존</td><td style="padding: 6px;">wiki-read-suggester.js 신설 (Agent 호출 prompt에 index 미참조 시 경고)</td><td style="text-align: center;">✅</td></tr>
-        <tr><td style="padding: 6px;">B2</td><td style="padding: 6px;">자가 학습 5 메커니즘 실증 0건</td><td style="padding: 6px;">메인 LLM 자기보고 의존 feedback 메모리 신설 (첫 실증 시드)</td><td style="text-align: center;">✅</td></tr>
-        <tr><td style="padding: 6px;">B3</td><td style="padding: 6px;">개인 맥 cc-* 필터 실환경 미검증</td><td style="padding: 6px;">jungki-sync.md "개인 맥 첫 sync 가이드" 자체로 절차 충분</td><td style="text-align: center;">✅</td></tr>
-        <tr><td style="padding: 6px;">B4</td><td style="padding: 6px;">launchd cron 실패 알림 X</td><td style="padding: 6px;">run-worklog/run-daily-end에 ERR trap + osascript 알림 + cron-failures.log</td><td style="text-align: center;">✅</td></tr>
-        <tr><td style="padding: 6px;">B5</td><td style="padding: 6px;">agent 호출 결과 품질 측정 X</td><td style="padding: 6px;">cost-summary에 재요청 의심 패턴(같은 session+agent 5분 이내 2회+) 카운트</td><td style="text-align: center;">✅</td></tr>
-        <tr><td style="padding: 6px;">B6</td><td style="padding: 6px;">회귀 테스트 범위 좁음 (8 항목)</td><td style="padding: 6px;">test-harness 12 항목 확장 (실제 hook 동작·sync 통합성·vault-lock·index 무결성)</td><td style="text-align: center;">✅</td></tr>
-        <tr><td style="padding: 6px;">B7</td><td style="padding: 6px;">agent 자가 진화 보안 X</td><td style="padding: 6px;">변경 흔적 강제·diff commit 분리·주간 검토·금지 영역·악의 감지·롤백·HITL 7 항목</td><td style="text-align: center;">✅</td></tr>
-        <tr><td style="padding: 6px;">B8</td><td style="padding: 6px;">multi-agent 병렬 vault 락 X</td><td style="padding: 6px;">vault-lock.sh utility (path별 mkdir atomic + TTL + acquire/release/check)</td><td style="text-align: center;">✅</td></tr>
-        <tr><td style="padding: 6px;">B9</td><td style="padding: 6px;">사이트 자동 갱신 강제 X</td><td style="padding: 6px;">site-update-notifier.js PostToolUse hook (정책/hook/sync 변경 시 알림)</td><td style="text-align: center;">✅</td></tr>
-        <tr><td style="padding: 6px;">B10</td><td style="padding: 6px;">MCP 분산 자체 미해결</td><td style="padding: 6px;">mcp-servers.md에 "분산 받아들이고 가시화" 패턴 명문화 (통합 자체 불가)</td><td style="text-align: center;">✅</td></tr>
-        <tr><td style="padding: 6px;">B11</td><td style="padding: 6px;">버전 태그·롤백 절차 X</td><td style="padding: 6px;">git tag v2026.05.22-harness-complete 신설</td><td style="text-align: center;">✅</td></tr>
-        <tr><td style="padding: 6px;">B12</td><td style="padding: 6px;">hostname 단일 키 의존</td><td style="padding: 6px;">setup/.machines.conf 신설 (hostname=role 매핑, 새 머신 한 줄 추가만)</td><td style="text-align: center;">✅</td></tr>
-        <tr><td style="padding: 6px;">B13</td><td style="padding: 6px;">컨텍스트 압박 측정 X</td><td style="padding: 6px;">cost-summary에 prompt_len 평균·총·agent별 max KB 추가</td><td style="text-align: center;">✅</td></tr>
-      </tbody>
-    </table>
-    <p class="muted" style="margin-top: 12px;"><strong>처리율 12/13 ✅ + 1개 (B3) 이미 충분 — 약점 100% 해결.</strong> P1(자동매매) 보류 1건 제외.</p>
-
-    <div class="panel" style="margin-top: 16px; background: rgba(63, 185, 80, 0.05); border: 1px solid rgba(63, 185, 80, 0.2);">
-      <strong>🏆 1차 하네스 완성 — 다음 단계 "실증 데이터로 정책 진화"</strong>
-      <ul class="muted" style="margin-top: 6px;">
-        <li><code>git tag v2026.05.22-harness-complete</code> — 1차 마일스톤 명시</li>
-        <li>측정 인프라 풀세트: PreToolUse·PostToolUse·logger·cost-summary·test-harness·vault-lock·notifier (총 4 hook + 4 utility)</li>
-        <li>다음 큰 진전 = 데이터 누적 후 정책 진화 (<code>/weekly</code> 5/29 / <code>/monthly</code> 6/01)</li>
-        <li>실증 측정 후보: 박정운 정정 횟수 추이·escalation 빈도·재요청 패턴·자가 진화 첫 사례</li>
-      </ul>
-    </div>
-
-    <h3 style="margin-top: 16px;">측면별 점수 (이번 세션 전·후)</h3>
-    <table style="width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px;">
-      <thead>
-        <tr style="border-bottom: 1px solid var(--border);">
-          <th style="text-align: left; padding: 6px;">측면</th>
-          <th style="text-align: center; padding: 6px;">Before</th>
-          <th style="text-align: center; padding: 6px;">After</th>
-          <th style="text-align: left; padding: 6px;">변화</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td style="padding: 6px;">PKM·정책 설계</td><td style="text-align: center;">★★★★★</td><td style="text-align: center;">★★★★★</td><td style="padding: 6px;">유지 (이미 최상)</td></tr>
-        <tr><td style="padding: 6px;">Agent 인프라</td><td style="text-align: center;">★★★★★</td><td style="text-align: center;">★★★★☆</td><td style="padding: 6px;">분리·운영 패턴 +, 테스트 X</td></tr>
-        <tr><td style="padding: 6px;">측정·관측가능성</td><td style="text-align: center;">★☆☆☆☆</td><td style="text-align: center;">★★★☆☆</td><td style="padding: 6px;">+2 (logger·라우팅 분기)</td></tr>
-        <tr><td style="padding: 6px;">보안</td><td style="text-align: center;">★★★☆☆</td><td style="text-align: center;">★★★★☆</td><td style="padding: 6px;">+1 (시크릿 차단·gitignore)</td></tr>
-        <tr><td style="padding: 6px;">백업·복구</td><td style="text-align: center;">★★☆☆☆</td><td style="text-align: center;">★★★★★</td><td style="padding: 6px;">+3 (vault 단일 소스 풀)</td></tr>
-        <tr><td style="padding: 6px;">자동화 강제</td><td style="text-align: center;">★★☆☆☆</td><td style="text-align: center;">★★★☆☆</td><td style="padding: 6px;">+1 (hook 1개 추가)</td></tr>
-        <tr><td style="padding: 6px;">알림·에러 모니터링</td><td style="text-align: center;">★★☆☆☆</td><td style="text-align: center;">★★★★☆</td><td style="padding: 6px;">+2 (cron 실패 알림·재요청 추적·사이트 알림 hook)</td></tr>
-      </tbody>
-    </table>
-    <p class="muted" style="margin-top: 12px;"><strong>총평 ★★★★☆ 상위 1% 유지 + 측정·백업 격차 메움.</strong> 다음 큰 진전 후보: 자동화 강제 hook 더 · 회귀 테스트.</p>
-  </div>
-</section>
-
-<!-- Section 8: Today's changes -->
-<section id="today">
-  <h2><span class="num">8</span>오늘 5/22 하루 변화</h2>
-  <div class="summary-grid">
-    <div class="summary-card"><div class="num">9</div><div class="label">Ingest 자료 (오전)</div></div>
-    <div class="summary-card"><div class="num">+82</div><div class="label">wiki 페이지 정리 (321→258, stub 63 삭제)</div></div>
-    <div class="summary-card"><div class="num">1</div><div class="label">archives/lint 첫 보고서 (0→1)</div></div>
-    <div class="summary-card"><div class="num">25</div><div class="label">슬래시 모델 frontmatter 적용</div></div>
-    <div class="summary-card"><div class="num">76→90</div><div class="label">하네스 점수 (B+ → A, 오전)</div></div>
-    <div class="summary-card"><div class="num">~70%</div><div class="label">예상 월 LLM 비용 절감</div></div>
-    <div class="summary-card" style="background: rgba(120, 200, 255, 0.08);"><div class="num">11→7</div><div class="label">하네스 약점 해결 (오후 평가)</div></div>
-    <div class="summary-card" style="background: rgba(120, 200, 255, 0.08);"><div class="num">523→191</div><div class="label">글로벌 CLAUDE.md 슬림화 (-63%)</div></div>
-    <div class="summary-card" style="background: rgba(120, 200, 255, 0.08);"><div class="num">40→28</div><div class="label">회사 맥 agents 정리 (cc-* 분리)</div></div>
-    <div class="summary-card" style="background: rgba(120, 200, 255, 0.08);"><div class="num">+6</div><div class="label">policies/*.md 신설 (P3 분리)</div></div>
-    <div class="summary-card" style="background: rgba(120, 200, 255, 0.08);"><div class="num">+1</div><div class="label">PostToolUse hook (agent-call-logger)</div></div>
-    <div class="summary-card" style="background: rgba(120, 200, 255, 0.08);"><div class="num">6</div><div class="label">vault sync 대상 종 (3→6)</div></div>
-    <div class="summary-card" style="background: rgba(120, 200, 255, 0.08);"><div class="num">+3</div><div class="label">신규 스크립트 (cost-summary·test-harness·sync 락)</div></div>
-    <div class="summary-card" style="background: rgba(120, 200, 255, 0.08);"><div class="num">8/8</div><div class="label">회귀 테스트 첫 실행 통과</div></div>
-    <div class="summary-card" style="background: rgba(120, 200, 255, 0.08);"><div class="num">11→11</div><div class="label">하네스 약점 해결 (P1 보류 제외)</div></div>
-    <div class="summary-card" style="background: rgba(189, 147, 249, 0.08);"><div class="num">13→12</div><div class="label">B 약점 보완 (12/13 + 1 충분)</div></div>
-  </div>
-
-  <div class="panel" style="margin-top: 16px;">
-    <strong>📦 오후 commits (vault)</strong>
-    <table style="width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px;">
-      <thead><tr style="border-bottom: 1px solid var(--border);"><th style="text-align: left; padding: 4px;">SHA</th><th style="text-align: left; padding: 4px;">제목</th></tr></thead>
-      <tbody>
-        <tr><td style="padding: 4px;"><code>431f15e</code></td><td style="padding: 4px;">chore(security): settings.local.json gitignore 차단</td></tr>
-        <tr><td style="padding: 4px;"><code>c5a0278</code></td><td style="padding: 4px;">feat(jungki/sync): P5 백업 확장 — hooks·settings·gsd</td></tr>
-        <tr><td style="padding: 4px;"><code>ae5a9d8</code></td><td style="padding: 4px;">feat(jungki/hook): P2 Agent 위임 자동 로깅 hook 신설</td></tr>
-        <tr><td style="padding: 4px;"><code>6d07ac6</code></td><td style="padding: 4px;">feat(jungki): P3 슬림화 + P4 머신별 분리 + 정책 6분리</td></tr>
-        <tr><td style="padding: 4px;"><code>5452d1f</code></td><td style="padding: 4px;">fix(jungki/sync): line 183 unbound + 개인 맥 필터 + daily/log</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
-<!-- Section 9: Validation -->
-<section id="check">
-  <h2><span class="num">9</span>박정운 이해 검증 체크리스트</h2>
-  <div class="panel">
-    <p class="muted">아래 항목을 보고 "맞다/이해 됨"이면 ✓, "헷갈림"이면 표시 후 알려주세요.</p>
-    <ul class="check-list">
-      <li>Jungki vault는 iCloud + Git 양쪽 동기화, 5층 분리(wiki/raw/work-private/personal-private/setup)</li>
-      <li>회사 맥은 본업 + 수동 / 개인 맥은 자동화 본거지 (cron·launchd 한 대만)</li>
-      <li>공통 룰 파일(CLAUDE.md·index·log·setup) 수정은 pull→편집→push 강제</li>
-      <li>Karpathy 3-동작(Ingest·Query·Lint) — 오늘 Lint 첫 실행으로 모두 가동</li>
-      <li>슬래시 25개는 frontmatter <code>model:</code>로 자동 모델 분기 (Haiku 4·Sonnet 19·Opus 2)</li>
-      <li>자연어로 요청해도 메인 LLM이 agent TRIGGER 매칭으로 자동 위임 시도 (PROACTIVELY)</li>
-      <li>한계 감지 시 ai-engineer(Opus)로 Escalation = 반-자동 안전망</li>
-      <li>setup/global-CLAUDE.md(191줄)가 글로벌 룰 단일 소스, ~/.claude/CLAUDE.md는 sync 사본 — 풀 본문은 setup/policies/*.md 6개로 분리 (2026-05-22 P3) ⭐</li>
-      <li>sync-global.sh --auto는 mtime 비교해서 더 최신 쪽으로 자동 양방향 sync — 6종 동기화 + 머신 분기 ⭐</li>
-      <li>새 프로젝트는 overview만 생성 (Lazy Seed) — 5종 stub 미리 만들지 않음</li>
-      <li>cc-* 12개는 개인 맥 풀스택 팀 전용 (회사 맥 자동 skip) — vault setup/agents-personal/에 단일 소스 보존 ⭐</li>
-      <li>Agent tool 호출은 PostToolUse hook이 자동 로깅 → .metrics/agent-calls.jsonl ⭐</li>
-      <li>settings.local.json은 API 토큰 평문 가능성으로 영구 차단 (sync·git 둘 다) ⭐</li>
-      <li>~/.claude/{hooks,settings.json,commands/gsd}는 vault setup/ 풀 동기화 (백업·복구 풀 커버) ⭐</li>
-      <li>이 사이트는 jungki + 하네스 변경 시 자동 갱신되는 살아있는 문서 ⭐</li>
-    </ul>
-  </div>
-</section>
-
-<!-- Section 10: Auto-update policy -->
+<!-- Section 12: Auto-update -->
 <section id="autoupdate">
-  <h2><span class="num">10</span>이 사이트의 자동 갱신 정책</h2>
-  <div class="panel">
-    <p class="muted">박정운 지시(2026-05-22): "LLM Wiki + My AI System 설명용 — 변경될 때마다 항상 자동 업데이트".</p>
-    <h3 style="margin-top: 12px;">갱신 트리거</h3>
-    <ul>
-      <li>글로벌 CLAUDE.md / policies/*.md 추가·수정</li>
-      <li>~/.claude/agents/ 추가·삭제 (vault setup/agents·agents-personal 변경 포함)</li>
-      <li>~/.claude/hooks/ 추가·수정</li>
-      <li>sync-global.sh 동기화 구조 변경</li>
-      <li>슬래시 신설·모델 분기 변경</li>
-      <li>하네스 약점 평가·해결 (이 페이지 §7 매트릭스 갱신)</li>
-      <li>박정운이 직접 "사이트 업데이트해줘" 요청</li>
-    </ul>
-    <h3 style="margin-top: 12px;">갱신 절차 (LLM 자동)</h3>
-    <ol>
-      <li>의미 있는 변경 발생 → 영향 받는 섹션 식별</li>
-      <li><code>~/Projects/jungki-overview/index.html</code> 편집 (해당 섹션 + 오늘 변화 §8 박스 + footer timestamp)</li>
-      <li>vault <code>wiki/projects/jungki-overview/overview.md</code> 동시 갱신 (필요 시)</li>
-      <li><code>git push</code> → GitHub webhook → Vercel 자동 deploy → <a href="https://jungki-overview.vercel.app">https://jungki-overview.vercel.app</a> 즉시 반영</li>
-      <li>vault commit + push (오늘 daily 한 줄 누적)</li>
-    </ol>
-    <p class="muted" style="margin-top: 12px;">정책 단일 소스: <code>~/jungki/wiki/projects/jungki-overview/overview.md</code> "자동 갱신 정책" 섹션.</p>
-  </div>
-</section>
+  <h2><span class="num">12</span>자동 갱신 정책</h2>
+  <p class="lead"><strong>박정운 정책 (2026-05-24 신설)</strong>: Jungki 관련 구조·기능이 변경될 때마다 이 사이트가 즉시 업데이트되어야 함. 어제처럼 큰 변경이 누적되면 박정운이 본인 시스템도 혼란해지기 때문.</p>
 
-<!-- Section 11: Knowledge learning cycle + self-evolution -->
-<section id="learning">
-  <h2><span class="num">11</span>노하우 학습 루프 + 자가 학습 메커니즘</h2>
-  <div class="panel">
-    <p class="muted">박정운 작업 → wiki/메모리 누적 → agent가 다음 호출 시 자동 Read → 사이클 반복. Claude 모델 자체는 학습 안 되지만 외부 지식 누적·자동 첨부로 "학습한 듯" 작동.</p>
-
-    <h3 style="margin-top: 16px;">노하우 학습 사이클 (정적 인프라)</h3>
-    <pre style="background: var(--panel-2); padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 12px; line-height: 1.5;">
-박정운 작업 → 노하우 누적 (wiki/메모리) ──────┐
-                                              ↓
-                  agent-knowledge-index.md (영역별 wiki 매트릭스)
-                                              ↓
-              agent description에 "위임 받으면 인덱스 Read"
-                                              ↓
-                  메인 LLM 위임 prompt에 자동 첨부
-                                              ↓
-                  agent 작업 결과 ─ 새 노하우 발견
-                                              ↓ (자동 누적 정책)
-                       ┌──────────────────────┘
-                       (사이클 반복)
-    </pre>
-
-    <h3 style="margin-top: 20px;">자가 학습 메커니즘 5종 (동적 진화)</h3>
-    <table style="width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px;">
-      <thead>
-        <tr style="border-bottom: 1px solid var(--border);">
-          <th style="text-align: left; padding: 6px;">#</th>
-          <th style="text-align: left; padding: 6px;">메커니즘</th>
-          <th style="text-align: left; padding: 6px;">트리거</th>
-          <th style="text-align: left; padding: 6px;">저장 위치</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td style="padding: 6px;">1</td><td style="padding: 6px;"><strong>Feedback 메모리 자동 누적</strong></td><td style="padding: 6px;">박정운 정정·확인 + 메인 LLM 자체 감지</td><td style="padding: 6px;"><code>memory/feedback_*.md</code></td></tr>
-        <tr><td style="padding: 6px;">2</td><td style="padding: 6px;"><strong>Agent description 자동 진화</strong></td><td style="padding: 6px;">놓친 항목·새 TRIGGER 키워드 발견</td><td style="padding: 6px;"><code>setup/agents/*.md</code> 한 줄 추가</td></tr>
-        <tr><td style="padding: 6px;">3</td><td style="padding: 6px;"><strong>Knowledge-index 자동 갱신</strong></td><td style="padding: 6px;">새 wiki 페이지 / 새 agent 추가</td><td style="padding: 6px;"><code>wiki/areas/agent-knowledge-index.md</code></td></tr>
-        <tr><td style="padding: 6px;">4</td><td style="padding: 6px;"><strong>메타 학습 회고</strong></td><td style="padding: 6px;"><code>/weekly</code>·<code>/monthly</code> 슬래시</td><td style="padding: 6px;">회고 보고서 별도 섹션</td></tr>
-        <tr><td style="padding: 6px;">5</td><td style="padding: 6px;"><strong>실패 학습 (Postmortem)</strong></td><td style="padding: 6px;">박정운 정정·재요청 + 작업 실패 시그널</td><td style="padding: 6px;"><code>gotchas.md</code> G번호 + 메모리</td></tr>
-      </tbody>
-    </table>
-
-    <div class="panel" style="margin-top: 16px; background: rgba(63, 185, 80, 0.05); border: 1px solid rgba(63, 185, 80, 0.2);">
-      <strong>✅ 학습 성공 신호</strong>
-      <p class="muted" style="margin-top: 6px;">
-        다음 작업·다음 세션에서 박정운이 비슷한 정정·지적을 안 함 (반복률 감소).<br/>
-        측정: <code>/monthly</code> 메타 학습 회고에서 박정운 정정 횟수 추이 추적.
-      </p>
-    </div>
-
-    <div class="panel" style="margin-top: 12px; background: rgba(240, 136, 62, 0.05); border: 1px solid rgba(240, 136, 62, 0.2);">
-      <strong>⚠️ 한계·안전</strong>
-      <ul class="muted" style="margin-top: 6px;">
-        <li>Claude 모델 자체(가중치)는 fine-tuning 없이 안 똑똑해짐 — Anthropic이 모델 업데이트해야 함</li>
-        <li>agent description 자동 진화는 본문 추가만 (frontmatter·기존 본문 보존)</li>
-        <li>큰 정책·룰 변경은 박정운 컨펌 필수 (자율 진화 X)</li>
-        <li>모든 자가 학습은 vault에 누적 → 다른 머신 자동 반영 (단일 소스)</li>
+  <div class="grid grid-2">
+    <div class="panel">
+      <h3>📋 갱신 트리거</h3>
+      <ul class="muted" style="line-height: 2;">
+        <li>새 agent 추가/삭제 → Section 4 갱신</li>
+        <li>새 슬래시 추가/삭제 → Section 5 갱신</li>
+        <li>새 메모리 카테고리·feedback 영구 저장 → Section 6 갱신</li>
+        <li>자가 학습 메커니즘 추가 → Section 7 갱신</li>
+        <li>정책 변경 (P3·P4 등) → 해당 섹션 + Section 11 변경 이력</li>
+        <li>vault 구조 변경 → Section 3 갱신</li>
       </ul>
     </div>
+    <div class="panel">
+      <h3>🔄 배포 흐름</h3>
+      <ol class="muted" style="line-height: 2;">
+        <li>로컬: <code>~/Projects/jungki-overview/index.html</code> 편집</li>
+        <li><code>git add · commit · push</code></li>
+        <li>Vercel webhook 자동 deploy</li>
+        <li><code>https://jungki-overview.vercel.app</code> 즉시 반영</li>
+      </ol>
+      <p class="muted" style="margin-top: 10px;">📦 <a href="https://github.com/Jungwoon/jungki-overview" style="color: var(--accent);">GitHub Jungwoon/jungki-overview</a> (Public)</p>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top: 16px; background: rgba(63,185,80,.06); border-color: var(--green);">
+    <strong style="color: var(--green);">✅ LLM 책임</strong>
+    <p class="muted" style="margin-top: 6px;">Jungki 관련 변경 commit 후 LLM이 자동으로 이 사이트의 영향받는 섹션을 갱신·push해야 함. <code>~/.claude/CLAUDE.md</code> 정책에 포함됨.</p>
   </div>
 </section>
 
 </main>
 
 <footer>
-  마지막 갱신: <span style="color: var(--yellow); font-weight: bold;">2026-05-22 18:30 KST</span> (B1~B13 일괄 보완 + v2026.05.22-harness-complete 태그) · 박정운 Jungki 시스템 시각화 · 단일 HTML (외부 의존성 0) · <a href="https://github.com/Jungwoon/jungki-overview" style="color: var(--muted);">Source</a>
+  <p>Jungki Overview · <span class="highlight">박정운 본인 reference</span> · 2026-05-24 갱신</p>
+  <p>변경 사항이 있으면 LLM이 자동으로 이 사이트도 같이 업데이트합니다.</p>
 </footer>
 
 <script>
-  // 부드러운 스크롤
-  document.querySelectorAll('nav a').forEach(a => {
-    a.addEventListener('click', e => {
-      e.preventDefault();
-      const target = document.querySelector(a.getAttribute('href'));
-      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  function filterAgents(query) {
+    const q = (query || '').toLowerCase().trim();
+    const agents = document.querySelectorAll('#crew .agent');
+    const depts = document.querySelectorAll('#crew .dept');
+    if (!q) {
+      agents.forEach(a => a.style.display = '');
+      depts.forEach(d => d.style.display = '');
+      return;
+    }
+    agents.forEach(a => {
+      const name = (a.querySelector('.name')?.innerText || '').toLowerCase();
+      const desc = (a.querySelector('.desc')?.innerText || '').toLowerCase();
+      const kw = (a.dataset.keywords || '').toLowerCase();
+      const match = name.includes(q) || desc.includes(q) || kw.includes(q);
+      a.style.display = match ? '' : 'none';
     });
-  });
-
-  // Layer 클릭 시 colored flash
-  document.querySelectorAll('.layer').forEach(l => {
-    l.addEventListener('click', () => {
-      l.style.background = 'rgba(88,166,255,.2)';
-      setTimeout(() => l.style.background = '', 400);
+    // hide depts with no visible agents
+    depts.forEach(d => {
+      const visible = Array.from(d.querySelectorAll('.agent')).some(a => a.style.display !== 'none');
+      d.style.display = visible ? '' : 'none';
     });
-  });
+  }
 </script>
 
 </body>
