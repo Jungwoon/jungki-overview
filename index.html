@@ -511,15 +511,15 @@
       <span class="dept-count">5명</span>
     </div>
     <div class="agent-grid">
-      <div class="agent" data-keywords="quality solid clean code uncle bob 코드 품질 리뷰 보안">
+      <div class="agent" data-keywords="quality refactor 리팩토링 solid clean code 품질 개선 악취 제거 dead code 네이밍">
         <div class="name">byjw-qa-quality</div>
-        <div class="desc">코드 품질 종합. SOLID·Clean Code·보안·코드 악취. Uncle Bob 기준.</div>
-        <div class="triggers"><strong>TRIGGER:</strong> 품질 점검 · SOLID · Clean Code · 코드 악취</div>
+        <div class="desc">코드 품질 개선·리팩토링 <strong>실행</strong> (writable). SOLID 위반 수정·코드 악취 제거·네이밍 개선·dead code 제거. <em>코드 자체를 고침</em>.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 리팩토링 · 코드 품질 개선 · SOLID 위반 수정 · 코드 악취 제거 · 네이밍 개선</div>
       </div>
-      <div class="agent" data-keywords="review mr pr 코드 리뷰 보안 owasp">
+      <div class="agent" data-keywords="review mr pr diff 변경분 리뷰 owasp 감사 커버리지 리포트">
         <div class="name">byjw-qa-review</div>
-        <div class="desc">코드 리뷰 (읽기 전용). MR/PR 변경분 + 보안 (OWASP) + Before/After 예시.</div>
-        <div class="triggers"><strong>TRIGGER:</strong> MR 리뷰 · PR 리뷰 · 보안 점검 · OWASP</div>
+        <div class="desc">MR/PR <strong>변경분 리뷰</strong> (읽기 전용). diff 단위·OWASP 보안 감사·커버리지 평가·Before/After 리포트. <em>변경 단위 리뷰만</em>.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 코드 리뷰 · MR 리뷰 · PR 리뷰 · diff 리뷰 · 변경분 리뷰 · OWASP</div>
       </div>
       <div class="agent" data-keywords="test 단위 통합 e2e 커버리지 uat junit jest playwright">
         <div class="name">byjw-qa-test</div>
@@ -994,6 +994,7 @@
           <li>🛡️ <strong>byjw-* 34개 호출 신뢰도 정밀 점검 + 19개 일괄 보강</strong> — 자연어 라우팅 시뮬레이션 결과 약 60% 신뢰도. TRIGGER 키워드 부재 9개 (mkt-* 6·design-figma·dev-platform·exec-prompt) + Use PROACTIVELY 부재 8개 + model 필드 누락 15개. 일괄 패치: TRIGGER 한국어/English 라인 + Use PROACTIVELY 패턴 + model 배정. 최종 model 분포: <strong>opus 5</strong> (exec-ceo·exec-prompt·mkt-strategist·plan-architect·plan-discovery — 다층 reasoning) / <strong>sonnet 29</strong> (나머지). 재점검: 부재 0/0/0 <span class="badge updated">UPDATED</span></li>
           <li>🐛 <strong>sync-global.sh cmp 사전 체크 fix</strong> — <code>set -euo pipefail</code> + sync_file의 cp가 identical src·dst (CLAUDE.md iCloud symlink 케이스)에서 exit 1 → 스크립트 중단되던 버그. agents/ 등 후속 sync 미실행. <code>cmp -s</code> 사전 체크로 동일 시 skip + return 0 패치 (commit <code>cc1e073</code>)</li>
           <li>🛑 <strong>원격 트리거 정리</strong> — 동작 안 하거나 사용 안 하는 트리거 비활성화: 한국경제 조간 브리핑 + 글로벌 트렌드 일일 보고서. memory <code>project_hankyung_digest.md</code> 제거. 활성 트리거는 yt-dlp 자동 업데이트만 남음</li>
+          <li>🔀 <strong>qa-quality ↔ qa-review 영역 충돌 해소</strong> — 두 agent TRIGGER 키워드 거의 동일(코드 리뷰·SOLID·보안·악취) → 메인 LLM 라우팅 모호. tools 분리(writable vs read-only)는 이미 의도된 상태라 description의 TRIGGER만 명확 분리: qa-quality = "리팩토링 실행"(코드 자체 고침) / qa-review = "MR/PR diff 리뷰"(변경 단위 리포트). 서로의 description에 ⚠️ 안내로 잘못 호출 시 옳은 agent 알림 (commit <code>72d1a88</code>)</li>
         </ul>
       </div>
     </div>
