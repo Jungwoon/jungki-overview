@@ -793,10 +793,11 @@
       </div>
     </div>
     <div class="memory-card">
-      <div class="name">feedback_*.md</div><span class="count">1개</span>
+      <div class="name">feedback_*.md</div><span class="count">2개</span>
       <p class="muted" style="margin-top:6px;">박정운 정정·확인 사항 영구 저장. 같은 실수 반복 차단. <strong>박정운 컨펌 후 저장</strong>.</p>
       <div class="examples">
-        • <code>feedback_agent_oneline_description.md</code> — agent description은 oneline 필수 (YAML 멀티라인 파싱 실패)
+        • <code>feedback_agent_oneline_description.md</code> — agent description은 oneline 필수 (YAML 멀티라인 파싱 실패)<br>
+        • <code>feedback_jungki_overview_auto_update.md</code> — Jungki·하네스 변경 시 이 사이트 자동 갱신 의무
       </div>
     </div>
     <div class="memory-card">
@@ -979,6 +980,8 @@
           <li><code>policies/agent-routing.md</code> P4 머신별 분리 섹션 35줄 제거</li>
           <li>feedback-candidate-detector.js의 "다시 시도" 트리거 제거 (단순 재실행이라 정정 아님)</li>
           <li>📌 <strong>이 사이트 (jungki-overview) 전면 개편</strong> — 12 섹션·crew 카탈로그·메모리·자가 학습·UI 카드 그리드·검색·접기</li>
+          <li>📌 <strong>자동 갱신 정책 도입</strong> — Jungki·하네스 변경 시 LLM이 이 사이트 동시 갱신·commit·push 의무. memory <code>feedback_jungki_overview_auto_update.md</code> 신설 + vault CLAUDE.md "작업 종료 시 자동 누적" 표에 등록</li>
+          <li>🧹 <strong>마케팅 agent 중복 정리 (Option C)</strong> — <code>mk-*</code> 6개 (mk-strategist·researcher·brand·copywriter·content·growth) 통째 제거 → <code>byjw-mkt-*</code>로 단일화. byjw-mkt-strategist 본문의 협업 섹션도 mk-* 참조 → byjw-mkt-* 정정</li>
         </ul>
       </div>
     </div>
