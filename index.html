@@ -987,6 +987,7 @@
           <li>🗑️ <strong>sync-global.sh에 30일+ .bak 자동 GC 통합</strong> — <code>--auto</code> 모드 끝에 <code>find -mtime +30 -delete</code> 한 줄 추가. SessionStart hook이 매 세션 sync 자동 호출 → .bak 누적 0 보장. 현재 26개 / 128KB / 30일+ 0개. 4/28 jungki 도입 전 백업이 4일 후 첫 정리 대상</li>
           <li>🩺 <strong>/monthly에 /lint 자동 실행 통합</strong> — 박정운 /lint 까먹음 해소. monthly cron (4번 launchd) 매월 1일 23:50 자동 실행 시 lint도 같이 돔. Haiku 모델이라 부담 적음. 월간 리뷰 페이지에 "🩺 Vault 건강 점검" 섹션 요약 첨부 + archives/lint/{YYYY-MM-DD}.md 본보고서. 박정운 부담 0</li>
           <li>✂️ <strong>글로벌 CLAUDE.md 추가 슬림화</strong> — P3 후속. <code>~/jungki/setup/global-CLAUDE.md</code> 147 → 57줄 (-61%). 위험 가드 풀 본문(자동매매·.app·시스템 폴더)은 유지, 나머지(박정운 본인 정보 매핑 표·자주 쓰는 명령 인식 표·LLM 운영 패러다임 본문)는 vault policies 포인터로 압축. 매 세션 입력 토큰 비용 절감</li>
+          <li>📧 <strong>/weekly·/monthly Gmail 발송 통합</strong> — 박정운 컴퓨터 부재 시 핸드폰 인지. <code>mcp__gmail__send_email</code> 도구(MCP 검증 완료, ping 정상 수신). weekly: 핵심 한 줄·다음 주 우선순위·feedback 후보 요약. monthly: 한 줄 평·역량맵 변화·lint 결과·deprecate 후보. 발송 실패해도 회고 페이지 보존. 박정운 수동 호출 시도 발송</li>
         </ul>
       </div>
     </div>
