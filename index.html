@@ -990,6 +990,10 @@
           <li>🩺 <strong>/monthly에 /lint 자동 실행 통합</strong> — 박정운 /lint 까먹음 해소. monthly cron (4번 launchd) 매월 1일 23:50 자동 실행 시 lint도 같이 돔. Haiku 모델이라 부담 적음. 월간 리뷰 페이지에 "🩺 Vault 건강 점검" 섹션 요약 첨부 + archives/lint/{YYYY-MM-DD}.md 본보고서. 박정운 부담 0</li>
           <li>✂️ <strong>글로벌 CLAUDE.md 추가 슬림화</strong> — P3 후속. <code>~/jungki/setup/global-CLAUDE.md</code> 147 → 57줄 (-61%). 위험 가드 풀 본문(자동매매·.app·시스템 폴더)은 유지, 나머지(박정운 본인 정보 매핑 표·자주 쓰는 명령 인식 표·LLM 운영 패러다임 본문)는 vault policies 포인터로 압축. 매 세션 입력 토큰 비용 절감</li>
           <li>📧 <strong>/weekly·/monthly Gmail 발송 통합</strong> — 박정운 컴퓨터 부재 시 핸드폰 인지. <code>mcp__gmail__send_email</code> 도구(MCP 검증 완료, ping 정상 수신). weekly: 핵심 한 줄·다음 주 우선순위·feedback 후보 요약. monthly: 한 줄 평·역량맵 변화·lint 결과·deprecate 후보. 발송 실패해도 회고 페이지 보존. 박정운 수동 호출 시도 발송</li>
+          <li>🔍 <strong>진단: Claude Code 프로세스 stale 캐시</strong> — byjw-* agent 호출 0건의 진짜 원인 발견. 5/22 02시 시작 프로세스가 5/23 cc-/mk- → byjw- 통합을 인지 못함 (system-reminder에 옛 cc-* 잔존, byjw-* 0개 노출). Claude Code 재시작 후 byjw-* 34개 정상 노출 확정. memory <code>feedback_measurement_baseline.md</code> 신설 — agent 추가·삭제 후 Claude Code 재시작 의무화 + 측정 baseline 짧을 때 "0건"을 미사용 판정 근거로 쓰지 말 것</li>
+          <li>🛡️ <strong>byjw-* 34개 호출 신뢰도 정밀 점검 + 19개 일괄 보강</strong> — 자연어 라우팅 시뮬레이션 결과 약 60% 신뢰도. TRIGGER 키워드 부재 9개 (mkt-* 6·design-figma·dev-platform·exec-prompt) + Use PROACTIVELY 부재 8개 + model 필드 누락 15개. 일괄 패치: TRIGGER 한국어/English 라인 + Use PROACTIVELY 패턴 + model 배정. 최종 model 분포: <strong>opus 5</strong> (exec-ceo·exec-prompt·mkt-strategist·plan-architect·plan-discovery — 다층 reasoning) / <strong>sonnet 29</strong> (나머지). 재점검: 부재 0/0/0 <span class="badge updated">UPDATED</span></li>
+          <li>🐛 <strong>sync-global.sh cmp 사전 체크 fix</strong> — <code>set -euo pipefail</code> + sync_file의 cp가 identical src·dst (CLAUDE.md iCloud symlink 케이스)에서 exit 1 → 스크립트 중단되던 버그. agents/ 등 후속 sync 미실행. <code>cmp -s</code> 사전 체크로 동일 시 skip + return 0 패치 (commit <code>cc1e073</code>)</li>
+          <li>🛑 <strong>원격 트리거 정리</strong> — 동작 안 하거나 사용 안 하는 트리거 비활성화: 한국경제 조간 브리핑 + 글로벌 트렌드 일일 보고서. memory <code>project_hankyung_digest.md</code> 제거. 활성 트리거는 yt-dlp 자동 업데이트만 남음</li>
         </ul>
       </div>
     </div>
