@@ -328,7 +328,7 @@
 
 <header>
   <h1>🧠 Jungki — 박정운의 LLM Wiki + AI 하네스</h1>
-  <div class="sub">2026-05-24 갱신 · 박정운 본인 reference 사이트 · <span class="highlight">변경 즉시 자동 갱신</span></div>
+  <div class="sub">2026-05-29 갱신 · 박정운 본인 reference 사이트 · <span class="highlight">변경 즉시 자동 갱신</span></div>
   <div class="one-liner">
     <strong>한 줄 요약</strong> — 박정운은 ① <em>Jungki vault</em> (개인 영구 지식 베이스) ② <em>BYJW Studio crew 34 agents</em> (작업별 전문가 위임) ③ <em>23 슬래시 명령</em> (운영 자동화) ④ <em>4 종 메모리</em> (user·feedback·project·reference) ⑤ <em>자가 학습 5 메커니즘</em>으로 LLM 협업을 운영. 글로벌 ↔ vault 단일 소스, 머신 간 자동 sync.
   </div>
@@ -339,7 +339,7 @@
   <a href="#machines">② 멀티 머신</a>
   <a href="#vault">③ Vault 5층</a>
   <a href="#crew">④ Crew 34명</a>
-  <a href="#slash">⑤ 슬래시 23개</a>
+  <a href="#slash">⑤ 슬래시 25개</a>
   <a href="#memory">⑥ 메모리 4종</a>
   <a href="#learning">⑦ 자가 학습</a>
   <a href="#operations">⑧ 3-동작</a>
@@ -714,25 +714,27 @@
 
 <!-- Section 5: Slash -->
 <section id="slash">
-  <h2><span class="num">5</span>슬래시 명령어 23개</h2>
-  <p class="lead">매 작업마다 박정운이 호출하는 자동화 명령. <strong>Jungki 운영(13) + BYJW 워크플로우(8) + 기타(2)</strong>. 각 명령은 `~/.claude/commands/*.md` 단일 파일에 설명·model·동작이 정의.</p>
+  <h2><span class="num">5</span>슬래시 명령어 25개</h2>
+  <p class="lead">매 작업마다 박정운이 호출하는 자동화 명령. <strong>Jungki 운영(15) + BYJW 워크플로우(8) + 기타(2)</strong>. 각 명령은 `~/.claude/commands/*.md` 단일 파일에 설명·model·동작이 정의. <strong>2026-05-27: 슬래시 floor = Sonnet</strong> (Haiku 전면 폐지 — 200k 캡) <span class="badge updated">UPDATED</span></p>
 
   <!-- Jungki 운영 -->
   <div class="slash-cat">
-    <h3>📚 Jungki Vault 운영 (13)</h3>
+    <h3>📚 Jungki Vault 운영 (15)</h3>
     <table class="slash-table">
       <thead><tr><th>명령</th><th>설명</th><th>모델</th></tr></thead>
       <tbody>
-        <tr><td><code>/daily</code></td><td>오늘 daily note 생성 (어제 미완료 자동 이월)</td><td><span class="model-badge haiku">Haiku</span></td></tr>
-        <tr><td><code>/daily-end</code></td><td>오늘 daily 마무리 (Inbox 분배 + 키워드 추정 + 미완료 이월)</td><td><span class="model-badge haiku">Haiku</span></td></tr>
-        <tr><td><code>/inbox</code></td><td>오늘 daily의 Inbox 섹션에 한 줄 메모 던지기</td><td><span class="model-badge haiku">Haiku</span></td></tr>
-        <tr><td><code>/lint</code></td><td>위키 점검 (모순·고아·stale·누락 cross-ref)</td><td><span class="model-badge haiku">Haiku</span></td></tr>
+        <tr><td><code>/daily</code></td><td>오늘 daily note 생성 (어제 미완료 자동 이월)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
+        <tr><td><code>/daily-end</code></td><td>오늘 daily 마무리 (Inbox 분배 + 키워드 추정 + 미완료 이월)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
+        <tr><td><code>/inbox</code></td><td>오늘 daily의 Inbox 섹션에 한 줄 메모 던지기</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
+        <tr><td><code>/lint</code></td><td>위키 점검 (모순·고아·stale·누락 cross-ref)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
         <tr><td><code>/tidy</code></td><td>위키 정리 (frontmatter 통일 + 중복 통합 + 추상화 추출)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
         <tr><td><code>/ingest</code></td><td>큰 자료 raw 저장 + 위키 정제 페이지 자동 생성</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
         <tr><td><code>/research</code></td><td>키워드 짧게 조사 + raw 보존 + resources에 정리 + daily 기록</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
         <tr><td><code>/worklog</code></td><td>현재 코드 디렉토리의 오늘 git 작업을 daily에 기록 (commit hash 중복 방지)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
         <tr><td><code>/append</code></td><td>Wiki 페이지에 내용 추가</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
         <tr><td><code>/sync</code></td><td>vault 강제 최신화 (회사↔개인 머신 sync + 글로벌 ~/.claude 갱신)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
+        <tr><td><code>/spend-close</code> <span class="badge new">NEW 2026-05-28</span></td><td>하루 지출 마감 — 현대카드 문자(chat.db)→가계부 CSV. 처음 본 가맹점만 질문·학습. 마켓플레이스(쿠팡·네이버)는 매번 질문(<code>_always_ask</code>)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
+        <tr><td><code>/spend-report</code> <span class="badge new">NEW 2026-05-28</span></td><td>지출 분석 리포트 (오늘/주/월/분기/반기/연 대시보드 + 카테고리·Top 가맹점·과지출 조언)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
         <tr><td><code>/weekly</code></td><td>주간 회고 (이번 주 daily 합성, 학습·함정·우선순위)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
         <tr><td><code>/monthly</code></td><td>월간 리뷰 (이번 달 합성, 역량맵 갱신, 트렌드 분석)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
         <tr><td><code>/quarterly</code></td><td>분기 정리 (raw archive + lint + tidy + 분기 회고)</td><td><span class="model-badge opus">Opus</span></td></tr>
@@ -777,10 +779,11 @@
 <section id="memory">
   <h2><span class="num">6</span>메모리 시스템 — 4종</h2>
   <p class="lead">박정운 개인 정보·정정·작업 컨텍스트를 <strong>매 세션 자동 로드</strong>하는 영구 저장소. <code>~/.claude/projects/-Users-jungwoon/memory/MEMORY.md</code>가 인덱스. CLAUDE.md는 메커니즘, 메모리는 박정운 개인 정보·동적 누적.</p>
+  <p class="muted" style="margin-top:-8px;">⚠️ <strong>메모리는 cwd별로 분리됨</strong> (Claude Code가 프로젝트 경로별 store 운영). 주 store = 홈(<code>-Users-jungwoon</code>). <strong>2026-05-29</strong>: Jungki vault cwd 세션이 별도 store 신설(<code>-…-Jungki/memory/</code>, <code>reference_home_assistant</code> + <code>user_book_authoring</code> 2개). 같은 메모리가 모든 cwd에 안 뜨니 주의.</p>
 
   <div class="grid grid-2">
     <div class="memory-card">
-      <div class="name">user_*.md</div><span class="count">8개</span>
+      <div class="name">user_*.md</div><span class="count">7개</span>
       <p class="muted" style="margin-top:6px;">박정운 본인 정보·선호. 변경 가능한 동적 프로필.</p>
       <div class="examples">
         • <code>user_profile.md</code> — 1989-03-20, 안드로이드 10년차, 배민커머스<br>
@@ -793,32 +796,37 @@
       </div>
     </div>
     <div class="memory-card">
-      <div class="name">feedback_*.md</div><span class="count">2개</span>
+      <div class="name">feedback_*.md</div><span class="count">5개</span>
       <p class="muted" style="margin-top:6px;">박정운 정정·확인 사항 영구 저장. 같은 실수 반복 차단. <strong>박정운 컨펌 후 저장</strong>.</p>
       <div class="examples">
         • <code>feedback_agent_oneline_description.md</code> — agent description은 oneline 필수 (YAML 멀티라인 파싱 실패)<br>
-        • <code>feedback_jungki_overview_auto_update.md</code> — Jungki·하네스 변경 시 이 사이트 자동 갱신 의무
+        • <code>feedback_jungki_overview_auto_update.md</code> — Jungki·하네스 변경 시 이 사이트 자동 갱신 의무<br>
+        • <code>feedback_macos_nfd_korean_search.md</code> — macOS 한글 파일명 NFD라 find/grep 실패<br>
+        • <code>feedback_measurement_baseline.md</code> — agent 추가·삭제 후 Claude Code 재시작 의무, 짧은 baseline "0건" 판정 금지<br>
+        • <code>feedback_travel_google_maps_verify.md</code> — byjw-travel Google Maps 검증 룰
       </div>
     </div>
     <div class="memory-card">
-      <div class="name">project_*.md</div><span class="count">6개</span>
+      <div class="name">project_*.md</div><span class="count">7개</span>
       <p class="muted" style="margin-top:6px;">진행 프로젝트 컨텍스트 — 코드·git에 없는 의도·이유·이해관계.</p>
       <div class="examples">
         • <code>project_akashic_record.md</code> — 일반인용 AI 프롬프트 플랫폼<br>
         • <code>project_akashic_strategy.md</code> — Option D 피봇 (4-Phase 완료)<br>
         • <code>project_akashic_roadmap.md</code> — v3 로드맵<br>
         • <code>project_smarthome.md</code> — HA+OpenAI Assist<br>
-        • <code>project_hankyung_digest.md</code> — 월~토 07:00 KST 조간 브리핑<br>
-        • <code>project_jungki_weekly_monthly_cron.md</code> — /weekly·/monthly launchd 자동 회고 (개인 맥 + Gmail)
+        • <code>project_jungki_weekly_monthly_cron.md</code> — /weekly·/monthly launchd 자동 회고 (개인 맥 + Gmail)<br>
+        • <code>project_harness_archive.md</code> — 하네스 엔지니어링 아카이브
       </div>
     </div>
     <div class="memory-card">
-      <div class="name">reference_*.md</div><span class="count">3개</span>
+      <div class="name">reference_*.md</div><span class="count">5개</span>
       <p class="muted" style="margin-top:6px;">외부 시스템 위치·재인증 절차 등 포인터.</p>
       <div class="examples">
         • <code>reference_openclaw_reauth.md</code> — openai-codex OAuth 토큰 재인증<br>
         • <code>reference_llm_wiki_pattern.md</code> — Karpathy 원본<br>
-        • <code>reference_claude_code_api_key.md</code> — 별도 ANTHROPIC_API_KEY
+        • <code>reference_claude_code_api_key.md</code> — 별도 ANTHROPIC_API_KEY<br>
+        • <code>reference_gmail_app_password.md</code> — Gmail 앱 비밀번호 (회고 자동 발송)<br>
+        • <code>reference_icloud_to_jungki_migration.md</code> — iCloud→Jungki 자료 이전 기록
       </div>
     </div>
   </div>
@@ -905,8 +913,8 @@
   <div class="grid grid-3">
     <div class="panel" style="border-top: 3px solid var(--green);">
       <h3 style="color: var(--green);">Haiku</h3>
-      <p class="muted">단순 IO · 패턴 매칭 · daily 운영.</p>
-      <p style="font-size: 12px; margin-top: 8px;"><code>/daily · /daily-end · /inbox · /lint</code></p>
+      <p class="muted">단순 IO · 패턴 매칭. <strong>2026-05-27 슬래시에선 전면 폐지</strong> — MCP 도구 과다 환경에서 200k 캡에 걸려 슬래시만 실패하던 문제 (Haiku 4.5는 1M 미지원).</p>
+      <p style="font-size: 12px; margin-top: 8px;">슬래시 floor = Sonnet. Haiku는 메인이 명시 위임할 때만.</p>
     </div>
     <div class="panel" style="border-top: 3px solid var(--accent);">
       <h3 style="color: var(--accent);">Sonnet <span class="badge">default</span></h3>
@@ -933,7 +941,7 @@
         <ul>
           <li><code>~/.claude/CLAUDE.md</code></li>
           <li><code>~/.claude/agents/byjw-*.md</code> (34)</li>
-          <li><code>~/.claude/commands/*.md</code> (23)</li>
+          <li><code>~/.claude/commands/*.md</code> (25)</li>
           <li><code>~/.claude/commands/gsd/*.md</code></li>
           <li><code>~/.claude/hooks/*.js</code> (7)</li>
           <li><code>~/.claude/settings.json</code></li>
@@ -963,12 +971,27 @@
 
 <!-- Section 11: Changelog -->
 <section id="changelog">
-  <h2><span class="num">11</span>변경 이력 — 2026-05-22 ~ 2026-05-24</h2>
-  <p class="lead">박정운이 어제·오늘 진행한 큰 변경 (이걸 reference 사이트에 반영하기 위해 이번 갱신).</p>
+  <h2><span class="num">11</span>변경 이력 — 2026-05-22 ~ 2026-05-29</h2>
+  <p class="lead">박정운이 진행한 큰 변경 (이걸 reference 사이트에 반영하기 위해 이번 갱신).</p>
 
   <div class="timeline">
     <div class="timeline-entry today">
-      <div class="timeline-date today">2026-05-24 (오늘)</div>
+      <div class="timeline-date today">2026-05-29 (오늘)</div>
+      <div class="timeline-content">
+        <strong>슬래시 모델 floor · 가계부 자동화 · 메모리 분리 · 스마트홈/월간 회고</strong>
+        <ul>
+          <li>🔧 <strong>슬래시 floor = Sonnet (Haiku 전면 폐지)</strong> — frontmatter <code>model: haiku</code>가 세션 모델 override → Haiku 4.5(1M 미지원, 200k 캡)로 실행돼 MCP 도구 과다 시 슬래시만 실패하던 근본 원인 해결. <code>/sync·/inbox·/daily·/daily-end·/lint</code> haiku→sonnet (commit <code>7796aa8</code>·<code>6bf944f</code>)</li>
+          <li>💳 <strong>/spend-close · /spend-report 신설</strong> (2026-05-28) — 현대카드 문자(chat.db)→가계부 CSV 자동 누적. 처음 본 가맹점만 질문·학습. <strong>2026-05-29 마켓플레이스 <code>_always_ask</code></strong> — 쿠팡·네이버는 항목이 매번 달라 자동분류 안 하고 매번 질문 (record_card.py가 학습 사전에 안 남김)</li>
+          <li>🔐 <strong>GCS 2-버킷 전략</strong> — 공개 버킷에 민감자료 ~530객체 노출 발견·시정. 비공개 버킷(<code>jungki-private</code>, public access prevention) 신설·이전. "추측 불가 hash 방어막은 없다" → default to private. vault 295M→90M</li>
+          <li>📅 <strong>첫 월간 회고 + 안드로이드 역량맵</strong> — <code>/monthly</code> 첫 실행 (Jungki 한 달 마일스톤). <code>wiki/areas/monthly-review/2026-05.md</code> + <code>안드로이드-역량맵.md</code> 신설</li>
+          <li>🏠 <strong>스마트홈 아키텍처 위키</strong> — <code>wiki/areas/smarthome/architecture.md</code> (vault 첫 HA 페이지). HA 중앙 허브·브리지별 기기·함정 G1~G3(LG ThinQ 9006·Nest 세션·엔티티 못찾음)</li>
+          <li>🧠 <strong>메모리 cwd별 분리 인지</strong> — Jungki vault cwd 세션이 별도 memory store 신설(<code>reference_home_assistant</code>·<code>user_book_authoring</code>). 홈 store와 별개. 메모리 누적: feedback 2→5·project 6→7·reference 3→5</li>
+          <li>💾 <strong>getmyhouse 백업 공백 해소</strong> — 본체(<code>~/Projects/getmyhouse</code>, git·iCloud 미동기화 로컬 only)를 GCS 비공개 버킷에 rsync 백업. 깨진 책 링크 5개·stale status.md 현행화</li>
+        </ul>
+      </div>
+    </div>
+    <div class="timeline-entry">
+      <div class="timeline-date">2026-05-24</div>
       <div class="timeline-content">
         <strong>하네스 정리 일괄 작업</strong>
         <ul>
@@ -1067,7 +1090,7 @@
 </main>
 
 <footer>
-  <p>Jungki Overview · <span class="highlight">박정운 본인 reference</span> · 2026-05-24 갱신</p>
+  <p>Jungki Overview · <span class="highlight">박정운 본인 reference</span> · 2026-05-29 갱신</p>
   <p>변경 사항이 있으면 LLM이 자동으로 이 사이트도 같이 업데이트합니다.</p>
 </footer>
 
