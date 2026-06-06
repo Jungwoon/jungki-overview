@@ -328,9 +328,9 @@
 
 <header>
   <h1>🧠 Jungki — 박정운의 LLM Wiki + AI 하네스</h1>
-  <div class="sub">2026-05-29 갱신 · 박정운 본인 reference 사이트 · <span class="highlight">변경 즉시 자동 갱신</span></div>
+  <div class="sub">2026-06-06 갱신 · 박정운 본인 reference 사이트 · <span class="highlight">개인맥 정기 batch 갱신 (gardener 넛지)</span></div>
   <div class="one-liner">
-    <strong>한 줄 요약</strong> — 박정운은 ① <em>Jungki vault</em> (개인 영구 지식 베이스) ② <em>BYJW Studio crew 34 agents</em> (작업별 전문가 위임) ③ <em>23 슬래시 명령</em> (운영 자동화) ④ <em>4 종 메모리</em> (user·feedback·project·reference) ⑤ <em>자가 학습 5 메커니즘</em>으로 LLM 협업을 운영. 글로벌 ↔ vault 단일 소스, 머신 간 자동 sync.
+    <strong>한 줄 요약</strong> — 박정운은 ① <em>Jungki vault</em> (개인 영구 지식 베이스) ② <em>BYJW Studio crew 36 agents</em> (작업별 전문가 위임, +GSD 11) ③ <em>40 슬래시 명령</em> (운영 자동화, 전부 Opus) ④ <em>4종 메모리</em> (user·feedback·project·reference — vault <code>.cc-memory</code> 단일 소스) ⑤ <em>자가 학습 5 메커니즘</em>으로 LLM 협업을 운영. 글로벌 ↔ vault 단일 소스, 머신 간 자동 sync.
   </div>
 </header>
 
@@ -338,8 +338,8 @@
   <a href="#core">① 핵심</a>
   <a href="#machines">② 멀티 머신</a>
   <a href="#vault">③ Vault 5층</a>
-  <a href="#crew">④ Crew 34명</a>
-  <a href="#slash">⑤ 슬래시 25개</a>
+  <a href="#crew">④ Crew 36명</a>
+  <a href="#slash">⑤ 슬래시 40개</a>
   <a href="#memory">⑥ 메모리 4종</a>
   <a href="#learning">⑦ 자가 학습</a>
   <a href="#operations">⑧ 3-동작</a>
@@ -434,8 +434,8 @@
 
 <!-- Section 4: Crew -->
 <section id="crew">
-  <h2><span class="num">4</span>BYJW Studio Crew 34명 <span class="badge new">NEW 2026-05-23</span></h2>
-  <p class="lead"><strong>BYJW Studio</strong>는 박정운 개인 사업자명. crew는 그 사내 조직 컨셉 — 10 본부 34 agents가 영역별로 박정운 작업을 위임받음. <code>~/.claude/agents/byjw-*.md</code>. 자연어 요청이 들어오면 메인 LLM이 각 agent의 description에 적힌 <strong>TRIGGER 키워드</strong>를 매칭해서 자동 호출.</p>
+  <h2><span class="num">4</span>BYJW Studio Crew 36명 <span class="badge updated">UPDATED 2026-06-05</span></h2>
+  <p class="lead"><strong>BYJW Studio</strong>는 박정운 개인 사업자명. crew는 그 사내 조직 컨셉 — 11 본부 36 agents가 영역별로 박정운 작업을 위임받음. <strong>2026-06-05: 레거시 중복 agent 17개(mk-*·구형 *-agent) 삭제 → byjw-* 단일 체제 확정 (byjw 36 + gsd 11 = 총 47)</strong>. <code>~/.claude/agents/byjw-*.md</code>. 자연어 요청이 들어오면 메인 LLM이 각 agent의 description에 적힌 <strong>TRIGGER 키워드</strong>를 매칭해서 자동 호출.</p>
 
   <input class="search-box" placeholder="🔍 agent 검색 (이름·키워드·역할로)" oninput="filterAgents(this.value)" id="agentSearch">
 
@@ -573,7 +573,7 @@
   <div class="dept" data-dept="design">
     <div class="dept-header">
       <span class="dept-title">🎨 디자인 본부 (design)</span>
-      <span class="dept-count">2명</span>
+      <span class="dept-count">3명</span>
     </div>
     <div class="agent-grid">
       <div class="agent" data-keywords="uiux ui ux 디자인 시스템 사용자 경험">
@@ -585,6 +585,11 @@
         <div class="name">byjw-design-figma</div>
         <div class="desc">Figma 시안 ↔ 코드 검증. Figma MCP 활용.</div>
         <div class="triggers"><strong>TRIGGER:</strong> Figma · 시안 검증 · 디자인 정합</div>
+      </div>
+      <div class="agent" data-keywords="mockup 시안 로고 아이콘 파비콘 워드마크 svg 갤러리 디자인 후보">
+        <div class="name">byjw-design-mockup <span class="badge new">NEW 2026-05-31</span></div>
+        <div class="desc">비주얼 시안 생성. SVG·HTML 직접 코딩해 '보이는' 디자인 후보 여러 개 → 브라우저 갤러리 비교. 로고·아이콘·파비콘·워드마크·UI 목업.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 로고 · 시안 · 디자인 후보 · 아이콘 · 목업 · 디자인 뽑아줘</div>
       </div>
     </div>
   </div>
@@ -694,6 +699,21 @@
     </div>
   </div>
 
+  <!-- 라이프스타일 -->
+  <div class="dept" data-dept="life">
+    <div class="dept-header">
+      <span class="dept-title">🧳 라이프스타일 (life)</span>
+      <span class="dept-count">1명</span>
+    </div>
+    <div class="agent-grid">
+      <div class="agent" data-keywords="travel 여행 일정 항공권 숙소 맛집 렌터카 비자 환전">
+        <div class="name">byjw-travel</div>
+        <div class="desc">국내·해외 여행계획 전담. 일정·동선·예산 큐레이션 + 실시간 항공·숙소·맛집 검색. 고양시 출발 기준. Google Maps 검증 룰 적용.</div>
+        <div class="triggers"><strong>TRIGGER:</strong> 여행 · 일정 짜 · 항공권 · 숙소 · 맛집 · 렌터카</div>
+      </div>
+    </div>
+  </div>
+
   <!-- 연구 -->
   <div class="dept" data-dept="rnd">
     <div class="dept-header">
@@ -714,30 +734,31 @@
 
 <!-- Section 5: Slash -->
 <section id="slash">
-  <h2><span class="num">5</span>슬래시 명령어 25개</h2>
-  <p class="lead">매 작업마다 박정운이 호출하는 자동화 명령. <strong>Jungki 운영(15) + BYJW 워크플로우(8) + 기타(2)</strong>. 각 명령은 `~/.claude/commands/*.md` 단일 파일에 설명·model·동작이 정의. <strong>2026-05-27: 슬래시 floor = Sonnet</strong> (Haiku 전면 폐지 — 200k 캡) <span class="badge updated">UPDATED</span></p>
+  <h2><span class="num">5</span>슬래시 명령어 40개</h2>
+  <p class="lead">매 작업마다 박정운이 호출하는 자동화 명령 (Jungki 운영 + BYJW 워크플로우 + 코드·미디어 유틸). 각 명령은 `~/.claude/commands/*.md` 단일 파일에 설명·model·동작이 정의. <strong>2026-06-01: 전 슬래시 model = Opus 일원화</strong> — MAX 플랜 Opus 1M(credit 0)인데 sonnet/haiku 잔존 시 "Context limit reached" 에러가 나던 문제 근절 <span class="badge updated">UPDATED</span></p>
 
   <!-- Jungki 운영 -->
   <div class="slash-cat">
-    <h3>📚 Jungki Vault 운영 (15)</h3>
+    <h3>📚 Jungki Vault 운영 (16)</h3>
     <table class="slash-table">
       <thead><tr><th>명령</th><th>설명</th><th>모델</th></tr></thead>
       <tbody>
-        <tr><td><code>/daily</code></td><td>오늘 daily note 생성 (어제 미완료 자동 이월)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
-        <tr><td><code>/daily-end</code></td><td>오늘 daily 마무리 (Inbox 분배 + 키워드 추정 + 미완료 이월)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
-        <tr><td><code>/inbox</code></td><td>오늘 daily의 Inbox 섹션에 한 줄 메모 던지기</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
-        <tr><td><code>/lint</code></td><td>위키 점검 (모순·고아·stale·누락 cross-ref)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
-        <tr><td><code>/tidy</code></td><td>위키 정리 (frontmatter 통일 + 중복 통합 + 추상화 추출)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
-        <tr><td><code>/ingest</code></td><td>큰 자료 raw 저장 + 위키 정제 페이지 자동 생성</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
-        <tr><td><code>/research</code></td><td>키워드 짧게 조사 + raw 보존 + resources에 정리 + daily 기록</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
-        <tr><td><code>/worklog</code></td><td>현재 코드 디렉토리의 오늘 git 작업을 daily에 기록 (commit hash 중복 방지)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
-        <tr><td><code>/append</code></td><td>Wiki 페이지에 내용 추가</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
-        <tr><td><code>/sync</code></td><td>vault 강제 최신화 (회사↔개인 머신 sync + 글로벌 ~/.claude 갱신)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
-        <tr><td><code>/spend-close</code> <span class="badge new">NEW 2026-05-28</span></td><td>하루 지출 마감 — 현대카드 문자(chat.db)→가계부 CSV. 처음 본 가맹점만 질문·학습. 마켓플레이스(쿠팡·네이버)는 매번 질문(<code>_always_ask</code>)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
-        <tr><td><code>/spend-report</code> <span class="badge new">NEW 2026-05-28</span></td><td>지출 분석 리포트 (오늘/주/월/분기/반기/연 대시보드 + 카테고리·Top 가맹점·과지출 조언)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
-        <tr><td><code>/weekly</code></td><td>주간 회고 (이번 주 daily 합성, 학습·함정·우선순위)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
-        <tr><td><code>/monthly</code></td><td>월간 리뷰 (이번 달 합성, 역량맵 갱신, 트렌드 분석)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
+        <tr><td><code>/daily</code></td><td>오늘 daily note 생성 (어제 미완료 자동 이월)</td><td><span class="model-badge opus">Opus</span></td></tr>
+        <tr><td><code>/daily-end</code></td><td>오늘 daily 마무리 (Inbox 분배 + 키워드 추정 + 미완료 이월)</td><td><span class="model-badge opus">Opus</span></td></tr>
+        <tr><td><code>/inbox</code></td><td>오늘 daily의 Inbox 섹션에 한 줄 메모 던지기</td><td><span class="model-badge opus">Opus</span></td></tr>
+        <tr><td><code>/lint</code></td><td>위키 점검 (모순·고아·stale·누락 cross-ref)</td><td><span class="model-badge opus">Opus</span></td></tr>
+        <tr><td><code>/tidy</code></td><td>위키 정리 (frontmatter 통일 + 중복 통합 + 추상화 추출)</td><td><span class="model-badge opus">Opus</span></td></tr>
+        <tr><td><code>/ingest</code></td><td>큰 자료 raw 저장 + 위키 정제 페이지 자동 생성</td><td><span class="model-badge opus">Opus</span></td></tr>
+        <tr><td><code>/research</code></td><td>키워드 짧게 조사 + raw 보존 + resources에 정리 + daily 기록</td><td><span class="model-badge opus">Opus</span></td></tr>
+        <tr><td><code>/worklog</code></td><td>현재 코드 디렉토리의 오늘 git 작업을 daily에 기록 (commit hash 중복 방지)</td><td><span class="model-badge opus">Opus</span></td></tr>
+        <tr><td><code>/append</code></td><td>Wiki 페이지에 내용 추가</td><td><span class="model-badge opus">Opus</span></td></tr>
+        <tr><td><code>/sync</code></td><td>vault 강제 최신화 (회사↔개인 머신 sync + 글로벌 ~/.claude 갱신)</td><td><span class="model-badge opus">Opus</span></td></tr>
+        <tr><td><code>/spend-close</code> <span class="badge new">NEW 2026-05-28</span></td><td>하루 지출 마감 — 현대카드 문자(chat.db)→가계부 CSV. 처음 본 가맹점만 질문·학습. 마켓플레이스(쿠팡·네이버)는 매번 질문(<code>_always_ask</code>)</td><td><span class="model-badge opus">Opus</span></td></tr>
+        <tr><td><code>/spend-report</code> <span class="badge new">NEW 2026-05-28</span></td><td>지출 분석 리포트 (오늘/주/월/분기/반기/연 대시보드 + 카테고리·Top 가맹점·과지출 조언)</td><td><span class="model-badge opus">Opus</span></td></tr>
+        <tr><td><code>/weekly</code></td><td>주간 회고 (이번 주 daily 합성, 학습·함정·우선순위)</td><td><span class="model-badge opus">Opus</span></td></tr>
+        <tr><td><code>/monthly</code></td><td>월간 리뷰 (이번 달 합성, 역량맵 갱신, 트렌드 분석)</td><td><span class="model-badge opus">Opus</span></td></tr>
         <tr><td><code>/quarterly</code></td><td>분기 정리 (raw archive + lint + tidy + 분기 회고)</td><td><span class="model-badge opus">Opus</span></td></tr>
+        <tr><td><code>/gardener</code> <span class="badge new">NEW 2026-06-05</span></td><td>정원사 — lint·tidy·feedback큐·Inbox 분배를 한 번에 점검→리포트→승인→실행 (보수형). SessionStart 넛지 + 개인맥 주간 cron 연동</td><td><span class="model-badge opus">Opus</span></td></tr>
       </tbody>
     </table>
   </div>
@@ -750,11 +771,11 @@
       <tbody>
         <tr><td><code>/byjw</code></td><td>BYJW Studio crew에 문제 의뢰. byjw-exec-ceo가 분석·분배·통합</td><td><span class="model-badge opus">Opus</span></td></tr>
         <tr><td><code>/byjw-new</code></td><td>신규 프로젝트 디스커버리. byjw-plan-discovery가 ROADMAP·REQUIREMENTS·PROJECT·PLAN 4가지 산출물 생성</td><td><span class="model-badge opus">Opus</span></td></tr>
-        <tr><td><code>/byjw-map</code></td><td>큰 코드베이스 처음 진입 시 병렬 분석으로 구조·기술·품질·보안 매핑</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
-        <tr><td><code>/byjw-quick</code></td><td>가벼운 1회 작업 — atomic commit + state tracking 유지하면서 빠르게</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
-        <tr><td><code>/byjw-pause</code></td><td>진행 중 작업 일시 정지 + 컨텍스트 핸드오프 문서 생성 (다른 머신·세션 복원 가능)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
-        <tr><td><code>/byjw-resume</code></td><td>/byjw-pause로 저장한 핸드오프 읽어 작업 컨텍스트 완전 복원</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
-        <tr><td><code>/byjw-verify</code></td><td>구현된 기능을 UAT 대화 형식으로 검증. 박정운이 실제 사용자처럼 확인</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
+        <tr><td><code>/byjw-map</code></td><td>큰 코드베이스 처음 진입 시 병렬 분석으로 구조·기술·품질·보안 매핑</td><td><span class="model-badge opus">Opus</span></td></tr>
+        <tr><td><code>/byjw-quick</code></td><td>가벼운 1회 작업 — atomic commit + state tracking 유지하면서 빠르게</td><td><span class="model-badge opus">Opus</span></td></tr>
+        <tr><td><code>/byjw-pause</code></td><td>진행 중 작업 일시 정지 + 컨텍스트 핸드오프 문서 생성 (다른 머신·세션 복원 가능)</td><td><span class="model-badge opus">Opus</span></td></tr>
+        <tr><td><code>/byjw-resume</code></td><td>/byjw-pause로 저장한 핸드오프 읽어 작업 컨텍스트 완전 복원</td><td><span class="model-badge opus">Opus</span></td></tr>
+        <tr><td><code>/byjw-verify</code></td><td>구현된 기능을 UAT 대화 형식으로 검증. 박정운이 실제 사용자처럼 확인</td><td><span class="model-badge opus">Opus</span></td></tr>
         <tr><td><code>/byjw-audit</code></td><td>완료된 마일스톤 회고. 원래 의도 vs 실제 산출 비교. 다음 사이클 패턴·실패 추출</td><td><span class="model-badge opus">Opus</span></td></tr>
       </tbody>
     </table>
@@ -766,8 +787,8 @@
     <table class="slash-table">
       <thead><tr><th>명령</th><th>설명</th><th>모델</th></tr></thead>
       <tbody>
-        <tr><td><code>/feedback-review</code></td><td>누적된 feedback 후보 검토 → user_*.md / feedback_*.md 메모리로 저장 (박정운 컨펌 필수)</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
-        <tr><td><code>/summary</code></td><td>Wiki URL 읽고 Android 작업 사항 정리</td><td><span class="model-badge sonnet">Sonnet</span></td></tr>
+        <tr><td><code>/feedback-review</code></td><td>누적된 feedback 후보 검토 → user_*.md / feedback_*.md 메모리로 저장 (박정운 컨펌 필수)</td><td><span class="model-badge opus">Opus</span></td></tr>
+        <tr><td><code>/summary</code></td><td>Wiki URL 읽고 Android 작업 사항 정리</td><td><span class="model-badge opus">Opus</span></td></tr>
       </tbody>
     </table>
   </div>
@@ -778,8 +799,8 @@
 <!-- Section 6: Memory -->
 <section id="memory">
   <h2><span class="num">6</span>메모리 시스템 — 4종</h2>
-  <p class="lead">박정운 개인 정보·정정·작업 컨텍스트를 <strong>매 세션 자동 로드</strong>하는 영구 저장소. <code>~/.claude/projects/-Users-jungwoon/memory/MEMORY.md</code>가 인덱스. CLAUDE.md는 메커니즘, 메모리는 박정운 개인 정보·동적 누적.</p>
-  <p class="muted" style="margin-top:-8px;">⚠️ <strong>메모리는 cwd별로 분리됨</strong> (Claude Code가 프로젝트 경로별 store 운영). 주 store = 홈(<code>-Users-jungwoon</code>). <strong>2026-05-29</strong>: Jungki vault cwd 세션이 별도 store 신설(<code>-…-Jungki/memory/</code>, <code>reference_home_assistant</code> + <code>user_book_authoring</code> 2개). 같은 메모리가 모든 cwd에 안 뜨니 주의.</p>
+  <p class="lead">박정운 개인 정보·정정·작업 컨텍스트를 <strong>매 세션 자동 로드</strong>하는 영구 저장소. <strong>2026-06-02: vault <code>.cc-memory/</code> 단일 소스로 마이그레이션 완료</strong> — <code>_global/</code>(전역, 모든 세션 로드) + 프로젝트별 폴더 17개(각 repo <code>autoMemoryDirectory</code>로 동시 로드). iCloud+git sync라 멀티머신 동일. CLAUDE.md는 메커니즘, 메모리는 박정운 개인 정보·동적 누적.</p>
+  <p class="muted" style="margin-top:-8px;">✅ 구 <code>~/.claude/projects/…/memory</code> cwd별 분리 문제는 <strong>.cc-memory 마이그레이션으로 해소</strong> — 전역은 어디서나, 프로젝트 메모리는 해당 repo에서 같이 로드. 아래 카운트는 <code>_global</code> 기준 (개인 금융·보험·EDC 등 생활 영역까지 확장).</p>
 
   <div class="grid grid-2">
     <div class="memory-card">
@@ -796,7 +817,7 @@
       </div>
     </div>
     <div class="memory-card">
-      <div class="name">feedback_*.md</div><span class="count">5개</span>
+      <div class="name">feedback_*.md</div><span class="count">9개</span>
       <p class="muted" style="margin-top:6px;">박정운 정정·확인 사항 영구 저장. 같은 실수 반복 차단. <strong>박정운 컨펌 후 저장</strong>.</p>
       <div class="examples">
         • <code>feedback_agent_oneline_description.md</code> — agent description은 oneline 필수 (YAML 멀티라인 파싱 실패)<br>
@@ -807,7 +828,7 @@
       </div>
     </div>
     <div class="memory-card">
-      <div class="name">project_*.md</div><span class="count">7개</span>
+      <div class="name">project_*.md</div><span class="count">16개</span>
       <p class="muted" style="margin-top:6px;">진행 프로젝트 컨텍스트 — 코드·git에 없는 의도·이유·이해관계.</p>
       <div class="examples">
         • <code>project_akashic_record.md</code> — 일반인용 AI 프롬프트 플랫폼<br>
@@ -819,7 +840,7 @@
       </div>
     </div>
     <div class="memory-card">
-      <div class="name">reference_*.md</div><span class="count">5개</span>
+      <div class="name">reference_*.md</div><span class="count">13개</span>
       <p class="muted" style="margin-top:6px;">외부 시스템 위치·재인증 절차 등 포인터.</p>
       <div class="examples">
         • <code>reference_openclaw_reauth.md</code> — openai-codex OAuth 토큰 재인증<br>
@@ -841,7 +862,7 @@
     <div class="learn-node">
       <div class="num">1</div>
       <div class="title">Feedback 메모리 자동 누적</div>
-      <div class="desc">UserPromptSubmit hook → 정정 패턴 감지 → <code>feedback-candidates.jsonl</code> append → /feedback-review에서 박정운 컨펌 후 영구 저장</div>
+      <div class="desc">UserPromptSubmit hook → 정정 패턴 감지 → <code>feedback-candidates.jsonl</code> append → /feedback-review 또는 /gardener에서 박정운 컨펌 후 영구 저장. <strong>2026-06-05: explicit-remember("기억해줘") 트리거 제거</strong> — 즉시 메모리화와 100% 중복이라 암묵적 정정 전용으로</div>
     </div>
     <div class="learn-node">
       <div class="num">2</div>
@@ -908,23 +929,23 @@
 <!-- Section 9: Models -->
 <section id="models">
   <h2><span class="num">9</span>모델 분기 정책</h2>
-  <p class="lead">슬래시 frontmatter <code>model:</code>로 자동 spawning. Haiku/Sonnet/Opus 비용 효율 최적화. <strong>동적 Escalation</strong>: 메인 LLM 한계 감지 시 byjw-exec-ceo(Opus) 위임.</p>
+  <p class="lead">슬래시 frontmatter <code>model:</code>로 자동 spawning. <strong>2026-06-01: 슬래시는 전부 Opus 일원화</strong> (MAX 플랜 Opus 1M, credit 0 — sonnet/haiku 잔존이 "Context limit" 에러 1순위 원인). agent는 sonnet 기본 + reasoning 5개만 opus. <strong>동적 Escalation</strong>: 메인 LLM 한계 감지 시 byjw-exec-ceo(Opus) 위임.</p>
 
   <div class="grid grid-3">
     <div class="panel" style="border-top: 3px solid var(--green);">
       <h3 style="color: var(--green);">Haiku</h3>
       <p class="muted">단순 IO · 패턴 매칭. <strong>2026-05-27 슬래시에선 전면 폐지</strong> — MCP 도구 과다 환경에서 200k 캡에 걸려 슬래시만 실패하던 문제 (Haiku 4.5는 1M 미지원).</p>
-      <p style="font-size: 12px; margin-top: 8px;">슬래시 floor = Sonnet. Haiku는 메인이 명시 위임할 때만.</p>
+      <p style="font-size: 12px; margin-top: 8px;">슬래시에선 미사용. Haiku는 메인이 명시 위임할 때만.</p>
     </div>
     <div class="panel" style="border-top: 3px solid var(--accent);">
       <h3 style="color: var(--accent);">Sonnet <span class="badge">default</span></h3>
-      <p class="muted">일반 코드·자연어·ingest·planning·worklog.</p>
-      <p style="font-size: 12px; margin-top: 8px;">대부분의 슬래시 + agent 기본</p>
+      <p class="muted">일반 코드·자연어 — agent 기본 모델 (29/36).</p>
+      <p style="font-size: 12px; margin-top: 8px;">슬래시는 더 이상 sonnet 아님 (전부 opus)</p>
     </div>
     <div class="panel" style="border-top: 3px solid var(--purple);">
       <h3 style="color: var(--purple);">Opus</h3>
-      <p class="muted">다층 reasoning · 분기 회고 · 아키텍처 결정.</p>
-      <p style="font-size: 12px; margin-top: 8px;"><code>/quarterly · /byjw · /byjw-new · /byjw-audit · byjw-exec-ceo · byjw-plan-architect</code></p>
+      <p class="muted">다층 reasoning + <strong>전 슬래시 40개</strong> (2026-06-01 일원화).</p>
+      <p style="font-size: 12px; margin-top: 8px;">agent 중 opus: <code>byjw-exec-ceo · exec-prompt · mkt-strategist · plan-architect · plan-discovery</code></p>
     </div>
   </div>
 </section>
@@ -940,10 +961,10 @@
         <h4>🖥️ 글로벌 (머신별)</h4>
         <ul>
           <li><code>~/.claude/CLAUDE.md</code></li>
-          <li><code>~/.claude/agents/byjw-*.md</code> (34)</li>
-          <li><code>~/.claude/commands/*.md</code> (25)</li>
+          <li><code>~/.claude/agents/byjw-*.md</code> (36) + gsd (11)</li>
+          <li><code>~/.claude/commands/*.md</code> (40)</li>
           <li><code>~/.claude/commands/gsd/*.md</code></li>
-          <li><code>~/.claude/hooks/*.js</code> (7)</li>
+          <li><code>~/.claude/hooks/*.js</code> (11)</li>
           <li><code>~/.claude/settings.json</code></li>
         </ul>
       </div>
@@ -966,17 +987,36 @@
       </div>
     </div>
     <p class="muted" style="margin-top: 14px;"><strong>4 모드</strong>: <code>--auto</code> (권장) · <code>--check</code> · <code>--pull</code> · <code>--push</code> · <code>--clean-old</code> (30일+ .bak 정리)</p>
+    <p class="muted" style="margin-top: 10px;">🔀 <strong>push 타이밍 정책 (2026-06-05)</strong> — <code>~/.claude</code> 복사가 필요한 것(hook·슬래시·settings)만 <strong>즉시 push</strong>, 나머지(메모리·정책·wiki·daily)는 <strong>daily-end 묶음</strong>. iCloud=맥 간 전파, git=백업+모바일. · <strong>/sync 단일 진입점</strong> — 머신 의존 자동화(launchd·cron)는 sync-vault.sh가 idempotent 자동 보장 (개인맥 gardener 주간 cron 포함)</p>
   </div>
 </section>
 
 <!-- Section 11: Changelog -->
 <section id="changelog">
-  <h2><span class="num">11</span>변경 이력 — 2026-05-22 ~ 2026-05-29</h2>
+  <h2><span class="num">11</span>변경 이력 — 2026-05-22 ~ 2026-06-06</h2>
   <p class="lead">박정운이 진행한 큰 변경 (이걸 reference 사이트에 반영하기 위해 이번 갱신).</p>
 
   <div class="timeline">
     <div class="timeline-entry today">
-      <div class="timeline-date today">2026-05-29 (오늘)</div>
+      <div class="timeline-date today">2026-05-30 ~ 06-06 (이번 갱신)</div>
+      <div class="timeline-content">
+        <strong>메모리 단일 소스 · 슬래시 Opus 일원화 · Gardener · 레거시 정리</strong>
+        <ul>
+          <li>🧠 <strong>auto memory → vault <code>.cc-memory</code> 단일 소스 마이그레이션</strong> (6/2) — 회사맥·개인맥 모두 완료. <code>_global/</code> 전역 + 프로젝트 폴더 17개 동시 로드, cwd별 분리 문제 해소. 개인 금융·보험·EDC 등 생활 메모리 대거 확장 (_global 45+)</li>
+          <li>🔧 <strong>슬래시 40개 전부 model: opus 통일</strong> (6/1~2) — MAX 플랜 Opus 1M(credit 0)에서 sonnet/haiku 잔존이 "Context limit reached" 에러 1순위 원인. 재발방지 gotcha+memory 등록, 6/5 구버전 Sonnet 표 잔재 정리로 모순 0</li>
+          <li>🌱 <strong>/gardener 신설</strong> (6/5, 백로그 B1) — lint·tidy·feedback큐·Inbox 분배 통합 오케스트레이터 (점검→리포트→승인→실행, 보수형). SessionStart 넛지 hook(<code>gardener-notifier.js</code>) + 개인맥 주간 cron. 첫 실행: stub 63·레거시 agent 17·feedback 12건 정리</li>
+          <li>🤖 <strong>레거시 agent 17개 삭제</strong> (6/5) — mk-* 6개·구형 *-agent 11개 (전부 byjw-* 전환 전 중복, 호출 0~6회). byjw 36 + gsd 11 = 47 단일 체제. <strong>byjw-design-mockup 신설</strong> (5/31, SVG/HTML 시안 갤러리) → crew 36명</li>
+          <li>🔀 <strong>push 타이밍 정책 명문화</strong> (6/5) — <code>~/.claude</code> 복사 필요분(hook·슬래시·settings)만 즉시 push, 나머지는 daily-end 묶음. vault 변경 자동 commit+push 사전 승인 (박정운 "신경 쓸 거 없게")</li>
+          <li>📱 <strong>daily ↔ Apple 미리알림 동기화</strong> (6/4) — <code>reminders-sync.py</code> 단방향(daily→미리알림 'Jungki' 목록) + <code>--done</code> 완료 동기화. /daily-end에 통합</li>
+          <li>💳 <strong>/spend-close KB 생활비 계좌 통합</strong> (6/2) — 카드+계좌 입출금 한 번에 마감. 가계부 git 동기화</li>
+          <li>🩹 <strong>feedback-detector explicit-remember 제거</strong> (6/5) — "기억해줘"는 즉시 메모리화와 100% 중복 누적 → 암묵적 정정 전용화</li>
+          <li>📌 <strong>이 사이트 갱신 정책 완화</strong> (6/5) — "매 변경 동시 갱신" → 개인맥 정기 batch + gardener-notifier 넛지 (Section 12)</li>
+          <li>📦 신규 프로젝트 wiki: <strong>lineup</strong> (자석 모듈식 데스크 케이블 관리 하드웨어 — 디자인출원·3D 렌더 진행), fittocal 마케팅, EDC 인벤토리(personal-private allowlist)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="timeline-entry">
+      <div class="timeline-date">2026-05-29</div>
       <div class="timeline-content">
         <strong>슬래시 모델 floor · 가계부 자동화 · 메모리 분리 · 스마트홈/월간 회고</strong>
         <ul>
@@ -1055,7 +1095,7 @@
 <!-- Section 12: Auto-update -->
 <section id="autoupdate">
   <h2><span class="num">12</span>자동 갱신 정책</h2>
-  <p class="lead"><strong>박정운 정책 (2026-05-24 신설)</strong>: Jungki 관련 구조·기능이 변경될 때마다 이 사이트가 즉시 업데이트되어야 함. 어제처럼 큰 변경이 누적되면 박정운이 본인 시스템도 혼란해지기 때문.</p>
+  <p class="lead"><strong>박정운 정책 (2026-05-24 신설 → 2026-06-05 완화)</strong>: 사이트 repo가 개인맥에만 있어 "매 변경 동시 갱신"은 비현실적(회사맥 작업분 누락 반복) → <strong>개인맥 정기 batch 갱신</strong>으로 전환. <code>gardener-notifier.js</code>(SessionStart hook)가 개인맥에서 "vault 구조 mtime &gt; 사이트 mtime" 감지 시 넛지 → 박정운이 그때 누적분 한 번에 반영 지시.</p>
 
   <div class="grid grid-2">
     <div class="panel">
