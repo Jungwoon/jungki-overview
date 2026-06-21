@@ -328,7 +328,7 @@
 
 <header>
   <h1>🧠 Jungki — 박정운의 LLM Wiki + AI 하네스</h1>
-  <div class="sub">2026-06-06 갱신 · 박정운 본인 reference 사이트 · <span class="highlight">개인맥 정기 batch 갱신 (gardener 넛지)</span></div>
+  <div class="sub">2026-06-21 갱신 · 박정운 본인 reference 사이트 · <span class="highlight">개인맥 정기 batch 갱신 (gardener 넛지)</span></div>
   <div class="one-liner">
     <strong>한 줄 요약</strong> — 박정운은 ① <em>Jungki vault</em> (개인 영구 지식 베이스) ② <em>BYJW Studio crew 36 agents</em> (작업별 전문가 위임, +GSD 11) ③ <em>40 슬래시 명령</em> (운영 자동화, 전부 Opus) ④ <em>4종 메모리</em> (user·feedback·project·reference — vault <code>.cc-memory</code> 단일 소스) ⑤ <em>자가 학습 5 메커니즘</em>으로 LLM 협업을 운영. 글로벌 ↔ vault 단일 소스, 머신 간 자동 sync.
   </div>
@@ -993,12 +993,31 @@
 
 <!-- Section 11: Changelog -->
 <section id="changelog">
-  <h2><span class="num">11</span>변경 이력 — 2026-05-22 ~ 2026-06-06</h2>
+  <h2><span class="num">11</span>변경 이력 — 2026-05-22 ~ 2026-06-21</h2>
   <p class="lead">박정운이 진행한 큰 변경 (이걸 reference 사이트에 반영하기 위해 이번 갱신).</p>
 
   <div class="timeline">
     <div class="timeline-entry today">
-      <div class="timeline-date today">2026-05-30 ~ 06-06 (이번 갱신)</div>
+      <div class="timeline-date today">2026-06-07 ~ 06-21 (이번 갱신)</div>
+      <div class="timeline-content">
+        <strong>민감정보 hook · 원클릭 ingest 익스텐션 · Health area · daily 월말 아카이브 · 공식 아이콘</strong>
+        <ul>
+          <li>🛡️ <strong>민감정보 감지 게이트 (B11) hook 신설</strong> (6/16~17) — 비밀번호·API 키·주민번호 등이 commit/메모리/vault에 새어 들어가기 전 차단하는 게이트. 백로그 B11 구현</li>
+          <li>🧩 <strong>웹페이지 → Jungki 원클릭 ingest 크롬 익스텐션</strong> (6/9) — 보던 페이지를 버튼 한 번에 raw 저장 + 위키 정제. 로컬 브릿지 서버 경유. <code>/sync</code>가 서버를 자동 설치(<code>install.sh</code> idempotent) — 머신 바뀌어도 셋업 0</li>
+          <li>🩺 <strong>Health area 신설</strong> (6/16~17) — 개인 건강 관리 디렉토리 Jungki 연결. 2022~2025 종합검진 4개년 추세분석 + 식이 단일변수 특정(라면 야식) + 관리계획. PDF는 GCS·로컬, 요약만 vault</li>
+          <li>🗂️ <strong>daily 월말 아카이브 정책 신설</strong> (6/8) — 끝난 달 daily를 <code>wiki/archives/daily/{YYYY-MM}/</code>로 이동(<code>/monthly</code>가 회고 합성 후 자동). 진행 중 달만 평면 유지 → 자동화 0개 깸. 4·5월 백필 32개 이동. 로직 견고화(git mv → mv+git add -A)</li>
+          <li>🎨 <strong>Jungki 공식 아이콘 확정</strong> (6/9) — 13번 J-only 컷아웃(그린 그라데 칩+J 네거티브). SVG/PNG + 20개 후보 갤러리</li>
+          <li>🧹 <strong>레거시 부활 정리 + 미사용 프로젝트 아카이브</strong> — sync 삭제 미전파로 되살아난 레거시 agent·hook 재정리(함정 기록). wit_2026_ax·clock-in 로컬 소스 삭제 → wiki는 <code>archives/projects/</code> 보존. 프로젝트 <code>~/Projects</code> 통합 + LG 협업 연결</li>
+          <li>🧠 <strong>메모리 누적</strong> — 가족 정보 위치 포인터(주민번호 본문은 로컬 전용), <code>feedback_no_sleep_nudge</code>(취침 권유 금지), <code>feedback_evaluation_writing_plain</code>(평가글 쉬운 표현)</li>
+          <li>💳 <strong>가계부 강화</strong> — <code>/spend-close</code> 구독 목록 대조 규칙(금액+결제일 일치 시 질문 생략), card-tracker 현대카드 해외승인 처리(유럽여행 19건 백필), 여행 카테고리 분리</li>
+          <li>🩹 <strong>한경 다이제스트 장애 복구</strong> — playwright firefox 소실 + claude 경로 이동으로 중단됐던 조간 파이프라인 자가치유(경로 동적해석 + firefox 자가치유 + 실패 알림)</li>
+          <li>🌱 <strong>/gardener 정기 운영</strong> — 6/6·6/21 두 차례 실행. validate v1.1 frontmatter 보강. 6/21 정원 건강 양호(feedback 큐·중복·stale 클린)</li>
+          <li>📦 신규: <strong>lg/A2UI 로컬 PoC</strong>(대화→실시간 웹 UI 렌더), AI insights ingest 6편(요즘IT — GEO·바이브코딩·옵시디언위키), fittocal 상표 대응 ADR(FitSync→FitToCal 개명)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="timeline-entry">
+      <div class="timeline-date">2026-05-30 ~ 06-06</div>
       <div class="timeline-content">
         <strong>메모리 단일 소스 · 슬래시 Opus 일원화 · Gardener · 레거시 정리</strong>
         <ul>
