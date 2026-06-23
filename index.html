@@ -328,7 +328,7 @@
 
 <header>
   <h1>🧠 Jungki — 박정운의 LLM Wiki + AI 하네스</h1>
-  <div class="sub">2026-06-22 갱신 · 박정운 본인 reference 사이트 · <span class="highlight">개인맥 정기 batch 갱신 (gardener 넛지)</span></div>
+  <div class="sub">2026-06-23 갱신 · 박정운 본인 reference 사이트 · <span class="highlight">개인맥 정기 batch 갱신 (gardener 넛지)</span></div>
   <div class="one-liner">
     <strong>한 줄 요약</strong> — 박정운은 ① <em>Jungki vault</em> (개인 영구 지식 베이스) ② <em>BYJW Studio crew 36 agents</em> (작업별 전문가 위임, 전부 byjw-*) ③ <em>17 슬래시 명령</em> (운영 자동화, 전부 Opus) ④ <em>4종 메모리</em> (user·feedback·project·reference — vault <code>.cc-memory</code> 단일 소스) ⑤ <em>자가 학습 5 메커니즘</em>으로 LLM 협업을 운영. 글로벌 ↔ vault 단일 소스, 머신 간 자동 sync.
   </div>
@@ -835,7 +835,7 @@
 
   <div class="grid grid-2">
     <div class="memory-card">
-      <div class="name">user_*.md</div><span class="count">7개</span>
+      <div class="name">user_*.md</div><span class="count">9개</span>
       <p class="muted" style="margin-top:6px;">박정운 본인 정보·선호. 변경 가능한 동적 프로필.</p>
       <div class="examples">
         • <code>user_profile.md</code> — 1989-03-20, 안드로이드 10년차, 배민커머스<br>
@@ -871,7 +871,7 @@
       </div>
     </div>
     <div class="memory-card">
-      <div class="name">reference_*.md</div><span class="count">21개</span>
+      <div class="name">reference_*.md</div><span class="count">22개</span>
       <p class="muted" style="margin-top:6px;">외부 시스템 위치·재인증 절차 등 포인터.</p>
       <div class="examples">
         • <code>reference_openclaw_reauth.md</code> — openai-codex OAuth 토큰 재인증<br>
@@ -994,7 +994,7 @@
           <li><code>~/.claude/CLAUDE.md</code></li>
           <li><code>~/.claude/agents/byjw-*.md</code> (36)</li>
           <li><code>~/.claude/commands/*.md</code> (17)</li>
-          <li><code>~/.claude/hooks/*.js</code> (11)</li>
+          <li><code>~/.claude/hooks/*.js</code> (15)</li>
           <li><code>~/.claude/settings.json</code></li>
         </ul>
       </div>
@@ -1028,15 +1028,17 @@
 
   <div class="timeline">
     <div class="timeline-entry today">
-      <div class="timeline-date today">2026-06-22 (이번 갱신)</div>
+      <div class="timeline-date today">2026-06-23 (이번 갱신)</div>
       <div class="timeline-content">
-        <strong>명령 다이어트 · GSD 완전 제거 · /harvest cron · stock Phase5 게이트 · 홈 시크릿 키체인 이관</strong>
+        <strong>검증·git가드 hook 레이어 · 명령 다이어트 40→17 · GSD 완전 제거 · /harvest cron · stock Phase5 게이트 · 시크릿 키체인 · 클램셸 상시구동</strong>
         <ul>
-          <li>✂️ <strong>슬래시 명령 다이어트 40→17</strong> — <code>/retro [week|month|quarter]</code>(옛 /weekly·/monthly·/quarterly 병합) · <code>/spend [close|report]</code>(옛 /spend-close·/spend-report 병합) · <code>/gardener [lint|tidy]</code>(옛 /lint·/tidy 흡수)로 통합. <code>/append·/summary</code> archived</li>
-          <li>🗑️ <strong>GSD 완전 제거</strong> — <code>/gsd:*</code> 슬래시 + BYJW 워크플로우 7개(<code>/byjw-new·/byjw-map·/byjw-quick·/byjw-pause·/byjw-resume·/byjw-verify·/byjw-audit</code>) 전부 archived. agent는 36개 전부 byjw-* 단일 (gsd 11 합산 폐기)</li>
+          <li>🛡️ <strong>검증·자동화 hook 레이어</strong> (sync로 전파, ~/.claude/hooks 15개) — <code>verify-on-output</code>(의미산출물 Write 시 독립 judge가 백그라운드 rubric 채점) · <code>block-dangerous-git</code>(force push·amend·reset --hard·clean -f 결정론적 차단) · <code>harvest-on-session-end</code>(세션종료 자동 하베스트) · <code>grill-nudge</code>(계획확정 시 /grill 넛지). <strong>검증을 의지가 아니라 hook으로 강제</strong> (하용호 "생산→검증" 사상)</li>
+          <li>✂️ <strong>슬래시 명령 다이어트 40→17</strong> — <code>/retro [week|month|quarter]</code>(옛 /weekly·/monthly·/quarterly 병합) · <code>/spend [close|report]</code> · <code>/gardener [lint|tidy]</code>로 통합. <code>/append·/summary</code> archived</li>
+          <li>🗑️ <strong>GSD 완전 제거</strong> — <code>/gsd:*</code> 슬래시 + BYJW 워크플로우 7개 전부 archived. agent는 36개 전부 byjw-* 단일 (gsd 11 합산 폐기)</li>
           <li>🧬 <strong>/harvest 주1회 cron</strong> — 세션 transcript(.jsonl)에서 정정·선호·결정·함정 추출 → dedup 후 feedback-review 큐 적재. 자가진화 루프 자동화</li>
-          <li>📈 <strong>byjw-fin-stock Phase 5 게이트</strong> — 실주문 봇 정식 가동(Phase 5) 전에는 실전 주문 거의 반드시 거절, 모의 기본. 안전 룰 강화</li>
-          <li>🔐 <strong>홈 시크릿 키체인 이관</strong> — 평문 저장하던 홈 관련 시크릿을 macOS 키체인으로 이관</li>
+          <li>📈 <strong>stock Phase 5 Go-Live 게이트</strong> — 실주문 전 통과할 Binary 체크 + 7차원 리스크 LLM-judge rubric(default to reject). 실주문 봇 가동 전 거의 반드시 거절·모의 기본</li>
+          <li>🔐 <strong>홈 시크릿 키체인 이관</strong> — 평문(LemonSqueezy·Supabase·data.go.kr) → macOS 키체인 <code>env.*</code> 자동발견. <code>.zshenv</code> 로드(export+launchctl setenv)·<code>.mcp.json</code> <code>${}</code> 참조·<code>addenvsecret</code> 헬퍼. 평문 디스크 0</li>
+          <li>🖥️ <strong>개인맥 클램셸 상시구동</strong> — <code>pmset disablesleep 1</code>로 뚜껑 닫힘+전원+KVM 전환에도 안 잠 → cron(07:00 한경 다이제스트 등)·Claude 리모트 상시 가능</li>
         </ul>
       </div>
     </div>
